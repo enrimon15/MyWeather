@@ -4,16 +4,7 @@
     <string name="date_today">Venerdì, 8 luglio</string>
     <string name="current_temperature">21</string>
     <string name="weather_information">Soleggiato</string>
-    <string name="temp_information">26, partly cloudy</string>
-    <string name="wind">VENTO</string>
-    <string name="wind_speed">18 km/h</string>
-    <string name="humidity">UMIDITÀ</string>
-    <string name="humidity_rate">73%</string>
-    <string name="day_of_week">Lun</string>
     <string name="location_hints">Inserisci Città</string>
     <string name="location_example">Example Malmo, Sweden</string>
     <string name="add_new_location">Aggiungi nuova città</string>
-    <string name="stored_location">Puoi salvare solo 5 città</string>
-    <string name="permission_notice">This permission is important but you can as well set your location on Location page</string>
-    <string name="go_to_location">Go to location setting</string>
 </resources>
