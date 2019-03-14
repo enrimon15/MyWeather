@@ -10,7 +10,7 @@
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
     <item
-        android:id="@+id/favourite_item"
+        android:id="@+id/position_item"
         android:title="Posizione"
         android:icon="@drawable/position"
         app:showAsAction="always"/>
