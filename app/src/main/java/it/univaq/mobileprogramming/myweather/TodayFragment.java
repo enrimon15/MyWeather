@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,11 +80,13 @@ public class TodayFragment extends Fragment {
         //richiama il metodo per popolare la vista principale (meteo odierno)
         try {
             find_weather();
+            Log.d("enri", "1");
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        Log.d("enri", "10");
         return view;
 
     }
@@ -98,10 +101,12 @@ public class TodayFragment extends Fragment {
                 String in = new String(responseBody);
                 String response = new String(responseBody);
                 try {
+                    Log.d("enri", response);
                     parseMethod(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                Log.d("ENRI", "prova ");
             }
 
             @Override
@@ -136,9 +141,11 @@ public class TodayFragment extends Fragment {
         String im = object.getString("icon");
         setIconWeather(im, icon);
         String city = jor.getString("name");
+        Log.d("enri", "2");
 
         String temperatura = String.format ("%.1f", temp);
         t1_temp.setTitleText(temperatura);
+        Log.d("enri", "3");
         t2_city.setText(city + ", " + country);
         t1_temp.setSubtitleText(description);
 
@@ -148,6 +155,7 @@ public class TodayFragment extends Fragment {
         String formatted_date = sdf.format(data);
 
         t4_date.setText(formatted_date);
+        Log.d("ENRI", "prova ");
     }
 
 
