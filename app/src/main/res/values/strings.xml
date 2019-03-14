@@ -7,4 +7,7 @@
     <string name="location_hints">Inserisci Città</string>
     <string name="location_example">Example Malmo, Sweden</string>
     <string name="add_new_location">Aggiungi nuova città</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

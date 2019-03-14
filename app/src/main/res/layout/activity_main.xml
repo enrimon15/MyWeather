@@ -19,76 +19,24 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="370dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="647dp"
-        android:orientation="vertical"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/toolBar"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="559dp"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.338">
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
-        <TextView
-            android:id="@+id/city_country"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Torrebruna, IT"
-            android:textColor="@color/colorWhite"
-            android:textSize="36dp" />
 
-        <TextView
-            android:id="@+id/current_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Venerdi, 8 luglio"
-            android:textColor="@color/colorWhite"
-            android:textSize="20dp" />
 
-        <ImageView
-            android:id="@+id/weather_icon"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_sunny" />
-
-        <com.github.pavlospt.CircleView
-            android:id="@+id/weather_result"
-            android:layout_width="210dp"
-            android:layout_height="178dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            app:cv_backgroundColorValue="@color/colorCircleStroke"
-            app:cv_fillColor="@color/colorBackground"
-            app:cv_strokeColorValue="@color/colorCircleStroke"
-            app:cv_subtitleSize="20dp"
-            app:cv_subtitleText="@string/weather_information"
-            app:cv_titleColor="@color/colorWhite"
-            app:cv_titleSize="60dp"
-            app:cv_titleSubtitleSpace="50"
-            app:cv_titleText="@string/current_temperature" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="53dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/arrow" />
 
 </android.support.constraint.ConstraintLayout>

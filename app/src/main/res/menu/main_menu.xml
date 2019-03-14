@@ -4,15 +4,15 @@
 
     <item
         android:id="@+id/search_item"
-        android:title="search"
+        android:title="Ricerca"
         app:showAsAction="always|collapseActionView"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/ic_search_icon"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
     <item
-        android:id="@+id/setting_item"
-        android:title="Settings"
-        android:icon="@drawable/ic_settings"
-        app:showAsAction="never"/>
+        android:id="@+id/favourite_item"
+        android:title="Posizione"
+        android:icon="@drawable/position"
+        app:showAsAction="always"/>
 
 </menu>
