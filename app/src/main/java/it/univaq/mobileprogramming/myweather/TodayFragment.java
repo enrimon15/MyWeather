@@ -2,6 +2,7 @@ package it.univaq.mobileprogramming.myweather;
 
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.pavlospt.CircleView;
 import com.loopj.android.http.AsyncHttpClient;
@@ -40,6 +40,9 @@ public class TodayFragment extends Fragment {
     private CircleView t1_temp;
     private ImageView icon;
 
+    private Snackbar snackbar;
+    private View lay;
+
 
     public TodayFragment() {
         // Required empty public constructor
@@ -56,6 +59,7 @@ public class TodayFragment extends Fragment {
         t4_date = (TextView) view.findViewById(R.id.current_date);
         icon = (ImageView) view.findViewById(R.id.weather_icon);
         recyclerView = view.findViewById(R.id.weather_list);
+        lay = view.findViewById(R.id.view_today);
 
         //popola la recycle view con il meteo dei prossimi 5 giorni
         ore = new ArrayList<>();
@@ -74,19 +78,17 @@ public class TodayFragment extends Fragment {
 
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        recyclerView.setAdapter(new RecyclerViewAdapter_hour(ore, getContext()));
+        recyclerView.setAdapter(new RecyclerViewAdapter_hour(ore, getActivity()));
         recyclerView.setHasFixedSize(true);
 
         //richiama il metodo per popolare la vista principale (meteo odierno)
         try {
             find_weather();
-            Log.d("enri", "1");
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Log.d("enri", "10");
         return view;
 
     }
@@ -101,18 +103,16 @@ public class TodayFragment extends Fragment {
                 String in = new String(responseBody);
                 String response = new String(responseBody);
                 try {
-                    Log.d("enri", response);
                     parseMethod(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.d("ENRI", "prova ");
             }
 
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                 // called when response HTTP status is "404 error"
-                /*snackbar = Snackbar.make(view, "errore", snackbar.LENGTH_INDEFINITE);
+                snackbar = Snackbar.make(lay, "Città non trovata", snackbar.LENGTH_INDEFINITE);
                 snackbar.setDuration(3000);
                 snackbar.setAction("RIMUOVI", new View.OnClickListener(){
                     @Override
@@ -120,8 +120,8 @@ public class TodayFragment extends Fragment {
                         snackbar.dismiss();
                     }
                 });
-                snackbar.show();*/
-                Toast.makeText(getContext(), "Errore: Inserire Città valida!", Toast.LENGTH_SHORT).show();
+                snackbar.show();
+                //Toast.makeText(getContext(), "Errore: Inserire Città valida!", Toast.LENGTH_SHORT).show();
             }
 
         }); }
@@ -141,11 +141,9 @@ public class TodayFragment extends Fragment {
         String im = object.getString("icon");
         setIconWeather(im, icon);
         String city = jor.getString("name");
-        Log.d("enri", "2");
 
         String temperatura = String.format ("%.1f", temp);
         t1_temp.setTitleText(temperatura);
-        Log.d("enri", "3");
         t2_city.setText(city + ", " + country);
         t1_temp.setSubtitleText(description);
 
@@ -155,7 +153,6 @@ public class TodayFragment extends Fragment {
         String formatted_date = sdf.format(data);
 
         t4_date.setText(formatted_date);
-        Log.d("ENRI", "prova ");
     }
 
 
