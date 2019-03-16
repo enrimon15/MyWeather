@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/search_button"
+        android:id="@+id/search_item"
         android:icon="@drawable/ic_search_icon"
         android:title="Ricerca"
-        app:showAsAction="always|collapseActionView" />
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always|collapseActionView"
+    />
 
     <item
-        android:id="@+id/position_button"
+        android:id="@+id/position_item"
         android:icon="@drawable/position"
         android:title="Posizione"
         app:showAsAction="always" />

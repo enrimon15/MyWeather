@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Torrebruna, IT"
+            tools:text="Torrebruna, IT"
             android:textColor="@color/colorWhite"
             android:textSize="36dp" />
 
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Venerdi, 8 luglio"
+            tools:text="Venerdi, 8 luglio"
             android:textColor="@color/colorWhite"
             android:textSize="20dp" />
 
@@ -60,11 +60,11 @@
             app:cv_fillColor="@color/colorBackground"
             app:cv_strokeColorValue="@color/colorCircleStroke"
             app:cv_subtitleSize="20dp"
-            app:cv_subtitleText="@string/weather_information"
+            tools:cv_subtitleText="@string/weather_information"
             app:cv_titleColor="@color/colorWhite"
             app:cv_titleSize="60dp"
             app:cv_titleSubtitleSpace="50"
-            app:cv_titleText="@string/current_temperature" />
+            tools:cv_titleText="@string/current_temperature" />
     </LinearLayout>
 
     <LinearLayout
