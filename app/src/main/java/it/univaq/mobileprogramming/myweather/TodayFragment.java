@@ -61,6 +61,14 @@ public class TodayFragment extends Fragment {
         recyclerView = view.findViewById(R.id.weather_list);
         lay = view.findViewById(R.id.view_today);
 
+        //richiama il metodo per popolare la vista principale (meteo odierno)
+        try {
+            find_weather();
+            Log.d("enri", "1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         //popola la recycle view con il meteo dei prossimi 5 giorni
         ore = new ArrayList<>();
 
@@ -81,21 +89,13 @@ public class TodayFragment extends Fragment {
         recyclerView.setAdapter(new RecyclerViewAdapter_hour(ore, getActivity()));
         recyclerView.setHasFixedSize(true);
 
-        //richiama il metodo per popolare la vista principale (meteo odierno)
-        try {
-            find_weather();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         return view;
 
     }
 
     public void find_weather() throws JSONException {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://api.openweathermap.org/data/2.5/weather?q=L'aquila,it&appid=73f45256d96f6980fc804cca915873ea&units=metric&lang=it", new AsyncHttpResponseHandler() {
+        client.get("https://api.openweathermap.org/data/2.5/weather?q=L'Aquila,it&appid=73f45256d96f6980fc804cca915873ea&units=metric&lang=it", new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
@@ -104,6 +104,7 @@ public class TodayFragment extends Fragment {
                 String response = new String(responseBody);
                 try {
                     parseMethod(response);
+                    Log.d("enri", "onSuccess:");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
