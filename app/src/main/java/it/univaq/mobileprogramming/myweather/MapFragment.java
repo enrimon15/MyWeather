@@ -11,13 +11,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MapFragment extends Fragment {
-
-    private View lay;
-    private WebView webView;
 
 
     public MapFragment() {
@@ -30,15 +24,6 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        lay = view.findViewById(R.id.view_map);
-        webView = view.findViewById(R.id.webView);
-
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.loadUrl("https://www.google.it/");
-
         return  view;
 
     }

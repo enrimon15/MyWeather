@@ -12,10 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.pavlospt.CircleView;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,25 +98,29 @@ public class TodayFragment extends Fragment {
     }
 
     public void find_weather() throws JSONException {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://api.openweathermap.org/data/2.5/weather?q=L'Aquila,it&appid=73f45256d96f6980fc804cca915873ea&units=metric&lang=it", new AsyncHttpResponseHandler() {
 
-            @Override
-            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-                // called when response HTTP status is "200 OK"
-                String in = new String(responseBody);
-                String response = new String(responseBody);
-                try {
-                    parseMethod(response);
-                    Log.d("enri", "onSuccess:");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+        String url = "https://api.openweathermap.org/data/2.5/weather?q=L'Aquila,it&appid=73f45256d96f6980fc804cca915873ea&units=metric&lang=it";
 
+        // Request a string response
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        if (response.length() > 0) {
+                            try {
+                                parseMethod(response);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-                // called when response HTTP status is "404 error"
+            public void onErrorResponse(VolleyError error) {
+
+                // Error handling
                 snackbar = Snackbar.make(lay, "Città non trovata", snackbar.LENGTH_INDEFINITE);
                 snackbar.setDuration(3000);
                 snackbar.setAction("RIMUOVI", new View.OnClickListener(){
@@ -123,12 +131,18 @@ public class TodayFragment extends Fragment {
                 });
                 snackbar.show();
                 //Toast.makeText(getContext(), "Errore: Inserire Città valida!", Toast.LENGTH_SHORT).show();
-            }
 
-        }); }
+                error.printStackTrace();
+            }
+        });
+
+        // Add the request to the queue
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
+    }
 
 
     public void parseMethod(String apiString) throws JSONException {
+        Log.d("enri", "we");
         String url = apiString;
         JSONObject jor = new JSONObject(url);
 
@@ -147,6 +161,7 @@ public class TodayFragment extends Fragment {
         t1_temp.setTitleText(temperatura);
         t2_city.setText(city + ", " + country);
         t1_temp.setSubtitleText(description);
+        Log.d("enri", "x");
 
         Date data = new  Date();
         Locale.setDefault(Locale.ITALIAN);
