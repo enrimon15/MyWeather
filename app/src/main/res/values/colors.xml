@@ -7,4 +7,6 @@
     <color name="colorBackground">#307dc1</color>
     <color name="colorCircleStroke">#03015b</color>
     <color name="colorAccent">#a1660d</color>
+    <color name="colorCard">#EEEEEE</color>
+    <color name="colorDetails">#757575</color>
 </resources>
