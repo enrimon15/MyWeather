@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment("ITEM ONE", new TodayFragment());
-        adapter.addFragment("ITEM TWO", new DetailsFragment());
-        adapter.addFragment("ITEM THREE", new MapFragment());
+        adapter.addFragment("OGGI", new TodayFragment());
+        adapter.addFragment("DETTAGLI", new DetailsFragment());
+        adapter.addFragment("MAPPA", new MapFragment());
 
 
         viewPager.setAdapter(adapter);

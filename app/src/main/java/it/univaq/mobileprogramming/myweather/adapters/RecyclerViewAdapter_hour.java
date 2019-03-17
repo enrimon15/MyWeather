@@ -11,16 +11,16 @@ import android.widget.TextView;
 import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.R;
-import it.univaq.mobileprogramming.myweather.model.Five_Day;
+import it.univaq.mobileprogramming.myweather.model.Five_Days;
 
 
 public class RecyclerViewAdapter_hour extends RecyclerView.Adapter<RecyclerViewAdapter_hour.ViewHolder>
 {
 
-    private List<Five_Day> hours;
+    private List<Five_Days> hours;
     private Context context;
 
-    public RecyclerViewAdapter_hour(List<Five_Day> hours, Context context) {
+    public RecyclerViewAdapter_hour(List<Five_Days> hours, Context context) {
         this.hours = hours;
         this.context = context;
     }
@@ -36,7 +36,7 @@ public class RecyclerViewAdapter_hour extends RecyclerView.Adapter<RecyclerViewA
     //impostare gli oggetti presi dalla lista popolata da classi "model"
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        Five_Day hour = hours.get(position);
+        Five_Days hour = hours.get(position);
         holder.tempmax.setText(hour.getMax_temp());
         holder.tempmin.setText(hour.getMin_temp());
         holder.ora.setText(hour.getday());

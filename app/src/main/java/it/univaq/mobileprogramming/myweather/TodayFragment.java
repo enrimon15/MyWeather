@@ -2,6 +2,7 @@ package it.univaq.mobileprogramming.myweather;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,13 +33,18 @@ import java.util.List;
 import java.util.Locale;
 
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_hour;
-import it.univaq.mobileprogramming.myweather.model.Five_Day;
+import it.univaq.mobileprogramming.myweather.json.ParsingFiveDays;
+import it.univaq.mobileprogramming.myweather.json.ParsingToday;
+import it.univaq.mobileprogramming.myweather.json.RequestCityCountry;
+import it.univaq.mobileprogramming.myweather.json.RequestFiveDays;
+import it.univaq.mobileprogramming.myweather.model.Five_Days;
+import it.univaq.mobileprogramming.myweather.model.Today;
 
 
 public class TodayFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private List<Five_Day> ore;
+    private List<Five_Days> giorni;
 
     private TextView t2_city,t4_date;
     private CircleView t1_temp;
@@ -47,11 +53,12 @@ public class TodayFragment extends Fragment {
     private Snackbar snackbar;
     private View lay;
 
+    private static Today weather;
+
 
     public TodayFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,41 +72,33 @@ public class TodayFragment extends Fragment {
         recyclerView = view.findViewById(R.id.weather_list);
         lay = view.findViewById(R.id.view_today);
 
+        //stringa 5 giorni json
+        RequestFiveDays richiesta2 = new RequestFiveDays("L'Aquila","it", getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS));
+        String url2 = richiesta2.getUrl();
+
+        //stringa today weather json
+        RequestCityCountry richiesta = new RequestCityCountry("L'Aquila","it", getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS));
+        String url = richiesta.getUrl();
+
+
         //richiama il metodo per popolare la vista principale (meteo odierno)
         try {
-            find_weather();
-            Log.d("enri", "1");
+            find_weather(url);
+            Log.d("enri", "sopra");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         //popola la recycle view con il meteo dei prossimi 5 giorni
-        ore = new ArrayList<>();
-
-        ore.add(new Five_Day("GIO","21°","18°",R.drawable.cloudy));
-        ore.add(new Five_Day("VEN","26°","18°",R.drawable.snow));
-        ore.add(new Five_Day("SAB","28°","18°",R.drawable.sun));
-        ore.add(new Five_Day("DOM","25°","18°",R.drawable.cloudy));
-        ore.add(new Five_Day("LUN","22°","18°",R.drawable.cloudy));
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false){
-            @Override
-            public boolean canScrollHorizontally() {
-                return false;
-            } };
-
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        recyclerView.setAdapter(new RecyclerViewAdapter_hour(ore, getActivity()));
-        recyclerView.setHasFixedSize(true);
+        fiveDays();
 
         return view;
 
     }
 
-    public void find_weather() throws JSONException {
 
-        String url = "https://api.openweathermap.org/data/2.5/weather?q=L'Aquila,it&appid=73f45256d96f6980fc804cca915873ea&units=metric&lang=it";
+    //json request
+    public void find_weather(String url) throws JSONException {
 
         // Request a string response
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -109,7 +108,9 @@ public class TodayFragment extends Fragment {
                     {
                         if (response.length() > 0) {
                             try {
-                                parseMethod(response);
+                                ParsingToday pars = new ParsingToday(response);
+                                weather = pars.getToday_object();
+                                setView();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -119,7 +120,6 @@ public class TodayFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 // Error handling
                 snackbar = Snackbar.make(lay, "Città non trovata", snackbar.LENGTH_INDEFINITE);
                 snackbar.setDuration(3000);
@@ -141,61 +141,63 @@ public class TodayFragment extends Fragment {
     }
 
 
-    public void parseMethod(String apiString) throws JSONException {
-        Log.d("enri", "we");
-        String url = apiString;
-        JSONObject jor = new JSONObject(url);
+    private void fiveDays(){
 
-        JSONObject main_object = jor.getJSONObject("main");
-        JSONObject country_object = jor.getJSONObject("sys");
-        JSONArray array = jor.getJSONArray("weather");
-        JSONObject object = array.getJSONObject(0);
-        Double temp= main_object.getDouble("temp");
-        String country= String.valueOf(country_object.getString("country"));
-        String description = object.getString("description");
-        String im = object.getString("icon");
-        setIconWeather(im, icon);
-        String city = jor.getString("name");
+        //stringa 5 giorni json
+        RequestFiveDays richiesta2 = new RequestFiveDays("L'Aquila","it", getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS));
+        String url2 = richiesta2.getUrl();
+        Log.d("fragment", url2);
 
-        String temperatura = String.format ("%.1f", temp);
-        t1_temp.setTitleText(temperatura);
-        t2_city.setText(city + ", " + country);
-        t1_temp.setSubtitleText(description);
-        Log.d("enri", "x");
+        // Request a string response
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, url2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response)
+                    { Log.d("dentro", response);
+                        if (response.length() > 0) {
+                            try {
+                                Log.d("dentro2", response);
+                                ParsingFiveDays pars = new ParsingFiveDays(response);
+                                giorni = pars.getListaDay();
+                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false){
+                                    @Override
+                                    public boolean canScrollHorizontally() {
+                                        return false;
+                                    } };
 
-        Date data = new  Date();
-        Locale.setDefault(Locale.ITALIAN);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, d MMMM ");
-        String formatted_date = sdf.format(data);
+                                recyclerView.setLayoutManager(linearLayoutManager);
+                                recyclerView.setAdapter(new RecyclerViewAdapter_hour(giorni, getActivity()));
+                                recyclerView.setHasFixedSize(true);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
-        t4_date.setText(formatted_date);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Error handling
+                //Toast.makeText(getContext(), "Errore: Inserire Città valida!", Toast.LENGTH_SHORT).show();
+
+                error.printStackTrace();
+            }
+        });
+
+        // Add the request to the queue
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
+
     }
 
-
-
-    public void dailyHours(String city){
-
+    private void setView() {
+        icon.setImageResource(weather.getIcon());
+        t1_temp.setTitleText(weather.getTemp());
+        t2_city.setText(weather.getCity() + ", " + weather.getCountry());
+        t1_temp.setSubtitleText(weather.getWeatherResult());
+        t4_date.setText(weather.getDate());
+        DetailsFragment.setOggi(weather);
+        Log.d("fine", "setView: ");
     }
 
-    public void setIconWeather(String condition, ImageView image) {
-        if (condition.equals("01d")) image.setImageResource(R.drawable.sun);
-        else if (condition.equals("01n")) image.setImageResource(R.drawable.sun);
-        else if (condition.equals("02d")) image.setImageResource(R.drawable.cloudy);
-        else if (condition.equals("02n")) image.setImageResource(R.drawable.cloudy_night);
-        else if (condition.equals("03d")) image.setImageResource(R.drawable.cloud);
-        else if (condition.equals("03n")) image.setImageResource(R.drawable.cloud);
-        else if (condition.equals("04d")) image.setImageResource(R.drawable.cloud);
-        else if (condition.equals("04n")) image.setImageResource(R.drawable.cloud);
-        else if (condition.equals("09d")) image.setImageResource(R.drawable.rain);
-        else if (condition.equals("09n")) image.setImageResource(R.drawable.rain);
-        else if (condition.equals("10d")) image.setImageResource(R.drawable.rain_sun);
-        else if (condition.equals("10n")) image.setImageResource(R.drawable.rain_night);
-        else if (condition.equals("11d")) image.setImageResource(R.drawable.lightning);
-        else if (condition.equals("11n")) image.setImageResource(R.drawable.lightning_night);
-        else if (condition.equals("13d")) image.setImageResource(R.drawable.snowing);
-        else if (condition.equals("13n")) image.setImageResource(R.drawable.snowing_night);
-        else if (condition.equals("50d")) image.setImageResource(R.drawable.windy);
-        else if (condition.equals("50n")) image.setImageResource(R.drawable.windy);
-    }
 
 }
