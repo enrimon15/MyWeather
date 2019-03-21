@@ -79,4 +79,9 @@ public class DetailsFragment extends Fragment{
         icon.setImageResource(oggi.getIcon());
     }
 
+    @Override
+    public void setArguments(@Nullable Bundle args) {
+        super.setArguments(args);
+        city.setText(args.getString("ciao"));
+    }
 }

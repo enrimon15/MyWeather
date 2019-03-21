@@ -44,7 +44,9 @@ public class ParsingToday {
 
             JSONObject weather_object = weather.getJSONObject(0);
             String description = weather_object.getString("description");
-            String condition = description.toUpperCase().substring(0,1) + description.substring(1,description.length());
+            String condition;
+                if (description.equals("poche nuvole")) condition = "Nuvoloso";
+                else condition = description.toUpperCase().substring(0,1) + description.substring(1,description.length());
             String imm = weather_object.getString("icon");
             int image = setImm(imm);
 

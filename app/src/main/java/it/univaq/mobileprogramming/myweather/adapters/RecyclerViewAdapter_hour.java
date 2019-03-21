@@ -1,7 +1,8 @@
 package it.univaq.mobileprogramming.myweather.adapters;
 
  import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+ import android.support.annotation.NonNull;
+ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +26,10 @@ public class RecyclerViewAdapter_hour extends RecyclerView.Adapter<RecyclerViewA
         this.context = context;
     }
 
-    // facciamo l'inflate (gonfiaggio) lo riportiamo sul ViewHolder -> grazie al quale andrà a richiamare i vari componenti
+    // facciamo l'inflate lo riportiamo sul ViewHolder -> grazie al quale andrà a richiamare i vari componenti
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.day_hours, parent, false);
         return new ViewHolder(v);
     }

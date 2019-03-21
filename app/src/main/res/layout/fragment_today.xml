@@ -10,33 +10,31 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/city_country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            tools:text="Torrebruna, IT"
             android:textColor="@color/colorWhite"
-            android:textSize="36dp" />
+            android:textSize="36dp"
+            tools:text="Torrebruna, IT" />
 
         <TextView
             android:id="@+id/current_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            tools:text="Venerdi, 8 luglio"
             android:textColor="@color/colorWhite"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            tools:text="Venerdi, 8 luglio" />
 
         <ImageView
             android:id="@+id/weather_icon"
@@ -55,36 +53,35 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="3dp"
             app:cv_backgroundColorValue="@color/colorCircleStroke"
             app:cv_fillColor="@color/colorBackground"
             app:cv_strokeColorValue="@color/colorCircleStroke"
             app:cv_subtitleSize="20dp"
-            tools:cv_subtitleText="@string/weather_information"
             app:cv_titleColor="@color/colorWhite"
             app:cv_titleSize="60dp"
             app:cv_titleSubtitleSpace="50"
+            tools:cv_subtitleText="@string/weather_information"
             tools:cv_titleText="@string/current_temperature" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:orientation="vertical"
-        android:paddingBottom="3dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/weather_list"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:scrollbars="none" />
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:paddingBottom="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/weather_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:scrollbars="none" />
+
+        </LinearLayout>
     </LinearLayout>
-
 </android.support.constraint.ConstraintLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="switch_notifiche"
+        android:title="Abilita Notifiche"
+        android:summaryOn="Notifiche abilitate"
+        android:summaryOff="Notifiche non abilitate"/>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="switch_position"
+        android:title="Consenti Posizione"
+        android:summaryOn="Posizione consentita"
+        android:summaryOff="Posizione non consentita"/>
+</PreferenceScreen>
