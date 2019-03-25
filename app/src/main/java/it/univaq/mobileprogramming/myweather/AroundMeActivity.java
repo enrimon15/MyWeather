@@ -93,6 +93,7 @@ public class AroundMeActivity extends AppCompatActivity{
                 public void onLocationChanged(Location location) {
                     lat = location.getLatitude() + "";
                     lon = location.getLongitude() + "";
+                    Log.d("prova", location.getLongitude() + "");
                     downloadData();
                 }
                 @Override

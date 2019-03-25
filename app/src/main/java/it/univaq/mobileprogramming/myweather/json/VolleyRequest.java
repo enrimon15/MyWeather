@@ -33,23 +33,23 @@ public class VolleyRequest {
         queue.add(request);
     }
 
-    public void downloadDetail(String city, String country, String key, String unit, Response.Listener<String> listener, Response.ErrorListener error){
+    public void downloadFive(String city, /*String country,*/ String key, String unit, Response.Listener<String> listener, Response.ErrorListener error){
 
         StringRequest request = new StringRequest(
                 StringRequest.Method.GET,
-                "https://api.openweathermap.org/data/2.5/forecast?q="+ city + "," + country + "&appid=" + key + unit,
+                "https://api.openweathermap.org/data/2.5/forecast?q="+ city + /*"," + country +*/ "&appid=" + key + unit,
                 listener,
                 error);
         queue.add(request);
     }
 
-    public void downloadCoord(String city, String country, String key, String unit, Response.Listener<String> listener, Response.ErrorListener error){
+    public void downloadCityName(String city, String key, String unit, Response.Listener<String> listener, Response.ErrorListener error){
 
         StringRequest request = new StringRequest(
                 StringRequest.Method.GET,
-                "",
+                "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key + unit,
                 listener,
-                null);
+                error);
         queue.add(request);
     }
 

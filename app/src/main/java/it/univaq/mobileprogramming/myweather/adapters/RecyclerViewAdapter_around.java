@@ -70,7 +70,6 @@ public class RecyclerViewAdapter_around extends RecyclerView.Adapter<RecyclerVie
                     ListCity city = lista_around.get(getAdapterPosition());
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
                     intent.putExtra("cityName", city.getNameCity());
-                    intent.putExtra("countryName", "");
                     v.getContext().startActivity(intent);
                 }
             });

@@ -30,15 +30,20 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import it.univaq.mobileprogramming.myweather.adapters.ViewPagerAdapter;
+import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TodayFragment.OnMyListner{
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Today oggi;
     DetailsFragment fr =  new DetailsFragment();
+    TodayFragment td = new TodayFragment();
+    MapFragment mp = new MapFragment();
+    private String Namecity;
+    private Today todayCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment("OGGI", new TodayFragment());
+        adapter.addFragment("OGGI", td);
         adapter.addFragment("DETTAGLI", fr);
-        adapter.addFragment("MAPPA", new MapFragment());
+        adapter.addFragment("MAPPA", mp);
 
 
         viewPager.setAdapter(adapter);
@@ -74,6 +79,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Namecity = getIntent().getStringExtra("cityName");
+
+        Bundle b = new Bundle();
+        b.putString("nameCity",Namecity);
+        td.setArguments(b);
+        //mp.setArguments(b);
     }
 
     @Override
@@ -98,9 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
 
             case R.id.position_button:
-                Bundle b = new Bundle();
-                b.putString("ciao","evviva");
-                fr.setArguments(b);
+                Intent intent1 = new Intent(getApplicationContext(), AroundMeActivity.class);
+                startActivity(intent1);
                 return true;
 
             default:
@@ -145,4 +160,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
+    public void passCity(Today today) {
+        todayCity = today;
+
+        Bundle x = new Bundle();
+        x.putString("nome", todayCity.getCity());
+        x.putString("nuv", todayCity.getClouds());
+        x.putString("desc", todayCity.getWeatherResult());
+        x.putString("temp", todayCity.getTemp());
+        x.putString("min", todayCity.getMin());
+        x.putString("max", todayCity.getMax());
+        x.putString("vento", todayCity.getWind());
+        x.putString("press", todayCity.getPressure());
+        x.putString("sunset", todayCity.getSunset());
+        x.putString("sunrise", todayCity.getSunrise());
+        x.putString("umid", todayCity.getHumidity());
+        x.putInt("imm", todayCity.getIcon());
+        fr.setArguments(x);
+    }
 }

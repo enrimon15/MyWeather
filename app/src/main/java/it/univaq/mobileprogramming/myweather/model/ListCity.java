@@ -1,6 +1,7 @@
 package it.univaq.mobileprogramming.myweather.model;
 
-public class ListCity {
+
+public class ListCity{
     private String name;
     private int weatherIcon;
     private String temp;

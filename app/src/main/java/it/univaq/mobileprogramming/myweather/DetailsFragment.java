@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
+
+import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
 
@@ -19,19 +22,19 @@ import it.univaq.mobileprogramming.myweather.model.Today;
  * A simple {@link Fragment} subclass.
  */
 public class DetailsFragment extends Fragment{
-    private  static Today oggi;
-    private static TextView city;
-    private static  TextView description;
-    private static  TextView temp;
-    private static  TextView mintemp;
-    private static  TextView maxtemp;
-    private static  TextView cloud;
-    private static  TextView hum;
-    private static  TextView press;
-    private static  TextView wind;
-    private static  TextView sunrise;
-    private static  TextView sunset;
-    private static ImageView icon;
+    private Today oggi;
+    private TextView city;
+    private TextView description;
+    private TextView temp;
+    private TextView mintemp;
+    private TextView maxtemp;
+    private TextView cloud;
+    private TextView hum;
+    private TextView press;
+    private TextView wind;
+    private TextView sunrise;
+    private TextView sunset;
+    private ImageView icon;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -60,28 +63,32 @@ public class DetailsFragment extends Fragment{
         return view;
     }
 
-    public static void setOggi(Today today){
-        Log.d("fragment", "setOggi: ");
-        oggi = today;
-        Log.d("fragment", "setOggi: " + oggi.getCity());
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
-        city.setText(oggi.getCity());
-        description.setText(oggi.getWeatherResult());
-        temp.setText(oggi.getTemp());
-        mintemp.setText("MIN: " + oggi.getMin());
-        maxtemp.setText("MAX: " + oggi.getMax());
-        cloud.setText(oggi.getClouds());
-        hum.setText(oggi.getHumidity());
-        press.setText(oggi.getPressure());
-        wind.setText(oggi.getWind());
-        sunrise.setText(oggi.getSunrise());
-        sunset.setText(oggi.getSunset());
-        icon.setImageResource(oggi.getIcon());
+    public void setOggi(Bundle today){
+        Log.d("fragment", "setOggi: ");
+        //oggi = today;
+
+        city.setText(today.getString("nome"));
+        description.setText(today.getString("desc"));
+        temp.setText(today.getString("temp"));
+        mintemp.setText("MIN: " + today.getString("min"));
+        maxtemp.setText("MAX: " + today.getString("max"));
+        cloud.setText(today.getString("nuv"));
+        hum.setText(today.getString("umid"));
+        press.setText(today.getString("press"));
+        wind.setText(today.getString("vento"));
+        sunrise.setText(today.getString("sunrise"));
+        sunset.setText(today.getString("sunset"));
+        icon.setImageResource(today.getInt("imm"));
     }
 
     @Override
     public void setArguments(@Nullable Bundle args) {
         super.setArguments(args);
-        city.setText(args.getString("ciao"));
+        setOggi(args);
     }
 }

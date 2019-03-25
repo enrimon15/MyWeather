@@ -1,8 +1,10 @@
 package it.univaq.mobileprogramming.myweather;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,7 +45,13 @@ public class TodayFragment extends Fragment {
     private View lay;
 
     private static Today weather;
+    private  String cityArgument;
 
+    private  OnMyListner myListner;
+
+    public  interface OnMyListner{
+        void passCity(Today today);
+    }
 
     public TodayFragment() {
         // Required empty public constructor
@@ -60,30 +68,53 @@ public class TodayFragment extends Fragment {
         icon = (ImageView) view.findViewById(R.id.weather_icon);
         recyclerView = view.findViewById(R.id.weather_list);
         lay = view.findViewById(R.id.view_today);
-
-        //richiama il metodo per popolare la vista principale (meteo odierno)
-        try {
-            find_weather(/*url*/);
-            Log.d("enri", "sopra");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        //popola la recycle view con il meteo dei prossimi 5 giorni
-        fiveDays();
+        Activity a = getActivity();
+        Log.d("prova", a + "");
 
         return view;
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //richiama il metodo per popolare la vista principale (meteo odierno)
+        try {
+            find_weather();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //metodo che popola la recycle view con il meteo dei prossimi 5 giorni
+        fiveDays();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try{
+            myListner = (OnMyListner) context;
+        } catch (ClassCastException e){
+            throw new ClassCastException("Devi implementare l'interfaccia");
+        }
+    }
+
+    @Override
+    public void setArguments(@Nullable Bundle args) {
+        super.setArguments(args);
+        cityArgument = args.getString("nameCity");
+        Log.d("prova", cityArgument);
+    }
+
 
     //json request
-    public void find_weather(/*String url*/) throws JSONException {
+    public void find_weather() throws JSONException {
 
         // Request a string response
-
         VolleyRequest.getInstance(getActivity())
-                .downloadCity("L'Aquila","it", getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS), new Response.Listener<String>() {
+                .downloadCityName(cityArgument, getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS), new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response)
                     {
@@ -123,7 +154,7 @@ public class TodayFragment extends Fragment {
 
         // Request a string response
         VolleyRequest.getInstance(getActivity())
-                .downloadDetail("L'Aquila","it", getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS),
+                .downloadFive(cityArgument, getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response)
@@ -162,7 +193,8 @@ public class TodayFragment extends Fragment {
         t2_city.setText(weather.getCity() + ", " + weather.getCountry());
         t1_temp.setSubtitleText(weather.getWeatherResult());
         t4_date.setText(weather.getDate());
-        DetailsFragment.setOggi(weather);
+
+        myListner.passCity(weather);
     }
 
 

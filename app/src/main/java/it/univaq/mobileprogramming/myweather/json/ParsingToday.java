@@ -22,6 +22,7 @@ public class ParsingToday {
             JSONArray  weather = jor.getJSONArray("weather");
             JSONObject sys = jor.getJSONObject("sys");
             JSONObject wind_object = jor.getJSONObject("wind");
+            JSONObject coord = jor.getJSONObject("coord");
 
             String wind = wind_object.getString("speed") + " km/h";
 
@@ -31,10 +32,11 @@ public class ParsingToday {
                 temp = temp + "\u00B0";
             String pressione= main.getString("pressure") + " hPA";
             String umidita= main.getString("humidity") + " %";
-            String min= main.getString("temp_min") + "\u00B0";
-            String max= main.getString("temp_max") + "\u00B0";
+            String min= main.getInt("temp_min") + "\u00B0";
+            String max= main.getInt("temp_max") + "\u00B0";
 
-
+            String lat = coord.getString("lat");
+            String lon = coord.getString("lon");
 
             String country= sys.getString("country");
             int sunRise = sys.getInt("sunrise");
@@ -46,6 +48,8 @@ public class ParsingToday {
             String description = weather_object.getString("description");
             String condition;
                 if (description.equals("poche nuvole")) condition = "Nuvoloso";
+                else if (description.equals("pioggia leggera")) condition = "Pioggia";
+                else if (description.equals("pioggia moderata")) condition = "Pioggia";
                 else condition = description.toUpperCase().substring(0,1) + description.substring(1,description.length());
             String imm = weather_object.getString("icon");
             int image = setImm(imm);
@@ -58,7 +62,7 @@ public class ParsingToday {
 
 
             //creo l'oggetto today
-            today_object = new Today(temp,city,country,condition,image,max,min,wind,pressione,umidita,cloud,rise,set,data);
+            today_object = new Today(temp,city,country,condition,image,max,min,wind,pressione,umidita,cloud,rise,set,data,lat,lon);
 
         }
 
