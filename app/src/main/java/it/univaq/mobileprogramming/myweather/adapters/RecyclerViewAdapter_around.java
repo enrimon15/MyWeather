@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class RecyclerViewAdapter_around extends RecyclerView.Adapter<RecyclerVie
                     // Open another Activity and pass to it the right city
                     ListCity city = lista_around.get(getAdapterPosition());
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    intent.putExtra("cityName", city.getNameCity());
+                    intent.putExtra("cityID", "id=" + city.getcode());
                     v.getContext().startActivity(intent);
                 }
             });

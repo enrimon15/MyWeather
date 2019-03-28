@@ -24,7 +24,7 @@ public class VolleyRequest {
     }
 
     public void downloadCity(String city, String country, String key, String unit, Response.Listener<String> listener, Response.ErrorListener error){
-
+        Log.d("DB", "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&appid=" + key + unit);
         StringRequest request = new StringRequest(
                 StringRequest.Method.GET,
                 "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&appid=" + key + unit,
@@ -37,7 +37,7 @@ public class VolleyRequest {
 
         StringRequest request = new StringRequest(
                 StringRequest.Method.GET,
-                "https://api.openweathermap.org/data/2.5/forecast?q="+ city + /*"," + country +*/ "&appid=" + key + unit,
+                "https://api.openweathermap.org/data/2.5/forecast?"+ city + /*"," + country +*/ "&appid=" + key + unit,
                 listener,
                 error);
         queue.add(request);
@@ -47,7 +47,7 @@ public class VolleyRequest {
 
         StringRequest request = new StringRequest(
                 StringRequest.Method.GET,
-                "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key + unit,
+                "https://api.openweathermap.org/data/2.5/weather?" + city + "&appid=" + key + unit,
                 listener,
                 error);
         queue.add(request);

@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private Today oggi;
     DetailsFragment fr =  new DetailsFragment();
     TodayFragment td = new TodayFragment();
     MapFragment mp = new MapFragment();
@@ -84,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume() {
         super.onResume();
-        Namecity = getIntent().getStringExtra("cityName");
+        if (getIntent().getStringExtra("cityID") != null) Namecity =  getIntent().getStringExtra("cityID");
+        else Namecity = "q=" + getIntent().getStringExtra("cityName");
 
         Bundle b = new Bundle();
         b.putString("nameCity",Namecity);
@@ -114,7 +114,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
 
             case R.id.position_button:
-                Intent intent1 = new Intent(getApplicationContext(), AroundMeActivity.class);
+                /*Intent intent1 = new Intent(getApplicationContext(), AroundMeActivity.class);
+                startActivity(intent1);*/
+                Intent intent1 = new Intent(getApplicationContext(), FavouriteActivity.class);
                 startActivity(intent1);
                 return true;
 
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Bundle x = new Bundle();
         x.putString("nome", todayCity.getCity());
+        x.putString("country", todayCity.getCountry());
         x.putString("nuv", todayCity.getClouds());
         x.putString("desc", todayCity.getWeatherResult());
         x.putString("temp", todayCity.getTemp());

@@ -24,6 +24,8 @@ public class ParsingToday {
             JSONObject wind_object = jor.getJSONObject("wind");
             JSONObject coord = jor.getJSONObject("coord");
 
+            String id = jor.getString("id");
+
             String wind = wind_object.getString("speed") + " km/h";
 
             Double temperatura= main.getDouble("temp");
@@ -62,7 +64,7 @@ public class ParsingToday {
 
 
             //creo l'oggetto today
-            today_object = new Today(temp,city,country,condition,image,max,min,wind,pressione,umidita,cloud,rise,set,data,lat,lon);
+            today_object = new Today(temp,city,country,condition,image,max,min,wind,pressione,umidita,cloud,rise,set,data,lat,lon, id);
 
         }
 

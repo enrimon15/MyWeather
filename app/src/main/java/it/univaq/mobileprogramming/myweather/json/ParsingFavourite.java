@@ -4,54 +4,43 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
 
-public class ParsingAround {
-    private List<ListCity> around = new ArrayList<ListCity>();
+public class ParsingFavourite {
+    private ListCity city;
 
-    public ParsingAround(String parsing) throws JSONException {
+    public ParsingFavourite(String parsing) throws JSONException {
         JSONObject jor = new JSONObject(parsing);
-        JSONArray lista = jor.getJSONArray("list");
 
-        for (int i = 0; i < lista.length(); i++) {
-            JSONObject oggetto = lista.getJSONObject(i);
-            String nome = oggetto.getString("name");
+        JSONObject main = jor.getJSONObject("main");
+        JSONArray weather = jor.getJSONArray("weather");
+        JSONObject sys = jor.getJSONObject("sys");
 
-            JSONObject main = oggetto.getJSONObject("main");
-            int temperatura = main.getInt("temp");
-            String temp = temperatura + "\u00B0";
+        String id = jor.getString("id");
 
-            JSONArray weather = oggetto.getJSONArray("weather");
-            JSONObject icon = weather.getJSONObject(0);
-            String imm = icon.getString("icon");
-            int immagine = setImm(imm);
+        int temperatura = main.getInt("temp");
+        String temp = temperatura + "\u00B0";
 
-            String description = icon.getString("description");
-            String condition = description.toUpperCase().substring(0,1) + description.substring(1,description.length());
+        String country = sys.getString("country");
 
-            String id = oggetto.getString("id");
+        JSONObject weather_object = weather.getJSONObject(0);
+        String description = weather_object.getString("description");
 
-            around.add(new ListCity(nome,immagine,temp,condition, id));
-        }
+        String imm = weather_object.getString("icon");
+        int image = setImm(imm);
 
-        for (int x = 0; x<around.size()-1; x++){
-            String n = (around.get(x)).getNameCity();
-            if (n.equals((around.get(x+1)).getNameCity())) around.remove(x);
-            if (n.charAt(1) == '\'') around.remove(x+1);
+        String cityname = jor.getString("name");
 
-        }
+        city = new ListCity(cityname + ", " + country, image, temp, description, id);
     }
 
-    public List<ListCity> getAround() {
-        return around;
+    public ListCity getCity() {
+        return city;
     }
 
-    public void setAround(List<ListCity> around) {
-        this.around = around;
+    public void setCity(ListCity city) {
+        this.city = city;
     }
 
     private int setImm(String imm) {
@@ -76,6 +65,4 @@ public class ParsingAround {
         else if (imm.equals("50n")) image = R.drawable.windy;
         return image;
     }
-
-
 }

@@ -1,20 +1,26 @@
 package it.univaq.mobileprogramming.myweather;
 
 
+import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
 
+import it.univaq.mobileprogramming.myweather.database.FavDatabase;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
+import it.univaq.mobileprogramming.myweather.model.Preferiti;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
 
@@ -22,7 +28,6 @@ import it.univaq.mobileprogramming.myweather.model.Today;
  * A simple {@link Fragment} subclass.
  */
 public class DetailsFragment extends Fragment{
-    private Today oggi;
     private TextView city;
     private TextView description;
     private TextView temp;
@@ -35,6 +40,13 @@ public class DetailsFragment extends Fragment{
     private TextView sunrise;
     private TextView sunset;
     private ImageView icon;
+    private ImageButton pref;
+    private FavDatabase favdb;
+    private Snackbar snack;
+    private View lay;
+
+    private String n;
+    private String c;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -59,6 +71,13 @@ public class DetailsFragment extends Fragment{
         sunrise = view.findViewById(R.id.sunrise_details);
         sunset = view.findViewById(R.id.sunset_details);
         icon = view.findViewById(R.id.icon_weather_details);
+        pref = view.findViewById(R.id.star);
+        lay = view.findViewById(R.id.view_details);
+
+            favdb = Room.databaseBuilder(getActivity(), FavDatabase.class, "favouriteDB")
+                    .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration()
+                    .build();
 
         return view;
     }
@@ -66,13 +85,27 @@ public class DetailsFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        pref.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)  {
+                    snack = Snackbar.make(lay, "Città aggiunta ai preferiti", Snackbar.LENGTH_SHORT);
+                    snack.setDuration(3000);
+                    snack.show();
+                System.out.println(n);
+                System.out.println(c);
+                    favdb.favouriteDAO().deleteAll();
+                    favdb.favouriteDAO().save(new Preferiti(n, c));
+                    System.out.println(n);
+                    System.out.println(c);
+            }
+        });
     }
 
     public void setOggi(Bundle today){
         Log.d("fragment", "setOggi: ");
         //oggi = today;
-
-        city.setText(today.getString("nome"));
+        n = today.getString("nome");
+        c = today.getString("country");
+        city.setText(today.getString("nome") + ", " + today.getString("country"));
         description.setText(today.getString("desc"));
         temp.setText(today.getString("temp"));
         mintemp.setText("MIN: " + today.getString("min"));

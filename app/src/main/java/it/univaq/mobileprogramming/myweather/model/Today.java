@@ -1,11 +1,19 @@
 package it.univaq.mobileprogramming.myweather.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
+
 public class Today{
+
     private String temp;
     private String city;
     private String country;
     private String weatherResult;
     private String date;
+    private String code;
 
     //details
     private String max;
@@ -20,7 +28,7 @@ public class Today{
     private String lon;
     private int icon;
 
-    public Today(String temp, String city, String country, String weatherResult, int icon, String max, String min, String wind, String pressure, String humidity, String clouds, String sunrise, String sunset, String data, String lat, String lon) {
+    public Today(String temp, String city, String country, String weatherResult, int icon, String max, String min, String wind, String pressure, String humidity, String clouds, String sunrise, String sunset, String data, String lat, String lon, String code) {
         this.temp = temp;
         this.city = city;
         this.country = country;
@@ -37,6 +45,7 @@ public class Today{
         this.date = data;
         this.lat = lat;
         this.lon = lon;
+        this.code = code;
     }
 
     public String getTemp() {
@@ -158,4 +167,12 @@ public class Today{
     public String getLon() { return lon; }
 
     public void setLon(String lon) { this.lon = lon; }
+
+    public String getcode() {
+        return code;
+    }
+
+    public void setcode(String code) {
+        this.code = code;
+    }
 }
