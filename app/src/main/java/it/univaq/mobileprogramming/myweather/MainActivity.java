@@ -29,6 +29,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
 import it.univaq.mobileprogramming.myweather.adapters.ViewPagerAdapter;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
@@ -62,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addFragment("OGGI", td);
         adapter.addFragment("DETTAGLI", fr);
         adapter.addFragment("MAPPA", mp);
-
 
         viewPager.setAdapter(adapter);
 
@@ -167,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         todayCity = today;
 
         Bundle x = new Bundle();
+        Bundle map = new Bundle();
+
         x.putString("nome", todayCity.getCity());
         x.putString("country", todayCity.getCountry());
         x.putString("nuv", todayCity.getClouds());
@@ -180,6 +185,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         x.putString("sunrise", todayCity.getSunrise());
         x.putString("umid", todayCity.getHumidity());
         x.putInt("imm", todayCity.getIcon());
+        map.putString("lat", todayCity.getLat());
+        map.putString("lon", todayCity.getLon());
+        map.putString("cName", todayCity.getCity());
+
         fr.setArguments(x);
+        mp.setArguments(map);
     }
 }
