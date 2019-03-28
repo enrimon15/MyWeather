@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.content.Context;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,12 +30,19 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import it.univaq.mobileprogramming.myweather.adapters.ViewPagerAdapter;
+import it.univaq.mobileprogramming.myweather.model.ListCity;
+import it.univaq.mobileprogramming.myweather.model.Today;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TodayFragment.OnMyListner{
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    DetailsFragment fr =  new DetailsFragment();
+    TodayFragment td = new TodayFragment();
+    MapFragment mp = new MapFragment();
+    private String Namecity;
+    private Today todayCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +59,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment("OGGI", new TodayFragment());
-        adapter.addFragment("DETTAGLI", new DetailsFragment());
-        adapter.addFragment("MAPPA", new MapFragment());
+        adapter.addFragment("OGGI", td);
+        adapter.addFragment("DETTAGLI", fr);
+        adapter.addFragment("MAPPA", mp);
 
 
         viewPager.setAdapter(adapter);
@@ -69,6 +78,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getIntent().getStringExtra("cityID") != null) Namecity =  getIntent().getStringExtra("cityID");
+        else Namecity = "q=" + getIntent().getStringExtra("cityName");
+
+        Bundle b = new Bundle();
+        b.putString("nameCity",Namecity);
+        td.setArguments(b);
+        //mp.setArguments(b);
     }
 
     @Override
@@ -93,7 +114,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
 
             case R.id.position_button:
-
+                /*Intent intent1 = new Intent(getApplicationContext(), AroundMeActivity.class);
+                startActivity(intent1);*/
+                Intent intent1 = new Intent(getApplicationContext(), FavouriteActivity.class);
+                startActivity(intent1);
                 return true;
 
             default:
@@ -116,11 +140,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_gallery) {
             Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
             startActivity(intent2);
@@ -139,4 +162,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
+    public void passCity(Today today) {
+        todayCity = today;
+
+        Bundle x = new Bundle();
+        x.putString("nome", todayCity.getCity());
+        x.putString("country", todayCity.getCountry());
+        x.putString("nuv", todayCity.getClouds());
+        x.putString("desc", todayCity.getWeatherResult());
+        x.putString("temp", todayCity.getTemp());
+        x.putString("min", todayCity.getMin());
+        x.putString("max", todayCity.getMax());
+        x.putString("vento", todayCity.getWind());
+        x.putString("press", todayCity.getPressure());
+        x.putString("sunset", todayCity.getSunset());
+        x.putString("sunrise", todayCity.getSunrise());
+        x.putString("umid", todayCity.getHumidity());
+        x.putInt("imm", todayCity.getIcon());
+        fr.setArguments(x);
+    }
 }
