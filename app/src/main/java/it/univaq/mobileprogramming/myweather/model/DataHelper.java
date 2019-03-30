@@ -21,40 +21,24 @@ import android.widget.Filter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import com.label305.asynctask.SimpleAsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
-
-import it.univaq.mobileprogramming.myweather.R;
 
 public class DataHelper {
 
     private static final String CITIES_FILE_NAME = "city_list.json";
 
-    private static List<String> lstCities;
-
     private static List<CitySearch> citySuggestions = new ArrayList<>();
-
-    public interface OnFindColorsListener {
-        void onResults(List<Today> results);
-    }
 
     public interface OnFindSuggestionsListener {
         void onResults(List<CitySearch> results);
@@ -95,7 +79,7 @@ public class DataHelper {
                 }
 
                 DataHelper.resetSuggestionsHistory();
-                initColorWrapperList(context);
+                initCityWrapperList(context);
                 List<CitySearch> suggestionList = new ArrayList<>();
                 if (!(constraint == null || constraint.length() == 0)) {
 
@@ -108,7 +92,10 @@ public class DataHelper {
                                 break;
                             }
                         }
+
                     }
+
+                    //if (suggestionList.isEmpty()) suggestionList.add(new CitySearch("No suggestions available", ""));
                 }
 
                 FilterResults results = new FilterResults();
@@ -127,8 +114,13 @@ public class DataHelper {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
-                if (listener != null) {
+                if (listener != null & results.values != null) {
                     listener.onResults((List<CitySearch>) results.values);
+                }
+                else {
+                    List<CitySearch> vuoto = new ArrayList<>();
+                    vuoto.add(new CitySearch("No suggestions available", ""));
+                    listener.onResults(vuoto);
                 }
             }
         }.filter(query);
@@ -177,7 +169,7 @@ public class DataHelper {
 
     }*/
 
-    private static void initColorWrapperList(Context context) {
+    private static void initCityWrapperList(Context context) {
 
         if (citySuggestions.isEmpty()) {
 
@@ -187,7 +179,7 @@ public class DataHelper {
     }
 
     private static List<CitySearch> loadJson(Context context) {
-        List<CitySearch> cityList = new LinkedList<>();
+        List<CitySearch> cityList = new ArrayList<>();
 
         try {
             InputStream is = context.getAssets().open(CITIES_FILE_NAME);
@@ -198,8 +190,11 @@ public class DataHelper {
             Gson gson = new GsonBuilder().create();
 
             while (reader.hasNext()) {
+
                 CitySearch cityJson = gson.fromJson(reader, CitySearch.class);
                 cityList.add(cityJson);
+
+                //cityList.add(readMessage(reader));
 
             }
         } catch (IOException ex) {
@@ -208,6 +203,25 @@ public class DataHelper {
         }
 
         return cityList;
+    }
+
+    public static CitySearch readMessage(JsonReader reader) throws IOException {
+
+        String name = null;
+        String country = "IT";
+
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String nome = reader.nextName();
+            if (nome.equals("comune")) {
+                name = reader.nextString();
+            } else {
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+        return new CitySearch(name, country);
     }
 
     private static List<CitySearch> deserializeCity(String jsonString) throws JSONException {

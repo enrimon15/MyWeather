@@ -172,9 +172,13 @@ public class AroundMeActivity extends AppCompatActivity{
 
         switch (item.getItemId()) {
             case R.id.search_button:
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
                 return true;
 
             case R.id.position_button:
+                Intent intent1 = new Intent(getApplicationContext(), FavouriteActivity.class);
+                startActivity(intent1);
                 return true;
 
             default:

@@ -1,5 +1,8 @@
 package it.univaq.mobileprogramming.myweather;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,9 +34,10 @@ import it.univaq.mobileprogramming.myweather.model.CitySearch;
 import it.univaq.mobileprogramming.myweather.model.DataHelper;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 
-public class SlidingSearchResultsExampleFragment extends BaseExampleFragment {
+public class SlidingSearchFragment extends BaseExampleFragment {
     private final String TAG = "BlankFragment";
 
     public static final long FIND_SUGGESTION_SIMULATED_DELAY = 250;
@@ -46,7 +51,7 @@ public class SlidingSearchResultsExampleFragment extends BaseExampleFragment {
 
     private String mLastQuery = "";
 
-    public SlidingSearchResultsExampleFragment() {
+    public SlidingSearchFragment() {
         // Required empty public constructor
     }
 
@@ -106,41 +111,53 @@ public class SlidingSearchResultsExampleFragment extends BaseExampleFragment {
             }
         });
 
-        /*mSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
+        mSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
             @Override
             public void onSuggestionClicked(final SearchSuggestion searchSuggestion) {
 
-                CitySearch CitySearch = (CitySearch) searchSuggestion;
-                DataHelper.findColors(getActivity(), CitySearch.getBody(),
-                        new DataHelper.OnFindColorsListener() {
+                Context ctx = getContext();
+                InputMethodManager inputManager = (InputMethodManager) ctx
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                            @Override
-                            public void onResults(List<Today> results) {
-                                mSearchResultsAdapter.swapData(results);
-                            }
+                // check if no view has focus:
+                View v = ((Activity) ctx).getCurrentFocus();
+                if (v == null)
+                    return;
 
-                        });
+                inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 Log.d(TAG, "onSuggestionClicked()");
 
-                mLastQuery = searchSuggestion.getBody();
+                mLastQuery = ((CitySearch) searchSuggestion).getName();
+
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.putExtra("cityName", mLastQuery);
+                startActivity(intent);
             }
 
             @Override
             public void onSearchAction(String query) {
                 mLastQuery = query;
 
-                DataHelper.findColors(getActivity(), query,
-                        new DataHelper.OnFindColorsListener() {
-
-                            @Override
-                            public void onResults(List<Today> results) {
-                                mSearchResultsAdapter.swapData(results);
-                            }
-
-                        });
                 Log.d(TAG, "onSearchAction()");
+
+
+                Context ctx = getContext();
+                InputMethodManager inputManager = (InputMethodManager) ctx
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                // check if no view has focus:
+                View v = ((Activity) ctx).getCurrentFocus();
+                if (v == null)
+                    return;
+
+                inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.putExtra("cityName", mLastQuery);
+                startActivity(intent);
             }
-        });*/
+        });
 
         mSearchView.setOnFocusChangeListener(new FloatingSearchView.OnFocusChangeListener() {
             @Override
@@ -162,6 +179,7 @@ public class SlidingSearchResultsExampleFragment extends BaseExampleFragment {
                 //mSearchView.setSearchText(searchSuggestion.getBody());
 
                 Log.d(TAG, "onFocusCleared()");
+
             }
         });
 
