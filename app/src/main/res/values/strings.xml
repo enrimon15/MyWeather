@@ -18,4 +18,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <!-- KEY MAPS -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBv1RzRtQTxYf-OYGmnts8u35ICeiejrns</string>
 </resources>
