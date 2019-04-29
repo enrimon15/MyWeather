@@ -34,6 +34,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import it.univaq.mobileprogramming.myweather.AroundMeActivity;
+
 public class DataHelper {
 
     private static final String CITIES_FILE_NAME = "city_list.json";
@@ -173,75 +175,10 @@ public class DataHelper {
 
         if (citySuggestions.isEmpty()) {
 
-            citySuggestions=loadJson(context);
+            citySuggestions= AroundMeActivity.getList();
 
         }
     }
-
-    private static List<CitySearch> loadJson(Context context) {
-        List<CitySearch> cityList = new ArrayList<>();
-
-        try {
-            InputStream is = context.getAssets().open(CITIES_FILE_NAME);
-            JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
-
-            reader.beginArray();
-
-            Gson gson = new GsonBuilder().create();
-
-            while (reader.hasNext()) {
-
-                CitySearch cityJson = gson.fromJson(reader, CitySearch.class);
-                cityList.add(cityJson);
-
-                //cityList.add(readMessage(reader));
-
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-
-        return cityList;
-    }
-
-    public static CitySearch readMessage(JsonReader reader) throws IOException {
-
-        String name = null;
-        String country = "IT";
-
-
-        reader.beginObject();
-        while (reader.hasNext()) {
-            String nome = reader.nextName();
-            if (nome.equals("comune")) {
-                name = reader.nextString();
-            } else {
-                reader.skipValue();
-            }
-        }
-        reader.endObject();
-        return new CitySearch(name, country);
-    }
-
-    private static List<CitySearch> deserializeCity(String jsonString) throws JSONException {
-        JSONObject jObject = new JSONObject(jsonString);
-        JSONArray jArray = jObject.getJSONArray("citta");
-        List<CitySearch> suggestion = new ArrayList<CitySearch>();
-        for (int i=0; i < jArray.length(); i++)
-        {
-            try {
-                JSONObject oneObject = jArray.getJSONObject(i);
-                suggestion.add(new CitySearch(oneObject.getString("name"), oneObject.getString("country")));
-            } catch (JSONException e) {
-                // Errore
-                System.out.println("errore json");
-            }
-        }
-
-        return suggestion;
-    }
-
-
+    
 
 }

@@ -37,19 +37,28 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 
 import org.json.JSONException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_around;
 import it.univaq.mobileprogramming.myweather.json.ParsingAround;
 import it.univaq.mobileprogramming.myweather.json.VolleyRequest;
+import it.univaq.mobileprogramming.myweather.model.CitySearch;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
 public class AroundMeActivity extends AppCompatActivity{
+
+    private static final String CITIES_FILE_NAME = "city_list.json";
 
     private RecyclerView recyclerView;
     private List<ListCity> lista = new ArrayList<ListCity>();
@@ -60,6 +69,8 @@ public class AroundMeActivity extends AppCompatActivity{
     Location location;
     private String lat;
     private String lon;
+
+    private static List<CitySearch> citySuggestions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +84,15 @@ public class AroundMeActivity extends AppCompatActivity{
         lay = findViewById(R.id.view_list);
         recyclerView = findViewById(R.id.around_list);
         testoTop = findViewById(R.id.testo_top);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                citySuggestions=loadJson(AroundMeActivity.this);
+            }
+        }).start();
+
+
     }
 
     @Override
@@ -199,6 +219,39 @@ public class AroundMeActivity extends AppCompatActivity{
             }
         }
     }
+
+
+        private static List<CitySearch> loadJson (Context context){
+        List<CitySearch> cityList = new ArrayList<>();
+
+        try {
+            InputStream is = context.getAssets().open(CITIES_FILE_NAME);
+            JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
+
+            reader.beginArray();
+
+            Gson gson = new GsonBuilder().create();
+
+            while (reader.hasNext()) {
+
+                CitySearch cityJson = gson.fromJson(reader, CitySearch.class);
+                cityList.add(cityJson);
+
+                //cityList.add(readMessage(reader));
+
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        return cityList;
+    }
+
+    public static List<CitySearch> getList () {
+        return citySuggestions;
+    }
+
 
 
 }
