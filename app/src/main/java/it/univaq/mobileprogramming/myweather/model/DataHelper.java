@@ -35,6 +35,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.AroundMeActivity;
+import it.univaq.mobileprogramming.myweather.SlidingSearchFragment;
 
 public class DataHelper {
 
@@ -49,11 +50,12 @@ public class DataHelper {
     public static List<CitySearch> getHistory(Context context, int count) {
 
         List<CitySearch> suggestionList = new ArrayList<>();
-        CitySearch colorSuggestion;
-        for (int i = 0; i < citySuggestions.size(); i++) {
-            colorSuggestion = citySuggestions.get(i);
-            colorSuggestion.setIsHistory(true);
-            suggestionList.add(colorSuggestion);
+        CitySearch citySuggestion;
+        List<CitySearch> history = SlidingSearchFragment.getHistoryList();
+        for (int i = 0; i < history.size(); i++) {
+            citySuggestion = history.get(i);
+            citySuggestion.setIsHistory(true);
+            suggestionList.add(citySuggestion);
             if (suggestionList.size() == count) {
                 break;
             }

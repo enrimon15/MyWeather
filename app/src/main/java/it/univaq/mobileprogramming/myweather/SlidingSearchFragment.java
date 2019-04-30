@@ -27,6 +27,7 @@ import com.arlib.floatingsearchview.util.Util;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_search;
@@ -51,6 +52,8 @@ public class SlidingSearchFragment extends BaseExampleFragment {
 
     private String mLastQuery = "";
 
+    private static List<CitySearch> history = new ArrayList<>();
+
     public SlidingSearchFragment() {
         // Required empty public constructor
     }
@@ -70,6 +73,12 @@ public class SlidingSearchFragment extends BaseExampleFragment {
         setupFloatingSearch();
         setupResultsList();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupFloatingSearch();
     }
 
     private void setupFloatingSearch() {
@@ -130,8 +139,11 @@ public class SlidingSearchFragment extends BaseExampleFragment {
 
                 mLastQuery = ((CitySearch) searchSuggestion).getName();
 
+                history.add((CitySearch) searchSuggestion);
+
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 intent.putExtra("cityName", mLastQuery);
+
                 startActivity(intent);
             }
 
@@ -301,6 +313,10 @@ public class SlidingSearchFragment extends BaseExampleFragment {
             return false;
         }
         return true;
+    }
+
+    public static List<CitySearch> getHistoryList() {
+        return  history;
     }
 
 }

@@ -1,11 +1,6 @@
 package it.univaq.mobileprogramming.myweather;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
@@ -18,26 +13,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 
 import it.univaq.mobileprogramming.myweather.adapters.ViewPagerAdapter;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
-public class MainActivity extends AroundMeActivity implements TodayFragment.OnMyListner{
+public class MainActivity extends AppCompatActivity implements TodayFragment.OnMyListner{
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -72,7 +53,6 @@ public class MainActivity extends AroundMeActivity implements TodayFragment.OnMy
         tabLayout.setupWithViewPager(viewPager);
 
         //gestione drawer
-        super.onCreateDrawer();
 
     }
 
@@ -134,16 +114,6 @@ public class MainActivity extends AroundMeActivity implements TodayFragment.OnMy
                 return false;
         }
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
 
