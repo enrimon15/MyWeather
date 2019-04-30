@@ -47,6 +47,7 @@ public class DetailsFragment extends Fragment{
 
     private String n;
     private String c;
+    private String id;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -87,15 +88,18 @@ public class DetailsFragment extends Fragment{
         super.onResume();
         pref.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)  {
+                Preferiti p = favdb.favouriteDAO().getFav(n,c);
+                if (p != null) {
+                    snack = Snackbar.make(lay, "Città già presente nei preferiti", Snackbar.LENGTH_SHORT);
+                    snack.setDuration(3000);
+                    snack.show();
+                }
+                else {
                     snack = Snackbar.make(lay, "Città aggiunta ai preferiti", Snackbar.LENGTH_SHORT);
                     snack.setDuration(3000);
                     snack.show();
-                System.out.println(n);
-                System.out.println(c);
-                    favdb.favouriteDAO().deleteAll();
-                    favdb.favouriteDAO().save(new Preferiti(n, c));
-                    System.out.println(n);
-                    System.out.println(c);
+                    favdb.favouriteDAO().save(new Preferiti(n, c, id));
+                }
             }
         });
     }
@@ -105,6 +109,7 @@ public class DetailsFragment extends Fragment{
         //oggi = today;
         n = today.getString("nome");
         c = today.getString("country");
+        id = today.getString("id");
         city.setText(today.getString("nome") + ", " + today.getString("country"));
         description.setText(today.getString("desc"));
         temp.setText(today.getString("temp"));

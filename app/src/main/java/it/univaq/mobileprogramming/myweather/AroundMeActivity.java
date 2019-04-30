@@ -1,10 +1,15 @@
 package it.univaq.mobileprogramming.myweather;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,6 +19,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -43,13 +49,15 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.univaq.mobileprogramming.myweather.Location.LocationGoogleService;
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_around;
+import it.univaq.mobileprogramming.myweather.database.AroundDatabase;
 import it.univaq.mobileprogramming.myweather.json.ParsingAround;
 import it.univaq.mobileprogramming.myweather.json.VolleyRequest;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
-public class AroundMeActivity extends AppCompatActivity{
+public class AroundMeActivity extends AppCompatActivity implements LocationGoogleService.LocationListener{
 
     private RecyclerView recyclerView;
     private List<ListCity> lista = new ArrayList<ListCity>();
@@ -57,9 +65,11 @@ public class AroundMeActivity extends AppCompatActivity{
     private View lay;
     private Snackbar snackbar;
     private TextView testoTop;
-    Location location;
     private String lat;
     private String lon;
+    private MyListener listener = new MyListener();
+    private LocationGoogleService locationService;
+    private final int notification_id = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,34 +91,25 @@ public class AroundMeActivity extends AppCompatActivity{
         startGPS();
     }
 
+    //google location
+    @Override
+    public void onLocationChanged(Location location) {
+        lat = location.getLatitude() + "";
+        lon = location.getLongitude() + "";
+        downloadData();
+        locationService.stopLocationUpdates(this);
+    }
 
-
+    //gps location
     private void startGPS() {
             int check = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
             if(check == PackageManager.PERMISSION_GRANTED) {
+                //LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                //if(manager != null) manager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
 
-                LocationListener listener = new LocationListener() {
-
-                @Override
-                public void onLocationChanged(Location location) {
-                    lat = location.getLatitude() + "";
-                    lon = location.getLongitude() + "";
-                    Log.d("prova", location.getLongitude() + "");
-                    downloadData();
-                }
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-                @Override
-                public void onProviderEnabled(String provider) {}
-
-                @Override
-                public void onProviderDisabled(String provider) {} };
-
-                LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                if(manager != null) manager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
-                //location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
+                locationService = new LocationGoogleService();
+                locationService.onCreate(this, this);
+                locationService.requestLocationUpdates(this);
             }
 
             else {
@@ -127,11 +128,12 @@ public class AroundMeActivity extends AppCompatActivity{
                             try {
                                 ParsingAround pars = new ParsingAround(response);
                                 lista = pars.getAround();
+                                clearDataFromDB();
+                                saveDataInDB(lista);
                                 setView();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -152,7 +154,114 @@ public class AroundMeActivity extends AppCompatActivity{
                 });
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        if(requestCode == 1){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                startGPS();
+            } else {
+                finish();
+            }
+        }
+    }
+
+
+    /**
+     * Location Listener
+     */
+    private class MyListener implements LocationListener{
+
+        @Override
+        public void onLocationChanged(Location location) {
+            lat = location.getLatitude() + "";
+            lon = location.getLongitude() + "";
+            Log.d("prova", location.getLongitude() + "");
+            downloadData();
+        }
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+    }
+
+
+    /** Save city in database. */
+    private void saveDataInDB(final List<ListCity> city){
+
+        // Save by RoomDatabase
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (ListCity l : city){
+                AroundDatabase.getInstance(getApplicationContext()).getAroundDAO().save(l);
+                notifyMess("Database aggiornato: " + lat + ", " + lon);
+                    }
+            }
+        }).start();
+    }
+
+    /** Load all cities from database */
+    private void loadDataFromDB(){
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    List<ListCity> data = AroundDatabase.getInstance(getApplicationContext()).getAroundDAO().getAll();
+                    lista.addAll(data);
+                    setView();
+                }
+            }).start();
+        }
+
+    /** Clear data from database */
+    private void clearDataFromDB(){
+
+        //lista.clear();
+            // Delete by RoomDatabase
+        new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    AroundDatabase.getInstance(getApplicationContext()).getAroundDAO().deleteAll();
+                }
+            }).start();
+        }
+
+
+    /** Publish a notify. */
+    private void notifyMess(String message) {
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("myChannel", "Il Mio Canale", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setLightColor(Color.argb(255, 255, 0, 0));
+            if(notificationManager != null) notificationManager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                getApplicationContext(), "myChannel");
+        builder.setContentTitle(getString(R.string.app_name));
+        builder.setSmallIcon(R.drawable.sun);
+        builder.setContentText(message);
+        builder.setAutoCancel(true);
+
+        Intent intent = new Intent(getApplicationContext(), AroundMeActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                getApplicationContext(), 0, intent, 0);
+
+        builder.setContentIntent(pendingIntent);
+
+        Notification notify = builder.build();
+        if(notificationManager != null) notificationManager.notify(notification_id, notify);
+    }
+
+    /****** setta vista *****/
     private void setView() {
         testoTop.setText("Città intorno a me:");
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -160,6 +269,8 @@ public class AroundMeActivity extends AppCompatActivity{
         recyclerView.setHasFixedSize(true);
     }
 
+
+    /******* menu ******/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -182,19 +293,4 @@ public class AroundMeActivity extends AppCompatActivity{
         }
 
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if(requestCode == 1){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                startGPS();
-            } else {
-                finish();
-            }
-        }
-    }
-
-
 }
