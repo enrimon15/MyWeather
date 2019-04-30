@@ -97,6 +97,7 @@ public class MainActivity extends AroundMeActivity implements TodayFragment.OnMy
 
         Bundle b = new Bundle();
         b.putString("nameCity",Namecity);
+
         td.setArguments(b);
         //mp.setArguments(b);
     }
@@ -191,11 +192,15 @@ public class MainActivity extends AroundMeActivity implements TodayFragment.OnMy
         x.putString("sunrise", todayCity.getSunrise());
         x.putString("umid", todayCity.getHumidity());
         x.putInt("imm", todayCity.getIcon());
+        x.putString("id", todayCity.getcode());
         map.putString("lat", todayCity.getLat());
         map.putString("lon", todayCity.getLon());
         map.putString("cName", todayCity.getCity());
+        map.putString("desc", todayCity.getWeatherResult());
+        map.putInt("icon", todayCity.getIcon());
+        map.putString("temperatura", todayCity.getTemp());
 
-        fr.setArguments(x);
         mp.setArguments(map);
+        fr.setArguments(x);
     }
 }

@@ -39,10 +39,10 @@ public class RecyclerViewAdapter_favourite extends RecyclerView.Adapter<Recycler
     public void onBindViewHolder(@NonNull RecyclerViewAdapter_favourite.ViewHolder holder, int i) {
 
         ListCity city = lista_pref.get(i);
-        holder.name.setText(city.getNameCity());
-        holder.tempe.setText(city.getTempCity());
-        holder.descr.setText(city.getConditionCity());
-        holder.ic.setImageResource(city.getWeatherIconCity());
+        holder.name.setText(city.getName());
+        holder.tempe.setText(city.getTemp());
+        holder.descr.setText(city.getCondition());
+        holder.ic.setImageResource(city.getWeatherIcon());
     }
 
     @Override
@@ -74,7 +74,7 @@ public class RecyclerViewAdapter_favourite extends RecyclerView.Adapter<Recycler
                     // Open another Activity and pass to it the right city
                     ListCity city = lista_pref.get(getAdapterPosition());
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    intent.putExtra("cityID", "id=" + city.getcode());
+                    intent.putExtra("cityID", "id=" + city.getCode());
                     v.getContext().startActivity(intent);
                 }
             });
@@ -85,7 +85,7 @@ public class RecyclerViewAdapter_favourite extends RecyclerView.Adapter<Recycler
                 public void onClick(View v)
                 {
 
-                    String cod = lista_pref.get(getAdapterPosition()).getcode(); //Clicked entry in your List
+                    String cod = lista_pref.get(getAdapterPosition()).getCode(); //Clicked entry in your List
 
                     //Method from your activity
                     FavouriteActivity.methodOnBtnClick(cod);

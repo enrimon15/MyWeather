@@ -35,10 +35,10 @@ public class RecyclerViewAdapter_around extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
 
         ListCity city = lista_around.get(i);
-        holder.title.setText(city.getNameCity());
-        holder.temp.setText(city.getTempCity());
-        holder.condition.setText(city.getConditionCity());
-        holder.image.setImageResource(city.getWeatherIconCity());
+        holder.title.setText(city.getName());
+        holder.temp.setText(city.getTemp());
+        holder.condition.setText(city.getCondition());
+        holder.image.setImageResource(city.getWeatherIcon());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class RecyclerViewAdapter_around extends RecyclerView.Adapter<RecyclerVie
                     // Open another Activity and pass to it the right city
                     ListCity city = lista_around.get(getAdapterPosition());
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    intent.putExtra("cityID", "id=" + city.getcode());
+                    intent.putExtra("cityID", "id=" + city.getCode());
                     v.getContext().startActivity(intent);
                 }
             });

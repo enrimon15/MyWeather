@@ -14,12 +14,15 @@ public class Preferiti {
     private String nameCity;
     @ColumnInfo(name = "countryCity")
     private String countryCity;
+    @ColumnInfo(name = "codeCity")
+    private String code;
 
     @Ignore
     public Preferiti() {
     }
 
-    public Preferiti(String nameCity, String countryCity) {
+    public Preferiti(String nameCity, String countryCity, String code) {
+        this.code = code;
         this.nameCity = nameCity;
         this.countryCity = countryCity;
     }
@@ -47,4 +50,8 @@ public class Preferiti {
     public void setId(long id) {
         this.id = id;
     }
+
+    public String getCode() { return code; }
+
+    public void setCode(String code) { this.code = code; }
 }

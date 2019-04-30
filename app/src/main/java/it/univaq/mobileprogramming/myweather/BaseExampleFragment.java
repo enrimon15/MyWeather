@@ -5,9 +5,6 @@ import android.support.v4.app.Fragment;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 
-/**
- * Created by ari on 8/16/16.
- */
 public abstract class BaseExampleFragment extends Fragment {
 
 

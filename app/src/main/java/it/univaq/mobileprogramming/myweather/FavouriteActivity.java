@@ -30,8 +30,10 @@ import it.univaq.mobileprogramming.myweather.model.Preferiti;
 public class FavouriteActivity extends AppCompatActivity {
     private RecyclerView rec;
     private  List<ListCity> lista = new ArrayList<ListCity>();
-    private  FavDatabase favdb;
+    private  static FavDatabase favdb;
     private  RecyclerViewAdapter_favourite adapter;
+    private  static Snackbar snack;
+    private  static View lay;
 
 
     @Override
@@ -39,6 +41,7 @@ public class FavouriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
         rec = findViewById(R.id.favourite_city);
+        lay = findViewById(R.id.view_fav);
         /*int i = R.drawable.cloud;
         lista.add(new ListCity("Torreburna",i,"21°","sole","xcderv"));
         lista.add(new ListCity("Torreburna",i,"21°","sole","xcderv"));
@@ -63,6 +66,7 @@ public class FavouriteActivity extends AppCompatActivity {
     }
 
     private void getValue() {
+        lista.clear();
         List<Preferiti> pref = favdb.favouriteDAO().getAll();
         Log.d("DB", "preferito");
         for (Preferiti p : pref){
@@ -78,9 +82,9 @@ public class FavouriteActivity extends AppCompatActivity {
                                             Log.d("dentro2 db", response);
                                             ParsingFavourite pars = new ParsingFavourite(response);
                                             ListCity c = pars.getCity();
-                                            Log.d("DB", c.getNameCity());
+                                            Log.d("DB", c.getName());
                                             lista.add(c);
-                                            Log.d("DB", lista.get(0).getConditionCity());
+                                            Log.d("DB", lista.get(0).getCondition());
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -110,8 +114,11 @@ public class FavouriteActivity extends AppCompatActivity {
 
 
     public static void methodOnBtnClick(String cod) {
-        Log.d("PROVA", "methodOnBtnClick: " + cod);
         //eliminazione record db
+        favdb.favouriteDAO().delete(cod);
+        snack = Snackbar.make(lay, "Città rimossa dai preferiti", Snackbar.LENGTH_SHORT);
+        snack.setDuration(3000);
+        snack.show();
     }
 
 

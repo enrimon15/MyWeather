@@ -5,19 +5,19 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-//@Entity(tableName = "cities")
+@Entity(tableName = "cities")
 public class ListCity{
-    //@PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     private long id;
-    //@ColumnInfo(name = "name")
+    @ColumnInfo(name = "name")
     private String name;
-    //@ColumnInfo(name = "icon")
+    @ColumnInfo(name = "icon")
     private int weatherIcon;
-    //@ColumnInfo(name = "temp")
+    @ColumnInfo(name = "temp")
     private String temp;
-    //@ColumnInfo(name = "condition")
+    @ColumnInfo(name = "condition")
     private String condition;
-    //@ColumnInfo(name = "code")
+    @ColumnInfo(name = "code")
     private String code;
 
     public ListCity(String name, int weatherIcon, String temp, String condition, String code) {
@@ -28,47 +28,55 @@ public class ListCity{
         this.code = code;
     }
 
-    //@Ignore
+    @Ignore
     public ListCity() {
     }
 
-    public String getNameCity() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
         return name;
     }
 
-    public void setNameCity(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public int getWeatherIconCity() {
+    public int getWeatherIcon() {
         return weatherIcon;
     }
 
-    public void setWeatherIconCity(int weatherIcon) {
+    public void setWeatherIcon(int weatherIcon) {
         this.weatherIcon = weatherIcon;
     }
 
-    public String getTempCity() {
+    public String getTemp() {
         return temp;
     }
 
-    public void setTempCity(String temp) {
+    public void setTemp(String temp) {
         this.temp = temp;
     }
 
-    public String getConditionCity() {
+    public String getCondition() {
         return condition;
     }
 
-    public void setConditionCity(String condition) {
+    public void setCondition(String condition) {
         this.condition = condition;
     }
 
-    public String getcode() {
+    public String getCode() {
         return code;
     }
 
-    public void setcode(String code) {
+    public void setCode(String code) {
         this.code = code;
     }
 }

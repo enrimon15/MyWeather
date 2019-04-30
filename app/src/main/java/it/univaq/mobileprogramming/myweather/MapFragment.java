@@ -1,6 +1,8 @@
 package it.univaq.mobileprogramming.myweather;
 
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -25,7 +28,9 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
     private String lon;
     private String lat;
     private String name;
-
+    private  int icon;
+    private  String desc;
+    private String temp;
 
     public MapFragment() {
         // Required empty public constructor
@@ -38,6 +43,7 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
+        if(mapFragment != null) mapFragment.getMapAsync(this);
 
         return  view;
 
@@ -59,8 +65,13 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
         Log.d("POS", latitude + "");
         Log.d("POS", longitude + "");
         LatLng position = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(position).title("POSTO"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+        int height = 140;
+        int width = 140;
+        BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(icon);
+        Bitmap b=bitmapdraw.getBitmap();
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+        mMap.addMarker(new MarkerOptions().position(position).title(name).snippet(desc + ", temperatura: " + temp).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position,13), 5000, null);
     }
 
     @Override
@@ -70,9 +81,11 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
         Log.d("PAVAN", lat);
         lon = args.getString("lon");
         name = args.getString("cName");
-        if(mapFragment == null) Log.d("STEFANO", "setArguments: ");
+        desc = args.getString("desc");
+        icon = args.getInt("icon");
+        temp = args.getString("temperatura");
 
-        if(mapFragment != null) mapFragment.getMapAsync(this);
+
 
     }
 }

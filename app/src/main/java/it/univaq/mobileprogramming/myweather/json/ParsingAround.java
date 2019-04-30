@@ -39,8 +39,8 @@ public class ParsingAround {
         }
 
         for (int x = 0; x<around.size()-1; x++){
-            String n = (around.get(x)).getNameCity();
-            if (n.equals((around.get(x+1)).getNameCity())) around.remove(x);
+            String n = (around.get(x)).getName();
+            if (n.equals((around.get(x+1)).getName())) around.remove(x);
             if (n.charAt(1) == '\'') around.remove(x+1);
 
         }
