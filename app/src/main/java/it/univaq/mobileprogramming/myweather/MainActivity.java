@@ -37,7 +37,7 @@ import it.univaq.mobileprogramming.myweather.adapters.ViewPagerAdapter;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TodayFragment.OnMyListner{
+public class MainActivity extends AroundMeActivity implements TodayFragment.OnMyListner{
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.activity_main);
 
         //gestione activity_main
         toolbar = findViewById(R.id.toolBar);
@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.setupWithViewPager(viewPager);
 
         //gestione drawer
-        onCreateDrawer();
+        super.onCreateDrawer();
 
     }
 
-    protected void onCreateDrawer() {
+    /*protected void onCreateDrawer() {
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-    }
+    }*/
 
     @Override
     public void onResume() {
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     @SuppressWarnings("StatementWithEmptyBody")
-    @Override
+    /*@Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
+    }*/
 
     @Override
     public void passCity(Today today) {

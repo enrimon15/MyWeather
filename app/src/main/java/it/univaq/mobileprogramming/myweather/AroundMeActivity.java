@@ -56,7 +56,7 @@ import it.univaq.mobileprogramming.myweather.model.CitySearch;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
-public class AroundMeActivity extends AppCompatActivity{
+public class AroundMeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String CITIES_FILE_NAME = "city_list.json";
 
@@ -75,7 +75,7 @@ public class AroundMeActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_around_me);
+        setContentView(R.layout.activity_menu);
 
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -92,6 +92,20 @@ public class AroundMeActivity extends AppCompatActivity{
             }
         }).start();
 
+        //gestione drawer
+        onCreateDrawer();
+    }
+
+    protected void onCreateDrawer() {
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
     }
 
@@ -188,6 +202,30 @@ public class AroundMeActivity extends AppCompatActivity{
     }
 
     @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+
+        } else if (id == R.id.nav_gallery) {
+            Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
+            startActivity(intent2);
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
@@ -253,5 +291,8 @@ public class AroundMeActivity extends AppCompatActivity{
     }
 
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
 }
