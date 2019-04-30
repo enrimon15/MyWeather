@@ -21,7 +21,7 @@ public class SearchActivity extends AppCompatActivity implements BaseExampleFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        showFragment(new SlidingSearchResultsExampleFragment());
+        showFragment(new SlidingSearchFragment());
     }
 
     private void showFragment(Fragment fragment) {
