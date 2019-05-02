@@ -49,6 +49,7 @@ public class DetailsFragment extends Fragment{
     private String c;
     private String id;
 
+
     public DetailsFragment() {
         // Required empty public constructor
     }

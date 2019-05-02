@@ -62,7 +62,7 @@ import it.univaq.mobileprogramming.myweather.json.ParsingAround;
 import it.univaq.mobileprogramming.myweather.json.VolleyRequest;
 import it.univaq.mobileprogramming.myweather.model.CitySearch;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
-import it.univaq.mobileprogramming.myweather.model.Today;
+import it.univaq.mobileprogramming.myweather.InternetConnection.*;
 
 
 public class AroundMeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LocationGoogleService.LocationListener  {
@@ -123,7 +123,22 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onResume() {
         super.onResume();
-        startGPS();
+        if (InternetConnection.haveNetworkConnection(AroundMeActivity.this))
+            startGPS();
+        else {
+            loadDataFromDB();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(AroundMeActivity.this);
+            builder.setTitle("ATTENZIONE");
+            builder.setMessage("La connessione internet non è disponibile! \nSono state caricate le città in base all'ultima posizione rilevata.");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) { }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
     }
 
     //google location
@@ -269,7 +284,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getApplicationContext(), "myChannel");
         builder.setContentTitle(getString(R.string.app_name));
-        builder.setSmallIcon(R.drawable.sun);
+        builder.setSmallIcon(R.drawable.weather_512);
         builder.setContentText(message);
         builder.setAutoCancel(true);
 

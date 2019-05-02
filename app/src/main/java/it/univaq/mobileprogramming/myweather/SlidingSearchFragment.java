@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +34,7 @@ import java.util.List;
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_search;
 import it.univaq.mobileprogramming.myweather.model.CitySearch;
 import it.univaq.mobileprogramming.myweather.model.DataHelper;
+import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -51,8 +53,11 @@ public class SlidingSearchFragment extends BaseExampleFragment {
     private boolean mIsDarkSearchTheme = false;
 
     private String mLastQuery = "";
+    private Snackbar snackbar;
+    private View lay;
 
     private static List<CitySearch> history = new ArrayList<>();
+    private static List<CitySearch> lista = new ArrayList<>();
 
     public SlidingSearchFragment() {
         // Required empty public constructor
@@ -61,7 +66,9 @@ public class SlidingSearchFragment extends BaseExampleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        lay = view.findViewById(R.id.search_page);
+        return view;
     }
 
     @Override
@@ -69,6 +76,7 @@ public class SlidingSearchFragment extends BaseExampleFragment {
         super.onViewCreated(view, savedInstanceState);
         mSearchView = view.findViewById(R.id.floating_search_view);
         mSearchResultsList = view.findViewById(R.id.search_results_list);
+        lista = AroundMeActivity.getList();
 
         setupFloatingSearch();
         setupResultsList();
@@ -165,9 +173,23 @@ public class SlidingSearchFragment extends BaseExampleFragment {
 
                 inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                intent.putExtra("cityName", mLastQuery);
-                startActivity(intent);
+                if (lista.contains(mLastQuery)){
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.putExtra("cityName", mLastQuery);
+                    startActivity(intent);
+                }
+
+                else{
+                    snackbar = Snackbar.make(lay, "Città non trovata", snackbar.LENGTH_INDEFINITE);
+                    snackbar.setDuration(3000);
+                    snackbar.setAction("RIMUOVI", new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            snackbar.dismiss();
+                        }
+                    });
+                    snackbar.show();
+                }
             }
         });
 

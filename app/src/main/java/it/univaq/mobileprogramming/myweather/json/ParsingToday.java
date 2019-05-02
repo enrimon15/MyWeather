@@ -52,6 +52,7 @@ public class ParsingToday {
                 if (description.equals("poche nuvole")) condition = "Nuvoloso";
                 else if (description.equals("pioggia leggera")) condition = "Pioggia";
                 else if (description.equals("pioggia moderata")) condition = "Pioggia";
+                else if (description.equals("temporale con pioggia")) condition = "Temporale";
                 else condition = description.toUpperCase().substring(0,1) + description.substring(1,description.length());
             String imm = weather_object.getString("icon");
             int image = setImm(imm);

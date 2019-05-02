@@ -40,6 +40,7 @@ public class TodayFragment extends Fragment {
     private TextView t2_city,t4_date;
     private CircleView t1_temp;
     private ImageView icon;
+    private CircleView circle;
 
     private Snackbar snackbar;
     private View lay;
@@ -66,10 +67,9 @@ public class TodayFragment extends Fragment {
         t2_city = (TextView) view.findViewById(R.id.city_country);
         t4_date = (TextView) view.findViewById(R.id.current_date);
         icon = (ImageView) view.findViewById(R.id.weather_icon);
+        circle = (CircleView) view.findViewById(R.id.weather_result);
         recyclerView = view.findViewById(R.id.weather_list);
         lay = view.findViewById(R.id.view_today);
-        Activity a = getActivity();
-        Log.d("prova", a + "");
 
         return view;
 
@@ -134,14 +134,13 @@ public class TodayFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Error handling
+                t2_city.setVisibility(View.INVISIBLE);
+                icon.setVisibility(View.INVISIBLE);
+                circle.setVisibility(View.INVISIBLE);
+                t4_date.setVisibility(View.INVISIBLE);
+
                 snackbar = Snackbar.make(lay, "Città non trovata", snackbar.LENGTH_INDEFINITE);
                 snackbar.setDuration(3000);
-                snackbar.setAction("RIMUOVI", new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        snackbar.dismiss();
-                    }
-                });
                 snackbar.show();
                 error.printStackTrace();
             }

@@ -1,6 +1,7 @@
 package it.univaq.mobileprogramming.myweather;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import it.univaq.mobileprogramming.myweather.InternetConnection.InternetConnection;
 import it.univaq.mobileprogramming.myweather.adapters.ViewPagerAdapter;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
@@ -28,46 +31,48 @@ public class MainActivity extends AppCompatActivity implements TodayFragment.OnM
     MapFragment mp = new MapFragment();
     private String Namecity;
     private Today todayCity;
+    private Snackbar snackbar;
+    private View lay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //gestione activity_main
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager = findViewById(R.id.viewPager);
+        lay = findViewById(R.id.main_ac);
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        if (!InternetConnection.haveNetworkConnection(MainActivity.this)) {
+            snackbar = Snackbar.make(lay, "Errore di connessione", snackbar.LENGTH_INDEFINITE);
+            snackbar.setDuration(3000);
+            snackbar.setAction("RIMUOVI", new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    snackbar.dismiss();
+                }
+            });
+            snackbar.show();
+        }
 
-        adapter.addFragment("OGGI", td);
-        adapter.addFragment("DETTAGLI", fr);
-        adapter.addFragment("MAPPA", mp);
+        else {
+            tabLayout = findViewById(R.id.tabLayout);
+            viewPager = findViewById(R.id.viewPager);
 
-        viewPager.setAdapter(adapter);
+            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        tabLayout.setupWithViewPager(viewPager);
+            adapter.addFragment("OGGI", td);
+            adapter.addFragment("DETTAGLI", fr);
+            adapter.addFragment("MAPPA", mp);
 
-        //gestione drawer
+            viewPager.setAdapter(adapter);
+
+            tabLayout.setupWithViewPager(viewPager); }
 
     }
 
-    /*protected void onCreateDrawer() {
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-    }*/
 
     @Override
     public void onResume() {
@@ -117,60 +122,35 @@ public class MainActivity extends AppCompatActivity implements TodayFragment.OnM
     }
 
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    /*@Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-
-        } else if (id == R.id.nav_gallery) {
-            Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
-            startActivity(intent2);
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
-
     @Override
     public void passCity(Today today) {
-        todayCity = today;
+            todayCity = today;
 
-        Bundle x = new Bundle();
-        Bundle map = new Bundle();
+            Bundle x = new Bundle();
+            Bundle map = new Bundle();
 
-        x.putString("nome", todayCity.getCity());
-        x.putString("country", todayCity.getCountry());
-        x.putString("nuv", todayCity.getClouds());
-        x.putString("desc", todayCity.getWeatherResult());
-        x.putString("temp", todayCity.getTemp());
-        x.putString("min", todayCity.getMin());
-        x.putString("max", todayCity.getMax());
-        x.putString("vento", todayCity.getWind());
-        x.putString("press", todayCity.getPressure());
-        x.putString("sunset", todayCity.getSunset());
-        x.putString("sunrise", todayCity.getSunrise());
-        x.putString("umid", todayCity.getHumidity());
-        x.putInt("imm", todayCity.getIcon());
-        x.putString("id", todayCity.getcode());
-        map.putString("lat", todayCity.getLat());
-        map.putString("lon", todayCity.getLon());
-        map.putString("cName", todayCity.getCity());
-        map.putString("desc", todayCity.getWeatherResult());
-        map.putInt("icon", todayCity.getIcon());
-        map.putString("temperatura", todayCity.getTemp());
+            x.putString("nome", todayCity.getCity());
+            x.putString("country", todayCity.getCountry());
+            x.putString("nuv", todayCity.getClouds());
+            x.putString("desc", todayCity.getWeatherResult());
+            x.putString("temp", todayCity.getTemp());
+            x.putString("min", todayCity.getMin());
+            x.putString("max", todayCity.getMax());
+            x.putString("vento", todayCity.getWind());
+            x.putString("press", todayCity.getPressure());
+            x.putString("sunset", todayCity.getSunset());
+            x.putString("sunrise", todayCity.getSunrise());
+            x.putString("umid", todayCity.getHumidity());
+            x.putInt("imm", todayCity.getIcon());
+            x.putString("id", todayCity.getcode());
+            map.putString("lat", todayCity.getLat());
+            map.putString("lon", todayCity.getLon());
+            map.putString("cName", todayCity.getCity());
+            map.putString("desc", todayCity.getWeatherResult());
+            map.putInt("icon", todayCity.getIcon());
+            map.putString("temperatura", todayCity.getTemp());
 
-        mp.setArguments(map);
-        fr.setArguments(x);
+            mp.setArguments(map);
+            fr.setArguments(x);
     }
 }

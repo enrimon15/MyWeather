@@ -38,12 +38,9 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
-        if(mapFragment != null) mapFragment.getMapAsync(this);
 
         return  view;
 
@@ -52,6 +49,9 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
     @Override
     public void onResume() {
         super.onResume();
+
+        mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
+        if(mapFragment != null) mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -77,15 +77,12 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
     @Override
     public void setArguments(@Nullable Bundle args) {
         super.setArguments(args);
-        lat = args.getString("lat");
-        Log.d("PAVAN", lat);
-        lon = args.getString("lon");
-        name = args.getString("cName");
-        desc = args.getString("desc");
-        icon = args.getInt("icon");
-        temp = args.getString("temperatura");
-
-
+            lat = args.getString("lat");
+            lon = args.getString("lon");
+            name = args.getString("cName");
+            desc = args.getString("desc");
+            icon = args.getInt("icon");
+            temp = args.getString("temperatura");
 
     }
 }
