@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,7 +33,7 @@ import it.univaq.mobileprogramming.myweather.model.Five_Days;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
 
-public class TodayFragment extends Fragment {
+public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
     private List<Five_Days> giorni;
@@ -44,11 +45,17 @@ public class TodayFragment extends Fragment {
 
     private Snackbar snackbar;
     private View lay;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private static Today weather;
     private  String cityArgument;
 
     private  OnMyListner myListner;
+
+    @Override
+    public void onRefresh() {
+        onResume();
+    }
 
     public  interface OnMyListner{
         void passCity(Today today);
@@ -70,6 +77,8 @@ public class TodayFragment extends Fragment {
         circle = (CircleView) view.findViewById(R.id.weather_result);
         recyclerView = view.findViewById(R.id.weather_list);
         lay = view.findViewById(R.id.view_today);
+        swipeRefreshLayout = view.findViewById(R.id.main_swipe);
+        swipeRefreshLayout.setOnRefreshListener(TodayFragment.this);
 
         return view;
 
@@ -80,14 +89,10 @@ public class TodayFragment extends Fragment {
         super.onResume();
 
         //richiama il metodo per popolare la vista principale (meteo odierno)
-        try {
-            find_weather();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        find_weather();
 
         //metodo che popola la recycle view con il meteo dei prossimi 5 giorni
-        fiveDays();
+
     }
 
     @Override
@@ -110,8 +115,8 @@ public class TodayFragment extends Fragment {
 
 
     //json request
-    public void find_weather() throws JSONException {
-
+    public void find_weather() {
+        swipeRefreshLayout.setRefreshing(true);
         // Request a string response
         VolleyRequest.getInstance(getActivity())
                 .downloadCityName(cityArgument, getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS), new Response.Listener<String>() {
@@ -124,10 +129,11 @@ public class TodayFragment extends Fragment {
                                 ParsingToday pars = new ParsingToday(response);
                                 weather = pars.getToday_object();
                                 setView();
+                                fiveDays();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
+                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -175,7 +181,6 @@ public class TodayFragment extends Fragment {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -187,6 +192,7 @@ public class TodayFragment extends Fragment {
     }
 
     private void setView() {
+        circle.setVisibility(View.VISIBLE);
         icon.setImageResource(weather.getIcon());
         t1_temp.setTitleText(weather.getTemp());
         t2_city.setText(weather.getCity() + ", " + weather.getCountry());
