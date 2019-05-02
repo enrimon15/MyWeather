@@ -156,5 +156,4 @@ public class MainActivity extends AppCompatActivity implements TodayFragment.OnM
             mp.setArguments(map);
             fr.setArguments(x);
     }
-
 }

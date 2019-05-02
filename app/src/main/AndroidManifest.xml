@@ -22,6 +22,7 @@
 
         <activity android:name=".FavouriteActivity" />
         <activity android:name=".AroundMeActivity" />
+        <activity android:name=".Settings.SettingsActivity" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/AppFullScreenTheme">

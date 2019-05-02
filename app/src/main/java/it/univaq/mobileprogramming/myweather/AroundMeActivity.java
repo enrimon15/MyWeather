@@ -23,6 +23,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +57,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.Location.LocationGoogleService;
+import it.univaq.mobileprogramming.myweather.Settings.Settings;
+import it.univaq.mobileprogramming.myweather.Settings.SettingsActivity;
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_around;
 import it.univaq.mobileprogramming.myweather.database.AroundDatabase;
 import it.univaq.mobileprogramming.myweather.json.ParsingAround;
@@ -65,7 +68,7 @@ import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.InternetConnection.*;
 
 
-public class AroundMeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LocationGoogleService.LocationListener  {
+public class AroundMeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LocationGoogleService.LocationListener, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
     private List<ListCity> lista = new ArrayList<ListCity>();
@@ -78,6 +81,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     private MyListener listener = new MyListener();
     private LocationGoogleService locationService;
     private final int notification_id = 1;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +95,8 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         lay = findViewById(R.id.view_list);
         recyclerView = findViewById(R.id.around_list);
         testoTop = findViewById(R.id.testo_top);
+        swipeRefreshLayout = findViewById(R.id.main_swipe);
+        swipeRefreshLayout.setOnRefreshListener(AroundMeActivity.this);
 
         //gestione drawer
         onCreateDrawer();
@@ -112,22 +118,41 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onResume() {
         super.onResume();
-        if (InternetConnection.haveNetworkConnection(AroundMeActivity.this))
-            startGPS();
+
+        if(Settings.loadBoolean(getApplicationContext(), Settings.CHECK_LOCATION, false))
+            Log.d("pavoncino", "pipi ");
+
+        if (InternetConnection.haveNetworkConnection(AroundMeActivity.this)) {
+            if(Settings.loadBoolean(getApplicationContext(), Settings.CHECK_LOCATION, true)) {
+                startGPS();
+            }
+            else {
+                alert("Per continuare bisogna consentire la posizione dalle impostazioni dell'app", "settings");
+            }
+        }
         else {
             loadDataFromDB();
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(AroundMeActivity.this);
-            builder.setTitle("ATTENZIONE");
-            builder.setMessage("La connessione internet non è disponibile! \nSono state caricate le città in base all'ultima posizione rilevata.");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) { }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            alert("La connessione internet non è disponibile! \nSono state caricate le città in base all'ultima posizione rilevata.", "connection");
         }
 
+    }
+
+    private void alert(String message, final String type ) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AroundMeActivity.this);
+        builder.setTitle("ATTENZIONE");
+        builder.setMessage(message);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (type.equals("settings")) {
+                    Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     //google location
@@ -143,12 +168,15 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     private void startGPS() {
             int check = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
             if(check == PackageManager.PERMISSION_GRANTED) {
-                //LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                //if(manager != null) manager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
-
-                locationService = new LocationGoogleService();
-                locationService.onCreate(this, this);
-                locationService.requestLocationUpdates(this);
+                if(Settings.loadBoolean(getApplicationContext(), Settings.SWITCH_LOCATION, true)) {
+                    locationService = new LocationGoogleService();
+                    locationService.onCreate(this, this);
+                    locationService.requestLocationUpdates(this);
+                }
+                else {
+                    LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    if(manager != null) manager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
+                }
             }
 
             else {
@@ -157,7 +185,10 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         }
 
 
+
     void downloadData(){
+        swipeRefreshLayout.setRefreshing(true);
+
         VolleyRequest.getInstance(this)
                 .downloadAroundMe(lat,lon, getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS), new Response.Listener<String>() {
                     @Override
@@ -173,6 +204,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -191,6 +223,11 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
                         error.printStackTrace();
                     }
                 });
+    }
+
+    @Override
+    public void onRefresh() {
+        startGPS();
     }
 
 
@@ -262,29 +299,34 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     /** Publish a notify. */
     private void notifyMess(String message) {
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if(Settings.loadBoolean(getApplicationContext(), Settings.CHECK_NOTIFY, true)) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("myChannel", "Il Mio Canale", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setLightColor(Color.argb(255, 255, 0, 0));
-            if(notificationManager != null) notificationManager.createNotificationChannel(channel);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel("myChannel", "Il Mio Canale", NotificationManager.IMPORTANCE_DEFAULT);
+                channel.setLightColor(Color.argb(255, 255, 0, 0));
+                if (notificationManager != null)
+                    notificationManager.createNotificationChannel(channel);
+            }
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                    getApplicationContext(), "myChannel");
+            builder.setContentTitle(getString(R.string.app_name));
+            builder.setSmallIcon(R.drawable.weather_512);
+            builder.setContentText(message);
+            builder.setAutoCancel(true);
+
+            Intent intent = new Intent(getApplicationContext(), AroundMeActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    getApplicationContext(), 0, intent, 0);
+
+            builder.setContentIntent(pendingIntent);
+
+            Notification notify = builder.build();
+            if (notificationManager != null) notificationManager.notify(notification_id, notify);
+
         }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                getApplicationContext(), "myChannel");
-        builder.setContentTitle(getString(R.string.app_name));
-        builder.setSmallIcon(R.drawable.weather_512);
-        builder.setContentText(message);
-        builder.setAutoCancel(true);
-
-        Intent intent = new Intent(getApplicationContext(), AroundMeActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                getApplicationContext(), 0, intent, 0);
-
-        builder.setContentIntent(pendingIntent);
-
-        Notification notify = builder.build();
-        if(notificationManager != null) notificationManager.notify(notification_id, notify);
     }
 
     /****** setta vista *****/
@@ -308,18 +350,19 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_preferiti) {
+            Intent intent = new Intent(getApplicationContext(), FavouriteActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_cerca) {
             Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
             startActivity(intent2);
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_posizione) {
+            Intent intent = new Intent(getApplicationContext(), AroundMeActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_info) {
 
         }
 

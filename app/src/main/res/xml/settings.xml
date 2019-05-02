@@ -5,15 +5,22 @@
 
     <SwitchPreference
         android:defaultValue="true"
-        android:key="switch_notifiche"
+        android:key="check_notify"
         android:title="Abilita Notifiche"
         android:summaryOn="Notifiche abilitate"
         android:summaryOff="Notifiche non abilitate"/>
 
     <SwitchPreference
         android:defaultValue="true"
-        android:key="switch_position"
+        android:key="check_location"
         android:title="Consenti Posizione"
         android:summaryOn="Posizione consentita"
         android:summaryOff="Posizione non consentita"/>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="switch_location"
+        android:title="Metodo rilevamento posizione"
+        android:summaryOn="Google location"
+        android:summaryOff="GPS"/>
 </PreferenceScreen>
