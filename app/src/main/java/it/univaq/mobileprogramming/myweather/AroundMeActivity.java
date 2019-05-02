@@ -70,8 +70,6 @@ import it.univaq.mobileprogramming.myweather.InternetConnection.*;
 
 public class AroundMeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LocationGoogleService.LocationListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String CITIES_FILE_NAME = "city_list.json";
-
     private RecyclerView recyclerView;
     private List<ListCity> lista = new ArrayList<ListCity>();
     private Toolbar toolbar;
@@ -84,8 +82,6 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     private LocationGoogleService locationService;
     private final int notification_id = 1;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    private static List<CitySearch> citySuggestions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +98,14 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         swipeRefreshLayout = findViewById(R.id.main_swipe);
         swipeRefreshLayout.setOnRefreshListener(AroundMeActivity.this);
 
+
        new Thread(new Runnable() {
             @Override
             public void run() {
                 citySuggestions=loadJson(AroundMeActivity.this);
             }
         }).start();
+
 
         //gestione drawer
         onCreateDrawer();
@@ -390,7 +388,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
                 startActivity(intent);
                 return true;
 
-            case R.id.position_button:
+            case R.id.favourite_button:
                 Intent intent1 = new Intent(getApplicationContext(), FavouriteActivity.class);
                 startActivity(intent1);
                 return true;
@@ -423,39 +421,6 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
             }
         }
     }
-
-
-        private static List<CitySearch> loadJson (Context context){
-        List<CitySearch> cityList = new ArrayList<>();
-
-        try {
-            InputStream is = context.getAssets().open(CITIES_FILE_NAME);
-            JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
-
-            reader.beginArray();
-
-            Gson gson = new GsonBuilder().create();
-
-            while (reader.hasNext()) {
-
-                CitySearch cityJson = gson.fromJson(reader, CitySearch.class);
-                cityList.add(cityJson);
-
-                //cityList.add(readMessage(reader));
-
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-
-        return cityList;
-    }
-
-    public static List<CitySearch> getList () {
-        return citySuggestions;
-    }
-
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {

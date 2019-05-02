@@ -38,6 +38,7 @@ import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static it.univaq.mobileprogramming.myweather.SplashScreen.getList;
 
 
 public class SlidingSearchFragment extends BaseExampleFragment {
@@ -76,7 +77,7 @@ public class SlidingSearchFragment extends BaseExampleFragment {
         super.onViewCreated(view, savedInstanceState);
         mSearchView = view.findViewById(R.id.floating_search_view);
         mSearchResultsList = view.findViewById(R.id.search_results_list);
-        lista = AroundMeActivity.getList();
+        lista = SplashScreen.getList();
 
         setupFloatingSearch();
         setupResultsList();
