@@ -157,7 +157,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         }
 
 
-    private void downloadData(){
+    void downloadData(){
         VolleyRequest.getInstance(this)
                 .downloadAroundMe(lat,lon, getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS), new Response.Listener<String>() {
                     @Override
@@ -375,4 +375,12 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent startIntent = new Intent(getApplicationContext(), MyIntentService.class);
+        startIntent.putExtra("lat", lat);
+        startIntent.putExtra("lon", lon);
+        startService(startIntent);
+    }
 }

@@ -28,6 +28,8 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent stopIntent = new Intent(getApplicationContext(), MyIntentService.class);
+        stopService(stopIntent);
 
         new Thread(new Runnable() {
             @Override
