@@ -150,7 +150,7 @@ public class FavouriteActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
-            case R.id.position_button:
+            case R.id.favourite_button:
                 /*Intent intent1 = new Intent(getApplicationContext(), AroundMeActivity.class);
                 startActivity(intent1);*/
                 Intent intent1 = new Intent(getApplicationContext(), FavouriteActivity.class);
