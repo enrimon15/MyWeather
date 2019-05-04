@@ -10,8 +10,8 @@
         app:showAsAction="always|collapseActionView" />
 
     <item
-        android:id="@+id/favourite_button"
-        android:icon="@android:drawable/btn_star_big_off"
+        android:id="@+id/position_button"
+        android:icon="@drawable/position"
         android:title="Preferiti"
         app:showAsAction="always" />
 
