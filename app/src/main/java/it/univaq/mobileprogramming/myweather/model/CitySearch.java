@@ -7,12 +7,10 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 public class CitySearch implements SearchSuggestion {
 
     private String name;
-    private String country;
     private boolean mIsHistory = false;
 
-    public  CitySearch (String name, String country) {
+    public  CitySearch (String name) {
         this.name=name;
-        this.country=country;
     }
 
     public CitySearch(Parcel source) {
@@ -36,25 +34,13 @@ public class CitySearch implements SearchSuggestion {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
+    public void setName(String name) { this.name = name; }
 
     public void setIsHistory(boolean isHistory) {
         this.mIsHistory = isHistory;
     }
 
-    public boolean getIsHistory() {
-        return this.mIsHistory;
-    }
+    public boolean getIsHistory() { return this.mIsHistory; }
 
     @Override
     public String getBody() {
@@ -62,12 +48,8 @@ public class CitySearch implements SearchSuggestion {
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
+    public int describeContents() { return 0; }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
+    public void writeToParcel(Parcel dest, int flags) { }
 }

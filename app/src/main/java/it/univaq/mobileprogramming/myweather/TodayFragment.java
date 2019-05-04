@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.github.pavlospt.CircleView;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_hour;
@@ -29,13 +31,14 @@ import it.univaq.mobileprogramming.myweather.json.ParsingFiveDays;
 import it.univaq.mobileprogramming.myweather.json.ParsingToday;
 import it.univaq.mobileprogramming.myweather.json.VolleyRequest;
 import it.univaq.mobileprogramming.myweather.model.Five_Days;
+import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
 
-public class TodayFragment extends Fragment {
+public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
-    private List<Five_Days> giorni;
+    private List<Five_Days> giorni = new ArrayList<Five_Days>();
 
     private TextView t2_city,t4_date;
     private CircleView t1_temp;
@@ -44,11 +47,18 @@ public class TodayFragment extends Fragment {
 
     private Snackbar snackbar;
     private View lay;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private static Today weather;
     private  String cityArgument;
+    private  RecyclerViewAdapter_hour adapter;
 
     private  OnMyListner myListner;
+
+    @Override
+    public void onRefresh() {
+        onResume();
+    }
 
     public  interface OnMyListner{
         void passCity(Today today);
@@ -71,6 +81,20 @@ public class TodayFragment extends Fragment {
         recyclerView = view.findViewById(R.id.weather_list);
         lay = view.findViewById(R.id.view_today);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false){
+            @Override
+            public boolean canScrollHorizontally() {
+                return false;
+            } };
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        adapter = new RecyclerViewAdapter_hour(giorni);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+
+        swipeRefreshLayout = view.findViewById(R.id.main_swipe);
+        swipeRefreshLayout.setOnRefreshListener(TodayFragment.this);
+
         return view;
 
     }
@@ -80,14 +104,11 @@ public class TodayFragment extends Fragment {
         super.onResume();
 
         //richiama il metodo per popolare la vista principale (meteo odierno)
-        try {
-            find_weather();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+        find_weather();
 
         //metodo che popola la recycle view con il meteo dei prossimi 5 giorni
-        fiveDays();
+
     }
 
     @Override
@@ -110,8 +131,9 @@ public class TodayFragment extends Fragment {
 
 
     //json request
-    public void find_weather() throws JSONException {
-
+    public void find_weather() {
+        giorni.clear();
+        swipeRefreshLayout.setRefreshing(true);
         // Request a string response
         VolleyRequest.getInstance(getActivity())
                 .downloadCityName(cityArgument, getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS), new Response.Listener<String>() {
@@ -123,11 +145,10 @@ public class TodayFragment extends Fragment {
                                 Log.d("req", "downloadCity: ciao2");
                                 ParsingToday pars = new ParsingToday(response);
                                 weather = pars.getToday_object();
-                                setView();
+                                fiveDays();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -162,21 +183,14 @@ public class TodayFragment extends Fragment {
                             try {
                                 Log.d("dentro2", response);
                                 ParsingFiveDays pars = new ParsingFiveDays(response);
-                                giorni = pars.getListaDay();
-                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false){
-                                    @Override
-                                    public boolean canScrollHorizontally() {
-                                        return false;
-                                    } };
-
-                                recyclerView.setLayoutManager(linearLayoutManager);
-                                recyclerView.setAdapter(new RecyclerViewAdapter_hour(giorni, getActivity()));
-                                recyclerView.setHasFixedSize(true);
+                                giorni.addAll(pars.getListaDay());
+                                setView();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
+
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -187,11 +201,13 @@ public class TodayFragment extends Fragment {
     }
 
     private void setView() {
+        circle.setVisibility(View.VISIBLE);
         icon.setImageResource(weather.getIcon());
         t1_temp.setTitleText(weather.getTemp());
         t2_city.setText(weather.getCity() + ", " + weather.getCountry());
         t1_temp.setSubtitleText(weather.getWeatherResult());
         t4_date.setText(weather.getDate());
+        if (adapter != null) adapter.notifyDataSetChanged();
 
         myListner.passCity(weather);
     }

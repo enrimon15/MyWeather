@@ -1,12 +1,16 @@
 package it.univaq.mobileprogramming.myweather;
 
 import android.arch.persistence.room.Room;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.android.volley.Response;
@@ -29,11 +33,12 @@ import it.univaq.mobileprogramming.myweather.model.Preferiti;
 
 public class FavouriteActivity extends AppCompatActivity {
     private RecyclerView rec;
-    private  List<ListCity> lista = new ArrayList<ListCity>();
+    private static List<ListCity> lista = new ArrayList<ListCity>();
     private  static FavDatabase favdb;
-    private  RecyclerViewAdapter_favourite adapter;
+    private static RecyclerViewAdapter_favourite adapter;
     private  static Snackbar snack;
     private  static View lay;
+    private Toolbar toolbar;
 
 
     @Override
@@ -42,11 +47,9 @@ public class FavouriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favourite);
         rec = findViewById(R.id.favourite_city);
         lay = findViewById(R.id.view_fav);
-        /*int i = R.drawable.cloud;
-        lista.add(new ListCity("Torreburna",i,"21°","sole","xcderv"));
-        lista.add(new ListCity("Torreburna",i,"21°","sole","xcderv"));
-        lista.add(new ListCity("Torreburna",i,"21°","sole","xcderv"));
-        lista.add(new ListCity("Torreburna",i,"21°","sole","xcderv"));*/
+        toolbar = findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null){
             favdb = Room.databaseBuilder(this, FavDatabase.class, "favouriteDB")
@@ -113,12 +116,48 @@ public class FavouriteActivity extends AppCompatActivity {
 
 
 
-    public static void methodOnBtnClick(String cod) {
+    public static void methodOnBtnClick(ListCity lc) {
         //eliminazione record db
-        favdb.favouriteDAO().delete(cod);
+        favdb.favouriteDAO().delete(lc.getCode());
         snack = Snackbar.make(lay, "Città rimossa dai preferiti", Snackbar.LENGTH_SHORT);
         snack.setDuration(3000);
         snack.show();
+        lista.remove(lc);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        //MenuItem searchView = menu.findItem(R.id.search_item); PER APRIRE BARRA RICERCA
+        //searchView.expandActionView();
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.search_button:
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.position_button:
+                /*Intent intent1 = new Intent(getApplicationContext(), AroundMeActivity.class);
+                startActivity(intent1);*/
+                Intent intent1 = new Intent(getApplicationContext(), FavouriteActivity.class);
+                startActivity(intent1);
+                return true;
+
+            default:
+                return false;
+        }
+
     }
 
 

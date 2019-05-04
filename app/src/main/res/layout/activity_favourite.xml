@@ -41,7 +41,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Città Preferite"
+            android:text="Città Preferite:"
             android:textSize="24dp"
             android:textColor="@color/colorDetails"
             android:layout_marginBottom="8dp"/>

@@ -19,11 +19,9 @@ public class RecyclerViewAdapter_hour extends RecyclerView.Adapter<RecyclerViewA
 {
 
     private List<Five_Days> hours;
-    private Context context;
 
-    public RecyclerViewAdapter_hour(List<Five_Days> hours, Context context) {
+    public RecyclerViewAdapter_hour(List<Five_Days> hours) {
         this.hours = hours;
-        this.context = context;
     }
 
     // facciamo l'inflate lo riportiamo sul ViewHolder -> grazie al quale andrà a richiamare i vari componenti

@@ -8,36 +8,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.arlib.floatingsearchview.util.Util;
-
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_search;
 import it.univaq.mobileprogramming.myweather.model.CitySearch;
 import it.univaq.mobileprogramming.myweather.model.DataHelper;
-import it.univaq.mobileprogramming.myweather.model.ListCity;
-import it.univaq.mobileprogramming.myweather.model.Today;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 
 public class SlidingSearchFragment extends BaseExampleFragment {
@@ -48,9 +34,6 @@ public class SlidingSearchFragment extends BaseExampleFragment {
     private FloatingSearchView mSearchView;
 
     private RecyclerView mSearchResultsList;
-    private RecyclerViewAdapter_search mSearchResultsAdapter;
-
-    private boolean mIsDarkSearchTheme = false;
 
     private String mLastQuery = "";
     private Snackbar snackbar;
@@ -76,11 +59,7 @@ public class SlidingSearchFragment extends BaseExampleFragment {
         super.onViewCreated(view, savedInstanceState);
         mSearchView = view.findViewById(R.id.floating_search_view);
         mSearchResultsList = view.findViewById(R.id.search_results_list);
-        lista = AroundMeActivity.getList();
-
-        setupFloatingSearch();
-        setupResultsList();
-
+        lista = SplashScreen.getList();
     }
 
     @Override
@@ -217,46 +196,6 @@ public class SlidingSearchFragment extends BaseExampleFragment {
             }
         });
 
-
-        //handle menu clicks the same way as you would
-        //in a regular activity
-       /* mSearchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
-            @Override
-            public void onActionMenuItemSelected(MenuItem item) {
-
-                if (item.getItemId() == R.id.action_change_colors) {
-
-                    mIsDarkSearchTheme = true;
-
-                    //demonstrate setting colors for items
-                    mSearchView.setBackgroundColor(Color.parseColor("#787878"));
-                    mSearchView.setViewTextColor(Color.parseColor("#e9e9e9"));
-                    mSearchView.setHintTextColor(Color.parseColor("#e9e9e9"));
-                    mSearchView.setActionMenuOverflowColor(Color.parseColor("#e9e9e9"));
-                    mSearchView.setMenuItemIconColor(Color.parseColor("#e9e9e9"));
-                    mSearchView.setLeftActionIconColor(Color.parseColor("#e9e9e9"));
-                    mSearchView.setClearBtnColor(Color.parseColor("#e9e9e9"));
-                    mSearchView.setDividerColor(Color.parseColor("#BEBEBE"));
-                    mSearchView.setLeftActionIconColor(Color.parseColor("#e9e9e9"));
-                } else {
-
-                    //just print action
-                    Toast.makeText(getActivity().getApplicationContext(), item.getTitle(),
-                            Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        }); */
-
-        //use this listener to listen to menu clicks when app:floatingSearch_leftAction="showHome"
-        mSearchView.setOnHomeActionClickListener(new FloatingSearchView.OnHomeActionClickListener() {
-            @Override
-            public void onHomeClicked() {
-
-                Log.d(TAG, "onHomeClicked()");
-            }
-        });
-
         /*
          * Here you have access to the left icon and the text of a given suggestion
          * item after as it is bound to the suggestion list. You can utilize this
@@ -274,8 +213,7 @@ public class SlidingSearchFragment extends BaseExampleFragment {
                                          TextView textView, SearchSuggestion item, int itemPosition) {
                 CitySearch CitySearch = (CitySearch) item;
 
-                String textColor = mIsDarkSearchTheme ? "#ffffff" : "#000000";
-                String textLight = mIsDarkSearchTheme ? "#bfbfbf" : "#787878";
+                String textColor = "#000000";
 
                 if (CitySearch.getIsHistory()) {
                     leftIcon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
@@ -317,12 +255,6 @@ public class SlidingSearchFragment extends BaseExampleFragment {
                 Log.d(TAG, "onClearSearchClicked()");
             }
         });
-    }
-
-    private void setupResultsList() {
-        mSearchResultsAdapter = new RecyclerViewAdapter_search();
-        mSearchResultsList.setAdapter(mSearchResultsAdapter);
-        mSearchResultsList.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override

@@ -1,21 +1,5 @@
 package it.univaq.mobileprogramming.myweather.model;
 
-/**
- * Copyright (C) 2015 Ari C.
- * <p/>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import android.content.Context;
 import android.widget.Filter;
 
@@ -36,6 +20,7 @@ import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.AroundMeActivity;
 import it.univaq.mobileprogramming.myweather.SlidingSearchFragment;
+import it.univaq.mobileprogramming.myweather.SplashScreen;
 
 public class DataHelper {
 
@@ -51,12 +36,11 @@ public class DataHelper {
 
         List<CitySearch> suggestionList = new ArrayList<>();
         CitySearch citySuggestion;
-        List<CitySearch> history = SlidingSearchFragment.getHistoryList();
-        for (int i = 0; i < history.size(); i++) {
-            citySuggestion = history.get(i);
+        suggestionList.addAll(SlidingSearchFragment.getHistoryList());
+        for (int i = 0; i < suggestionList.size(); i++) {
+            citySuggestion = suggestionList.get(i);
             citySuggestion.setIsHistory(true);
-            suggestionList.add(citySuggestion);
-            if (suggestionList.size() == count) {
+            if (i == count) {
                 break;
             }
         }
@@ -64,13 +48,12 @@ public class DataHelper {
     }
 
     public static void resetSuggestionsHistory() {
-        for (CitySearch colorSuggestion : citySuggestions) {
-            colorSuggestion.setIsHistory(false);
+        for (CitySearch citySuggestion : citySuggestions) {
+            citySuggestion.setIsHistory(false);
         }
     }
 
-    public static void findSuggestions(final Context context, String query, final int limit, final long simulatedDelay,
-                                       final OnFindSuggestionsListener listener) {
+    public static void findSuggestions(final Context context, String query, final int limit, final long simulatedDelay, final OnFindSuggestionsListener listener) {
         new Filter() {
 
             @Override
@@ -123,7 +106,7 @@ public class DataHelper {
                 }
                 else {
                     List<CitySearch> vuoto = new ArrayList<>();
-                    vuoto.add(new CitySearch("No suggestions available", ""));
+                    vuoto.add(new CitySearch("No suggestions available"));
                     listener.onResults(vuoto);
                 }
             }
@@ -177,7 +160,7 @@ public class DataHelper {
 
         if (citySuggestions.isEmpty()) {
 
-            citySuggestions= AroundMeActivity.getList();
+            citySuggestions= SplashScreen.getList();
 
         }
     }

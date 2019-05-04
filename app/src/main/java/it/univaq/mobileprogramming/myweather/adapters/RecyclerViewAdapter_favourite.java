@@ -85,10 +85,12 @@ public class RecyclerViewAdapter_favourite extends RecyclerView.Adapter<Recycler
                 public void onClick(View v)
                 {
 
-                    String cod = lista_pref.get(getAdapterPosition()).getCode(); //Clicked entry in your List
+
+                    //String cod = lista_pref.get(getAdapterPosition()).getCode();
+                    //Clicked entry in your List
 
                     //Method from your activity
-                    FavouriteActivity.methodOnBtnClick(cod);
+                    FavouriteActivity.methodOnBtnClick(lista_pref.get(getAdapterPosition()));
                 }
         });
         }
