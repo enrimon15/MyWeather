@@ -51,6 +51,7 @@ public class FavouriteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         if (savedInstanceState == null){
             favdb = Room.databaseBuilder(this, FavDatabase.class, "favouriteDB")
                     .allowMainThreadQueries()
@@ -64,8 +65,6 @@ public class FavouriteActivity extends AppCompatActivity {
         adapter = new RecyclerViewAdapter_favourite(lista);
         rec.setAdapter(adapter);
         rec.setHasFixedSize(true);
-
-        //lista.clear();
     }
 
     private void getValue() {
@@ -159,6 +158,5 @@ public class FavouriteActivity extends AppCompatActivity {
         }
 
     }
-
 
 }

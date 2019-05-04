@@ -56,7 +56,6 @@ import it.univaq.mobileprogramming.myweather.InternetConnection.*;
 
 public class AroundMeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LocationGoogleService.LocationListener, SwipeRefreshLayout.OnRefreshListener {
 
-
     private RecyclerView recyclerView;
     private List<ListCity> lista = new ArrayList<ListCity>();
     private Toolbar toolbar;
@@ -289,7 +288,6 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         if(Settings.loadBoolean(getApplicationContext(), Settings.CHECK_NOTIFY, true)) {
 
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel("myChannel", "Il Mio Canale", NotificationManager.IMPORTANCE_DEFAULT);
                 channel.setLightColor(Color.argb(255, 255, 0, 0));
@@ -401,4 +399,16 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent startIntent = new Intent(getApplicationContext(), MyIntentService.class);
+        startIntent.putExtra("lat", lat);
+        startIntent.putExtra("lon", lon);
+        startService(startIntent);
+    }
 }

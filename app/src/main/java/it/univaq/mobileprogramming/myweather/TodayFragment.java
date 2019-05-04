@@ -80,6 +80,8 @@ public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         circle = (CircleView) view.findViewById(R.id.weather_result);
         recyclerView = view.findViewById(R.id.weather_list);
         lay = view.findViewById(R.id.view_today);
+        swipeRefreshLayout = view.findViewById(R.id.main_swipe);
+        swipeRefreshLayout.setOnRefreshListener(TodayFragment.this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false){
             @Override
@@ -104,7 +106,6 @@ public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         super.onResume();
 
         //richiama il metodo per popolare la vista principale (meteo odierno)
-
         find_weather();
 
         //metodo che popola la recycle view con il meteo dei prossimi 5 giorni
@@ -133,6 +134,7 @@ public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     //json request
     public void find_weather() {
         giorni.clear();
+
         swipeRefreshLayout.setRefreshing(true);
         // Request a string response
         VolleyRequest.getInstance(getActivity())
@@ -149,6 +151,8 @@ public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+
+                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 }, new Response.ErrorListener() {

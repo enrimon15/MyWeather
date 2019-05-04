@@ -3,28 +3,15 @@ package it.univaq.mobileprogramming.myweather.model;
 import android.content.Context;
 import android.widget.Filter;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import it.univaq.mobileprogramming.myweather.AroundMeActivity;
 import it.univaq.mobileprogramming.myweather.SlidingSearchFragment;
 import it.univaq.mobileprogramming.myweather.SplashScreen;
 
 public class DataHelper {
-
-    private static final String CITIES_FILE_NAME = "city_list.json";
 
     private static List<CitySearch> citySuggestions = new ArrayList<>();
 

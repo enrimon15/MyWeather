@@ -16,6 +16,9 @@
         android:roundIcon="@drawable/weather_512"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".MyIntentService"
+            android:exported="false"></service>
 
         <activity android:name=".FavouriteActivity" />
         <activity android:name=".AroundMeActivity" />

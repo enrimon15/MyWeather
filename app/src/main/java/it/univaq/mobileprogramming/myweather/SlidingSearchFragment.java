@@ -60,6 +60,8 @@ public class SlidingSearchFragment extends BaseExampleFragment {
         mSearchView = view.findViewById(R.id.floating_search_view);
         mSearchResultsList = view.findViewById(R.id.search_results_list);
         lista = SplashScreen.getList();
+        //setupFloatingSearch();
+
     }
 
     @Override

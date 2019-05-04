@@ -20,13 +20,25 @@ import it.univaq.mobileprogramming.myweather.model.CitySearch;
 
 public class SplashScreen extends AppCompatActivity {
 
+    private static final String CITIES_FILE_NAME = "city_list.json";
+
     private final int SPLASH_DISPLAY_LENGTH = 5000; //splash screen will be shown for 2 seconds
     private static List<CitySearch> citySuggestions = new ArrayList<>();
-    private static final String CITIES_FILE_NAME = "city_list.json";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent stopIntent = new Intent(getApplicationContext(), MyIntentService.class);
+        stopService(stopIntent);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                citySuggestions=loadJson(SplashScreen.this);
+            }
+        }).start();
+
         setContentView(R.layout.activity_splash_screen);
 
         new Thread(new Runnable() {
@@ -45,7 +57,7 @@ public class SplashScreen extends AppCompatActivity {
                     finish();
                 }
             }, SPLASH_DISPLAY_LENGTH);
-        }
+    }
 
 
     private static List<CitySearch> loadJson (Context context){

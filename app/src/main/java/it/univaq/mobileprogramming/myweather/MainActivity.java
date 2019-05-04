@@ -108,11 +108,15 @@ public class MainActivity extends AppCompatActivity implements TodayFragment.OnM
                 startActivity(intent);
                 return true;
 
-            case R.id.position_button:
+            case R.id.favourite_button:
                 /*Intent intent1 = new Intent(getApplicationContext(), AroundMeActivity.class);
                 startActivity(intent1);*/
                 Intent intent1 = new Intent(getApplicationContext(), FavouriteActivity.class);
                 startActivity(intent1);
+                return true;
+
+            case android.R.id.home:
+                onBackPressed();
                 return true;
 
             default:
@@ -120,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements TodayFragment.OnM
         }
 
     }
-
 
     @Override
     public void passCity(Today today) {
