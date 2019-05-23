@@ -23,4 +23,11 @@
         android:title="Metodo rilevamento posizione"
         android:summaryOn="Google location"
         android:summaryOff="GPS"/>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="switch_background"
+        android:title="Aggiornamento in background"
+        android:summaryOn="Abilitato"
+        android:summaryOff="Non abilitato"/>
 </PreferenceScreen>

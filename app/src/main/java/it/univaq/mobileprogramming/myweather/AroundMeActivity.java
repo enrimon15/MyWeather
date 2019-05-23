@@ -1,25 +1,36 @@
 package it.univaq.mobileprogramming.myweather;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.arch.lifecycle.Lifecycle;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.NetworkRequest;
 import android.os.Build;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -35,14 +46,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import it.univaq.mobileprogramming.myweather.Background.MyWorker;
 import it.univaq.mobileprogramming.myweather.Location.LocationGoogleService;
 import it.univaq.mobileprogramming.myweather.Settings.Settings;
 import it.univaq.mobileprogramming.myweather.Settings.SettingsActivity;
@@ -66,7 +92,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     private String lon;
     private MyListener listener = new MyListener();
     private LocationGoogleService locationService;
-    private final int notification_id = 1;
+    private final String TAG = "work";
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
@@ -106,9 +132,6 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     protected void onResume() {
         super.onResume();
 
-        if(Settings.loadBoolean(getApplicationContext(), Settings.CHECK_LOCATION, false))
-            Log.d("pavoncino", "pipi ");
-
         if (InternetConnection.haveNetworkConnection(AroundMeActivity.this)) {
             if(Settings.loadBoolean(getApplicationContext(), Settings.CHECK_LOCATION, true)) {
                 startGPS();
@@ -147,8 +170,10 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
     public void onLocationChanged(Location location) {
         lat = location.getLatitude() + "";
         lon = location.getLongitude() + "";
-        downloadData();
         locationService.stopLocationUpdates(this);
+        downloadData();
+        Settings.save(getApplicationContext(), Settings.LATITUDE, lat);
+        Settings.save(getApplicationContext(), Settings.LONGITUDE, lon);
     }
 
     //gps location
@@ -159,6 +184,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
                     locationService = new LocationGoogleService();
                     locationService.onCreate(this, this);
                     locationService.requestLocationUpdates(this);
+                    Log.d("schedulerrr", "startGPS: ");
                 }
                 else {
                     LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -184,9 +210,12 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
                             try {
                                 ParsingAround pars = new ParsingAround(response);
                                 lista = pars.getAround();
+                                if (!(getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED))) {  Log.d("schedulerrr", "stopped"); }
                                 clearDataFromDB();
                                 saveDataInDB(lista);
+                                Log.d("schedulerrr", "sopra ");
                                 setView();
+                                Log.d("schedulerrr", "sotto ");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -229,6 +258,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
             Log.d("prova", location.getLongitude() + "");
             downloadData();
         }
+
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {}
 
@@ -249,7 +279,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
             public void run() {
                 for (ListCity l : city){
                 AroundDatabase.getInstance(getApplicationContext()).getAroundDAO().save(l);
-                notifyMess("Database aggiornato: " + lat + ", " + lon);
+                    Log.d("schedulerrr", "notifica ");
                     }
             }
         }).start();
@@ -270,8 +300,6 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
 
     /** Clear data from database */
     private void clearDataFromDB(){
-
-        //lista.clear();
             // Delete by RoomDatabase
         new Thread(new Runnable() {
                 @Override
@@ -281,38 +309,6 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
             }).start();
         }
 
-
-    /** Publish a notify. */
-    private void notifyMess(String message) {
-
-        if(Settings.loadBoolean(getApplicationContext(), Settings.CHECK_NOTIFY, true)) {
-
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel("myChannel", "Il Mio Canale", NotificationManager.IMPORTANCE_DEFAULT);
-                channel.setLightColor(Color.argb(255, 255, 0, 0));
-                if (notificationManager != null)
-                    notificationManager.createNotificationChannel(channel);
-            }
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                    getApplicationContext(), "myChannel");
-            builder.setContentTitle(getString(R.string.app_name));
-            builder.setSmallIcon(R.drawable.weather_512);
-            builder.setContentText(message);
-            builder.setAutoCancel(true);
-
-            Intent intent = new Intent(getApplicationContext(), AroundMeActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(
-                    getApplicationContext(), 0, intent, 0);
-
-            builder.setContentIntent(pendingIntent);
-
-            Notification notify = builder.build();
-            if (notificationManager != null) notificationManager.notify(notification_id, notify);
-
-        }
-    }
 
     /****** setta vista *****/
     private void setView() {
@@ -347,8 +343,10 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_info) {
-
+        } else if (id == R.id.nav_backyes) {
+            scheduleJob();
+        } else if (id == R.id.nav_backno) {
+            cancelJob();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -399,16 +397,29 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+    public void scheduleJob(){
+        if(Settings.loadBoolean(getApplicationContext(), Settings.SWITCH_BACKGROUND, true)) {
+            Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build();
+
+            WorkManager workManager = WorkManager.getInstance();
+            PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES).setConstraints(constraints)
+                    .build();
+            workManager.enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.KEEP, request);
+
+            snackbar = Snackbar.make(lay, "Aggiornamento in background attivato", snackbar.LENGTH_INDEFINITE);
+            snackbar.setDuration(3000);
+            snackbar.show();
+        }
+
+        else { alert("Per continuare bisogna consentire i servizi in background dalle impostazioni dell'app", "background"); }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Intent startIntent = new Intent(getApplicationContext(), MyIntentService.class);
-        startIntent.putExtra("lat", lat);
-        startIntent.putExtra("lon", lon);
-        startService(startIntent);
+    public void cancelJob(){
+        WorkManager.getInstance().cancelUniqueWork(TAG);
+        snackbar = Snackbar.make(lay, "Aggiornamento in background disattivato", snackbar.LENGTH_INDEFINITE);
+        snackbar.setDuration(3000);
+        snackbar.show();
     }
 }
+

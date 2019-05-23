@@ -22,13 +22,16 @@
             android:title="Impostazioni" />
     </group>
 
-    <item android:title="Informazioni">
+    <item android:title="Aggiornamento dati in background">
         <menu>
             <item
-                android:id="@+id/nav_info"
-                android:icon="@drawable/information"
-                android:title="Info" />
+                android:id="@+id/nav_backyes"
+                android:icon="@drawable/time"
+                android:title="Avvia" />
+            <item
+                android:id="@+id/nav_backno"
+                android:icon="@drawable/stopping"
+                android:title="Ferma" />
         </menu>
     </item>
-
 </menu>

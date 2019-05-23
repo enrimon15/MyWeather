@@ -20,7 +20,6 @@ public class SearchActivity extends AppCompatActivity implements BaseExampleFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
         showFragment(new SlidingSearchFragment());
     }
 
@@ -32,7 +31,7 @@ public class SearchActivity extends AppCompatActivity implements BaseExampleFrag
 
     @Override
     public void onAttachSearchViewToDrawer(FloatingSearchView searchView) {
-        searchView.attachNavigationDrawerToMenuButton(mDrawerLayout);
+        //searchView.attachNavigationDrawerToMenuButton(mDrawerLayout);
     }
 
     @Override

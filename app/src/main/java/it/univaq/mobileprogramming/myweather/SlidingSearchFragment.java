@@ -134,6 +134,7 @@ public class SlidingSearchFragment extends BaseExampleFragment {
                 intent.putExtra("cityName", mLastQuery);
 
                 startActivity(intent);
+                getActivity().finish();
             }
 
             @Override
@@ -154,13 +155,17 @@ public class SlidingSearchFragment extends BaseExampleFragment {
 
                 inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-                if (lista.contains(mLastQuery)){
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    intent.putExtra("cityName", mLastQuery);
-                    startActivity(intent);
+
+                for (CitySearch c: lista){
+                    if (c.getName().equals(mLastQuery)) {
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        intent.putExtra("cityName", mLastQuery);
+                        startActivity(intent);
+                        getActivity().finish();
+                        break;
+                    }
                 }
 
-                else{
                     snackbar = Snackbar.make(lay, "Città non trovata", snackbar.LENGTH_INDEFINITE);
                     snackbar.setDuration(3000);
                     snackbar.setAction("RIMUOVI", new View.OnClickListener(){
@@ -170,7 +175,6 @@ public class SlidingSearchFragment extends BaseExampleFragment {
                         }
                     });
                     snackbar.show();
-                }
             }
         });
 

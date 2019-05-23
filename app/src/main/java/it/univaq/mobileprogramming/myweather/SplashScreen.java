@@ -29,8 +29,8 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent stopIntent = new Intent(getApplicationContext(), MyIntentService.class);
-        stopService(stopIntent);
+        //Intent stopIntent = new Intent(getApplicationContext(), MyIntentService.class);
+        //stopService(stopIntent);
 
         new Thread(new Runnable() {
             @Override
@@ -40,13 +40,6 @@ public class SplashScreen extends AppCompatActivity {
         }).start();
 
         setContentView(R.layout.activity_splash_screen);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                citySuggestions=loadJson(SplashScreen.this);
-            }
-        }).start();
 
             new Handler().postDelayed(new Runnable() {
                 @Override

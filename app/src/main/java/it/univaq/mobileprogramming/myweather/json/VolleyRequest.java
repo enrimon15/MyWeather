@@ -62,4 +62,14 @@ public class VolleyRequest {
                 error);
         queue.add(request);
     }
+
+    public void downloadBackground(String lat, String lon, String key, String unit, Response.Listener<String> listener){
+
+        StringRequest request = new StringRequest(
+                StringRequest.Method.GET,
+                "https://api.openweathermap.org/data/2.5/find?lat="+ lat + "&lon=" + lon + "&cnt=10&appid=" + key + unit,
+                listener,
+                null);
+        queue.add(request);
+    }
 }

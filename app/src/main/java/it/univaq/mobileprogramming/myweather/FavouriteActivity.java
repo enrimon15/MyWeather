@@ -144,13 +144,17 @@ public class FavouriteActivity extends AppCompatActivity {
             case R.id.search_button:
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(intent);
+                finish();
                 return true;
 
             case R.id.position_button:
-                /*Intent intent1 = new Intent(getApplicationContext(), AroundMeActivity.class);
-                startActivity(intent1);*/
-                Intent intent1 = new Intent(getApplicationContext(), FavouriteActivity.class);
+                Intent intent1 = new Intent(getApplicationContext(), AroundMeActivity.class);
                 startActivity(intent1);
+                finish();
+                return true;
+
+            case android.R.id.home:
+                onBackPressed();
                 return true;
 
             default:
