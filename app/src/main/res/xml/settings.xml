@@ -24,10 +24,12 @@
         android:summaryOn="Google location"
         android:summaryOff="GPS"/>
 
+    <PreferenceCategory android:title="Servizi Background">
     <SwitchPreference
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:key="switch_background"
-        android:title="Aggiornamento in background"
+        android:title="Aggiornamento dati in background"
         android:summaryOn="Abilitato"
-        android:summaryOff="Non abilitato"/>
+        android:summaryOff="Non abilitato" />
+    </PreferenceCategory>
 </PreferenceScreen>

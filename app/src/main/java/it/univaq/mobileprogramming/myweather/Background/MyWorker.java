@@ -50,8 +50,6 @@ public class MyWorker extends Worker {
 
     private void doBackgroundWork() {
 
-        //if(!(Settings.loadBoolean(getApplicationContext(), Settings.SWITCH_BACKGROUND, true))) {return;}
-
         Log.d(TAG, "pre work ");
 
         lat = Settings.loadString(getApplicationContext(), Settings.LATITUDE, "");
