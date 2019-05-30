@@ -1,24 +1,18 @@
 package it.univaq.mobileprogramming.myweather;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import it.univaq.mobileprogramming.myweather.InternetConnection.InternetConnection;
 import it.univaq.mobileprogramming.myweather.adapters.ViewPagerAdapter;
-import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
 public class MainActivity extends AppCompatActivity implements TodayFragment.OnMyListner{
@@ -46,9 +40,9 @@ public class MainActivity extends AppCompatActivity implements TodayFragment.OnM
         lay = findViewById(R.id.main_ac);
 
         if (!InternetConnection.haveNetworkConnection(MainActivity.this)) {
-            snackbar = Snackbar.make(lay, "Errore di connessione", snackbar.LENGTH_INDEFINITE);
+            snackbar = Snackbar.make(lay, R.string.connection_error, snackbar.LENGTH_INDEFINITE);
             snackbar.setDuration(3000);
-            snackbar.setAction("RIMUOVI", new View.OnClickListener(){
+            snackbar.setAction(R.string.snakebar_remove, new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     snackbar.dismiss();

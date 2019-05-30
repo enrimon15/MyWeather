@@ -1,4 +1,4 @@
-package it.univaq.mobileprogramming.myweather.model;
+package it.univaq.mobileprogramming.myweather.model.Search;
 
 import android.content.Context;
 import android.widget.Filter;
@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import it.univaq.mobileprogramming.myweather.SlidingSearchFragment;
-import it.univaq.mobileprogramming.myweather.SplashScreen;
 import it.univaq.mobileprogramming.myweather.json.ParsingSearch;
 
 public class DataHelper {

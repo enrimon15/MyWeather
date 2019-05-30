@@ -1,11 +1,10 @@
 package it.univaq.mobileprogramming.myweather;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,12 +21,9 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_around;
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_favourite;
-import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_hour;
 import it.univaq.mobileprogramming.myweather.database.FavDatabase;
 import it.univaq.mobileprogramming.myweather.json.ParsingFavourite;
-import it.univaq.mobileprogramming.myweather.json.ParsingFiveDays;
 import it.univaq.mobileprogramming.myweather.json.VolleyRequest;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Preferiti;
@@ -118,7 +114,7 @@ public class FavouriteActivity extends AppCompatActivity {
                 FavDatabase.getInstance(context).favouriteDAO().delete(lc.getCode());
             }
         }).start();
-        snack = Snackbar.make(lay, "Città rimossa dai preferiti", Snackbar.LENGTH_SHORT);
+        snack = Snackbar.make(lay, R.string.city_removed, Snackbar.LENGTH_SHORT);
         snack.setDuration(3000);
         snack.show();
         lista.remove(lc);
@@ -129,10 +125,6 @@ public class FavouriteActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
-        //MenuItem searchView = menu.findItem(R.id.search_item); PER APRIRE BARRA RICERCA
-        //searchView.expandActionView();
-
 
         return true;
     }

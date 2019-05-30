@@ -1,4 +1,4 @@
-package it.univaq.mobileprogramming.myweather.model;
+package it.univaq.mobileprogramming.myweather.model.Search;
 
 import android.os.Parcel;
 

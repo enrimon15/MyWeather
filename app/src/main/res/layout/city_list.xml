@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -32,7 +33,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Torrebruna"
+                    tools:text="Torrebruna"
                     android:textColor="@color/colorDetails"
                     android:textSize="32dp"
                     android:id="@+id/text_list"/>
@@ -40,7 +41,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sereno"
+                    tools:text="Sereno"
                     android:textColor="@color/colorDetails"
                     android:textSize="18dp"
                     android:id="@+id/desc_list"/>
@@ -60,7 +61,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="3dp"
-                android:text="21°"
+                tools:text="21°"
                 android:textColor="@color/colorDetails"
                 android:textSize="60dp"
                 app:layout_constraintBottom_toBottomOf="parent"

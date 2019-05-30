@@ -1,8 +1,6 @@
 package it.univaq.mobileprogramming.myweather;
 
 
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -14,14 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.Serializable;
 
 import it.univaq.mobileprogramming.myweather.database.FavDatabase;
-import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Preferiti;
-import it.univaq.mobileprogramming.myweather.model.Today;
 
 
 /**
@@ -82,11 +75,11 @@ public class DetailsFragment extends Fragment{
                     public void run() {
                         Preferiti p = FavDatabase.getInstance(getContext()).favouriteDAO().getFav(n, c);
                         if (p != null) {
-                            snack = Snackbar.make(lay, "Città già presente nei preferiti", Snackbar.LENGTH_SHORT);
+                            snack = Snackbar.make(lay, R.string.city_already_favourite, Snackbar.LENGTH_SHORT);
                             snack.setDuration(3000);
                             snack.show();
                         } else {
-                            snack = Snackbar.make(lay, "Città aggiunta ai preferiti", Snackbar.LENGTH_SHORT);
+                            snack = Snackbar.make(lay, R.string.city_added_favourite, Snackbar.LENGTH_SHORT);
                             snack.setDuration(3000);
                             snack.show();
                             FavDatabase.getInstance(getContext()).favouriteDAO().save(new Preferiti(n, c, id));
@@ -113,8 +106,8 @@ public class DetailsFragment extends Fragment{
         city.setText(today.getString("nome") + ", " + today.getString("country"));
         description.setText(today.getString("desc"));
         temp.setText(today.getString("temp"));
-        mintemp.setText("MIN: " + today.getString("min"));
-        maxtemp.setText("MAX: " + today.getString("max"));
+        mintemp.setText(R.string.min + today.getString("min"));
+        maxtemp.setText(R.string.max + today.getString("max"));
         cloud.setText(today.getString("nuv"));
         hum.setText(today.getString("umid"));
         press.setText(today.getString("press"));

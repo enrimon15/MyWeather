@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingLeft="11dp"
     android:paddingRight="18dp"
     android:layout_height="wrap_content"
@@ -13,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="GIO"
+        tools:text="GIO"
         android:textColor="@color/colorCircleStroke"
         android:textSize="18dp"
         android:textStyle="bold" />
@@ -40,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
-            android:text="18°"
+            tools:text="18°"
             android:textColor="@color/colorWhite"
             android:textSize="14dp" />
         <TextView
@@ -48,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
-            android:text=" / "
+            tools:text=" / "
             android:textColor="@color/colorWhite"
             android:textSize="14dp" />
         <TextView
@@ -57,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
-            android:text="21°"
+            tools:text="21°"
             android:textColor="@color/colorWhite"
             android:textSize="14dp" />
     </LinearLayout>

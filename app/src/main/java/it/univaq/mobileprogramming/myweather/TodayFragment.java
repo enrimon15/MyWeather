@@ -1,7 +1,6 @@
 package it.univaq.mobileprogramming.myweather;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,7 +30,6 @@ import it.univaq.mobileprogramming.myweather.json.ParsingFiveDays;
 import it.univaq.mobileprogramming.myweather.json.ParsingToday;
 import it.univaq.mobileprogramming.myweather.json.VolleyRequest;
 import it.univaq.mobileprogramming.myweather.model.Five_Days;
-import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
 
@@ -165,7 +163,7 @@ public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 circle.setVisibility(View.INVISIBLE);
                 t4_date.setVisibility(View.INVISIBLE);
 
-                snackbar = Snackbar.make(lay, "Città non trovata", snackbar.LENGTH_INDEFINITE);
+                snackbar = Snackbar.make(lay, R.string.city_not_found, snackbar.LENGTH_INDEFINITE);
                 snackbar.setDuration(3000);
                 snackbar.show();
                 error.printStackTrace();

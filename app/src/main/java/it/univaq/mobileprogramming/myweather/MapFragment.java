@@ -10,8 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -70,7 +68,7 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
         BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(icon);
         Bitmap b=bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
-        mMap.addMarker(new MarkerOptions().position(position).title(name).snippet(desc + ", temperatura: " + temp).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+        mMap.addMarker(new MarkerOptions().position(position).title(name).snippet(desc + R.string.temperature + temp).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position,13), 5000, null);
     }
 

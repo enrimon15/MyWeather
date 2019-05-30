@@ -18,7 +18,37 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="snakebar_remove">RIMUOVI</string>
 
     <!-- KEY MAPS -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBv1RzRtQTxYf-OYGmnts8u35ICeiejrns</string>
+
+    <!-- TODAY FRAGMENT -->
+    <string name="city_not_found">Città non trovata</string>
+
+    <!-- DETAILS FRAGMENT -->
+    <string name="city_already_favourite">Città già presente nei preferiti</string>
+    <string name="city_added_favourite">Città aggiunta ai preferiti</string>
+    <string name="min">MIN: </string>
+    <string name="max">MAX: </string>
+    <string name="wind">VENTO</string>
+    <string name="umidity">UMIDITA'</string>
+    <string name="pressure">PRESSIONE</string>
+    <string name="cloud">NUVOLE</string>
+
+    <!-- SEARCH FRAGMENT -->
+    <string name="search_bar">Cerca...</string>
+
+    <!-- MAP FRAGMENT -->
+    <string name="temperature">, temperatura: </string>
+
+    <!-- FAVOURITE ACTIVITY -->
+    <string name="city_removed">Città rimossa dai preferiti</string>
+
+    <!-- MAIN ACTIVITY -->
+    <string name="connection_error">Errore di connessione</string>
+
+    <!-- WORKER -->
+    <string name="db_updated">Database Aggiornato: </string>
+
 </resources>

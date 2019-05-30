@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -33,7 +34,7 @@
                     android:id="@+id/text_fav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Torrebruna"
+                    tools:text="Torrebruna"
                     android:textColor="@color/colorDetails"
                     android:textSize="32dp" />
 
@@ -41,7 +42,7 @@
                     android:id="@+id/desc_fav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sereno"
+                    tools:text="Sereno"
                     android:textColor="@color/colorDetails"
                     android:textSize="18dp" />
 
@@ -50,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:text="21°"
+                    tools:text="21°"
                     android:textColor="@color/colorDetails"
                     android:textSize="60dp" />
 
@@ -83,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:id="@+id/flat_button"
-                android:text="Rimuovi"
+                android:text="@string/snakebar_remove"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="15dp"
                 style="@style/FlatButton"

@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.job.JobParameters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -14,15 +13,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
 import com.android.volley.Response;
 
 import org.json.JSONException;
 
 import java.util.List;
 
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
-import it.univaq.mobileprogramming.myweather.AroundMeActivity;
 import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.Settings.Settings;
 import it.univaq.mobileprogramming.myweather.SplashScreen;
@@ -93,7 +92,7 @@ public class MyWorker extends Worker {
                     AroundDatabase.getInstance(getApplicationContext()).getAroundDAO().save(l);
                     Log.d("schedulerrr", "datadb ");
                 }
-                notifyMess("Database Aggiornato: " + lat + ", " + lon);
+                notifyMess(R.string.db_updated + lat + ", " + lon);
             }
         }).start();
     }

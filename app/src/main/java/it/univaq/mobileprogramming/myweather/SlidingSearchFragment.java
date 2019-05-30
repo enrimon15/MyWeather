@@ -1,9 +1,6 @@
 package it.univaq.mobileprogramming.myweather;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -14,19 +11,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
-import com.arlib.floatingsearchview.util.Util;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.json.ParsingSearch;
-import it.univaq.mobileprogramming.myweather.model.CitySearch;
-import it.univaq.mobileprogramming.myweather.model.DataHelper;
+import it.univaq.mobileprogramming.myweather.model.Search.CitySearch;
+import it.univaq.mobileprogramming.myweather.model.Search.DataHelper;
 
 
 public class SlidingSearchFragment extends Fragment {
@@ -145,9 +142,9 @@ public class SlidingSearchFragment extends Fragment {
                     }
                 }
 
-                    snackbar = Snackbar.make(lay, "Città non trovata", snackbar.LENGTH_INDEFINITE);
+                    snackbar = Snackbar.make(lay, R.string.city_not_found, snackbar.LENGTH_INDEFINITE);
                     snackbar.setDuration(3000);
-                    snackbar.setAction("RIMUOVI", new View.OnClickListener(){
+                    snackbar.setAction(R.string.snakebar_remove, new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
                             snackbar.dismiss();
@@ -252,16 +249,7 @@ public class SlidingSearchFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        /*Context ctx = getContext();
-        InputMethodManager inputManager = (InputMethodManager) ctx
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        // check if no view has focus:
-        View v = ((Activity) ctx).getCurrentFocus();
-        if (v == null)
-            return;
-
-        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);*/
         mSearchView.setSearchFocused(false);
     }
 

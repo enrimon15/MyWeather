@@ -1,23 +1,11 @@
 package it.univaq.mobileprogramming.myweather;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import it.univaq.mobileprogramming.myweather.json.ParsingSearch;
-import it.univaq.mobileprogramming.myweather.model.CitySearch;
 
 public class SplashScreen extends AppCompatActivity {
 

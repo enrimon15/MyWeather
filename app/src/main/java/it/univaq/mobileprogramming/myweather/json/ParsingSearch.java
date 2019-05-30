@@ -12,11 +12,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.univaq.mobileprogramming.myweather.model.CitySearch;
+import it.univaq.mobileprogramming.myweather.model.Search.CitySearch;
 
 public class ParsingSearch {
     List<CitySearch> cityList = new ArrayList<>();
-    private String CITIES_FILE_NAME = "city_list.json";
+    private final String CITIES_FILE_NAME = "city_list.json";
     Context cont;
     private static ParsingSearch instance = null;
 

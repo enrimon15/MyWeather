@@ -42,7 +42,7 @@
                         android:id="@+id/city_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Torrebruna"
+                        tools:text="Torrebruna"
                         android:textSize="32dp"
                         android:textColor="@color/colorWhite"/>
 
@@ -50,7 +50,7 @@
                         android:id="@+id/description_details"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sereno"
+                        tools:text="Sereno"
                         android:textSize="18dp"
                         android:textColor="@color/colorWhite"/>
 
@@ -69,7 +69,7 @@
                     android:layout_gravity="bottom"
                     android:layout_marginEnd="4dp"
                     android:layout_marginBottom="8dp"
-                    android:text="21°"
+                    tools:text="21°"
                     android:textColor="@color/colorWhite"
                     android:textSize="60dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -132,7 +132,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="MAX: 22°"
+                                tools:text="MAX: 22°"
                                 android:textColor="@color/colorDetails"
                                 android:textSize="18dp" />
                         </LinearLayout>
@@ -154,7 +154,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="MIN: 18°"
+                                tools:text="MIN: 18°"
                                 android:textColor="@color/colorDetails"
                                 android:textSize="18dp" />
 
@@ -198,14 +198,14 @@
                          <TextView
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="VENTO"
+                             android:text="@string/wind"
                              android:textColor="@color/colorDetails"
                              android:textSize="20dp"/>
                          <TextView
                              android:id="@+id/wind_details"
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="11 km/h"
+                             tools:text="11 km/h"
                              android:textColor="@color/colorDetails"
                              android:textSize="16dp"/>
                      </LinearLayout>
@@ -247,14 +247,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="UMIDITA'"
+                                    android:text="@string/umidity"
                                     android:textColor="@color/colorDetails"
                                     android:textSize="20dp"/>
                                 <TextView
                                     android:id="@+id/humidity_details"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="60 %"
+                                    tools:text="60 %"
                                     android:textColor="@color/colorDetails"
                                     android:textSize="16dp"/>
                             </LinearLayout>
@@ -296,14 +296,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="PRESSIONE"
+                                    android:text="@string/pressure"
                                     android:textColor="@color/colorDetails"
                                     android:textSize="20dp"/>
                                 <TextView
                                     android:id="@+id/pressure_details"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="1013 hPA"
+                                    tools:text="1013 hPA"
                                     android:textColor="@color/colorDetails"
                                     android:textSize="16dp"/>
                             </LinearLayout>
@@ -346,14 +346,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="NUVOLE"
+                                    android:text="@string/cloud"
                                     android:textColor="@color/colorDetails"
                                     android:textSize="20dp"/>
                                 <TextView
                                     android:id="@+id/clouds_details"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="62 %"
+                                    tools:text="62 %"
                                     android:textColor="@color/colorDetails"
                                     android:textSize="16dp"/>
                             </LinearLayout>
@@ -408,7 +408,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="06:30°"
+                                tools:text="06:30°"
                                 android:textColor="@color/colorDetails"
                                 android:textSize="18dp" />
                         </LinearLayout>
@@ -427,7 +427,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="17:30°"
+                                tools:text="17:30°"
                                 android:textColor="@color/colorDetails"
                                 android:textSize="18dp" />
 
