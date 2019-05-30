@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+//Per activity around e db
+
 @Entity(tableName = "cities")
 public class ListCity{
     @PrimaryKey(autoGenerate = true)

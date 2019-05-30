@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/main_swipe"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".TodayFragment">
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/view_today"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/view_today"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".TodayFragment">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -32,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorWhite"
-                android:textSize="36dp"
+                android:textSize="36sp"
                 tools:text="Torrebruna, IT" />
 
             <TextView
@@ -41,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorWhite"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 tools:text="Venerdi, 8 luglio" />
 
             <ImageView
@@ -98,4 +90,3 @@
 
 
 </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.SwipeRefreshLayout>

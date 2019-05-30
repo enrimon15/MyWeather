@@ -33,34 +33,21 @@ import it.univaq.mobileprogramming.myweather.model.Five_Days;
 import it.univaq.mobileprogramming.myweather.model.Today;
 
 
-public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TodayFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private List<Five_Days> giorni = new ArrayList<Five_Days>();
-
     private TextView t2_city,t4_date;
     private CircleView t1_temp;
     private ImageView icon;
     private CircleView circle;
-
-    private Snackbar snackbar;
-    private View lay;
-    private SwipeRefreshLayout swipeRefreshLayout;
-
-    private static Today weather;
-    private  String cityArgument;
     private  RecyclerViewAdapter_hour adapter;
-
-    private  OnMyListner myListner;
-
-    @Override
-    public void onRefresh() {
-        onResume();
-    }
-
-    public  interface OnMyListner{
-        void passCity(Today today);
-    }
+    private String nameC;
+    private int iconC;
+    private String countryC;
+    private String tempC;
+    private String descC;
+    private String dateC;
 
     public TodayFragment() {
         // Required empty public constructor
@@ -77,123 +64,51 @@ public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         icon = (ImageView) view.findViewById(R.id.weather_icon);
         circle = (CircleView) view.findViewById(R.id.weather_result);
         recyclerView = view.findViewById(R.id.weather_list);
-        lay = view.findViewById(R.id.view_today);
-        swipeRefreshLayout = view.findViewById(R.id.main_swipe);
-        swipeRefreshLayout.setOnRefreshListener(TodayFragment.this);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false){
-            @Override
-            public boolean canScrollHorizontally() {
-                return false;
-            } };
-
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         adapter = new RecyclerViewAdapter_hour(giorni);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
 
-        swipeRefreshLayout = view.findViewById(R.id.main_swipe);
-        swipeRefreshLayout.setOnRefreshListener(TodayFragment.this);
-
         return view;
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        //richiama il metodo per popolare la vista principale (meteo odierno)
-        find_weather();
-
-        //metodo che popola la recycle view con il meteo dei prossimi 5 giorni
-
+        if (nameC != null) setView(); //popola view
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        try{
-            myListner = (OnMyListner) context;
-        } catch (ClassCastException e){
-            throw new ClassCastException("Devi implementare l'interfaccia");
-        }
-    }
-
+    /** prende dati da main activity **/
     @Override
     public void setArguments(@Nullable Bundle args) {
+        Log.d("dentro0", "ciao");
         super.setArguments(args);
-        cityArgument = args.getString("nameCity");
-        Log.d("prova", cityArgument);
+        nameC = args.getString("nome");
+        iconC = args.getInt("imm");
+        countryC = args.getString("country");
+        tempC = args.getString("temp");
+        descC = args.getString("desc");
+        dateC = args.getString("date");
+        fiveDays(); //download next 5 days
     }
 
-
-    //json request
-    public void find_weather() {
-        giorni.clear();
-
-        swipeRefreshLayout.setRefreshing(true);
-        // Request a string response
-        VolleyRequest.getInstance(getActivity())
-                .downloadCityName(cityArgument, getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS), new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        if (response.length() > 0) {
-                            try {
-                                Log.d("req", "downloadCity: ciao2");
-                                ParsingToday pars = new ParsingToday(response);
-                                weather = pars.getToday_object();
-                                fiveDays();
-                                myListner.passCity(weather);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // Error handling
-                t2_city.setVisibility(View.INVISIBLE);
-                icon.setVisibility(View.INVISIBLE);
-                circle.setVisibility(View.INVISIBLE);
-                t4_date.setVisibility(View.INVISIBLE);
-
-                snackbar = Snackbar.make(lay, R.string.city_not_found, snackbar.LENGTH_INDEFINITE);
-                snackbar.setDuration(3000);
-                snackbar.show();
-                error.printStackTrace();
-            }
-        });
-
-    }
-
-
+    /** download e parsing next five days **/
     private void fiveDays(){
-
-        // Request a string response
         VolleyRequest.getInstance(getActivity())
-                .downloadFive(cityArgument, getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS),
+                .downloadFive(nameC, getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS),
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    { Log.d("dentro", response);
+                    public void onResponse(String response) {
                         if (response.length() > 0) {
                             try {
-                                Log.d("dentro2", response);
-                                ParsingFiveDays pars = new ParsingFiveDays(response);
+                                Log.d("dentro", response);
+                                ParsingFiveDays pars = new ParsingFiveDays(response); //parsing
                                 giorni.addAll(pars.getListaDay());
-                                setView();
+                                setView(); //popola vista
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-
-                        //swipeRefreshLayout.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -203,16 +118,15 @@ public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         });
     }
 
+    /** popola view **/
     private void setView() {
         circle.setVisibility(View.VISIBLE);
-        icon.setImageResource(weather.getIcon());
-        t1_temp.setTitleText(weather.getTemp());
-        t2_city.setText(weather.getCity() + ", " + weather.getCountry());
-        t1_temp.setSubtitleText(weather.getWeatherResult());
-        t4_date.setText(weather.getDate());
+        icon.setImageResource(iconC);
+        t1_temp.setTitleText(tempC);
+        t2_city.setText(nameC + ", " + countryC);
+        t1_temp.setSubtitleText(descC);
+        t4_date.setText(dateC);
         if (adapter != null) adapter.notifyDataSetChanged();
-
-        swipeRefreshLayout.setRefreshing(false);
     }
 
 

@@ -23,16 +23,17 @@
     <!-- KEY MAPS -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBv1RzRtQTxYf-OYGmnts8u35ICeiejrns</string>
 
+    <!-- AROUND ACTIVITY -->
+    <string name="city_around">Città intorno a me:</string>
+
     <!-- TODAY FRAGMENT -->
     <string name="city_not_found">Città non trovata</string>
 
     <!-- DETAILS FRAGMENT -->
     <string name="city_already_favourite">Città già presente nei preferiti</string>
     <string name="city_added_favourite">Città aggiunta ai preferiti</string>
-    <string name="min">MIN: </string>
-    <string name="max">MAX: </string>
     <string name="wind">VENTO</string>
-    <string name="umidity">UMIDITA'</string>
+    <string name="umidity">UMIDITÀ</string>
     <string name="pressure">PRESSIONE</string>
     <string name="cloud">NUVOLE</string>
 

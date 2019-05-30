@@ -28,7 +28,7 @@ public class ParsingToday {
 
             String wind = wind_object.getString("speed") + " km/h";
 
-            Double temperatura= main.getDouble("temp");
+            Double temperatura= main.getDouble("temp"); //trasformo la temp in string e tronco dopo la virgola
                 String temp = String.format ("%.1f", temperatura);
                 if (temp.charAt(temp.length()-1) == '0') temp = temp.substring(0,temp.length()-2);
                 temp = temp + "\u00B0";
@@ -77,6 +77,7 @@ public class ParsingToday {
         this.today_object = today_object;
     }
 
+    /** data odierna nel formato scelto **/
     private String today_date(){
             Date data = new  Date();
             Locale.setDefault(Locale.ITALIAN);
@@ -85,10 +86,11 @@ public class ParsingToday {
             return formatted_date;
         }
 
-        private String sun_convert(int timestamp){
+    /** conversione millisecondi in ora **/
+    private String sun_convert(int timestamp){
             String ora = new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date (timestamp*1000));
             return ora;
-        }
+    }
 
     private int setImm(String imm) {
         int image = 0;

@@ -16,12 +16,16 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ParsingSearch.getInstance(getApplicationContext()).loadJson();
-            }
-        }).start();
+        /** parsing list city world json (per ricerca) **/
+        if (ParsingSearch.getInstance(getApplicationContext()).getList().isEmpty()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ParsingSearch.getInstance(getApplicationContext()).loadJson();
+                }
+            }).start();
+        }
+
 
         setContentView(R.layout.activity_splash_screen);
 

@@ -16,10 +16,6 @@ import android.widget.TextView;
 import it.univaq.mobileprogramming.myweather.database.FavDatabase;
 import it.univaq.mobileprogramming.myweather.model.Preferiti;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class DetailsFragment extends Fragment{
     private TextView city;
     private TextView description;
@@ -68,12 +64,13 @@ public class DetailsFragment extends Fragment{
         pref = view.findViewById(R.id.star);
         lay = view.findViewById(R.id.view_details);
 
+        /** gestione tocco su "star" aggiungi a preferiti **/
         pref.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)  {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Preferiti p = FavDatabase.getInstance(getContext()).favouriteDAO().getFav(n, c);
+                        Preferiti p = FavDatabase.getInstance(getContext()).favouriteDAO().getFav(n, c); //check se già presente (name, country)
                         if (p != null) {
                             snack = Snackbar.make(lay, R.string.city_already_favourite, Snackbar.LENGTH_SHORT);
                             snack.setDuration(3000);
@@ -97,17 +94,18 @@ public class DetailsFragment extends Fragment{
         super.onResume();
     }
 
-    public void setOggi(Bundle today){
-        Log.d("fragment", "setOggi: ");
-        //oggi = today;
+    /** popola view **/
+    public void setDetails(Bundle today){
+        Log.d("fragmentDeatils", "setOggi: ");
         n = today.getString("nome");
         c = today.getString("country");
         id = today.getString("id");
-        city.setText(today.getString("nome") + ", " + today.getString("country"));
+
+        city.setText(n + ", " + c);
         description.setText(today.getString("desc"));
         temp.setText(today.getString("temp"));
-        mintemp.setText(R.string.min + today.getString("min"));
-        maxtemp.setText(R.string.max + today.getString("max"));
+        mintemp.setText("MAX: " + " " + today.getString("min"));
+        maxtemp.setText("MIN: " + today.getString("max"));
         cloud.setText(today.getString("nuv"));
         hum.setText(today.getString("umid"));
         press.setText(today.getString("press"));
@@ -117,9 +115,10 @@ public class DetailsFragment extends Fragment{
         icon.setImageResource(today.getInt("imm"));
     }
 
+    /** prende dati passati da main **/
     @Override
     public void setArguments(@Nullable Bundle args) {
         super.setArguments(args);
-        setOggi(args);
+        setDetails(args); //popola view
     }
 }

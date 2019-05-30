@@ -42,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             addPreferencesFromResource(R.xml.settings);
 
+            /** click sul toggle button dei servizi in background --> attiva o disattiva **/
             Preference myPref = (Preference) findPreference("switch_background");
             myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
@@ -56,6 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
         }
 
+        /** se il bottone è disattivato, al click, attivo il worker --> ogni ora aggiorna db e manda notifica **/
         public void scheduleJob(){
                 Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
                         .build();
@@ -70,6 +72,7 @@ public class SettingsActivity extends AppCompatActivity {
                 snackbar.show();
         }
 
+        /** se il bottone è attivato, al click, disattiva il worker **/
         public void cancelJob(){
             WorkManager.getInstance().cancelUniqueWork(TAG);
             snackbar = Snackbar.make(getView(), "Aggiornamento in background disattivato", snackbar.LENGTH_INDEFINITE);

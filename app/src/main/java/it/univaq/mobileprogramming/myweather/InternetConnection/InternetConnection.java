@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class InternetConnection {
-
+    /** check internet connection **/
     public static boolean haveNetworkConnection(Context contesto) {
 
         ConnectivityManager cm = (ConnectivityManager) contesto.getSystemService(Context.CONNECTIVITY_SERVICE);
