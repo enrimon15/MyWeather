@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.job.JobParameters;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import androidx.work.WorkerParameters;
 import it.univaq.mobileprogramming.myweather.AroundMeActivity;
 import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.Settings.Settings;
+import it.univaq.mobileprogramming.myweather.SplashScreen;
 import it.univaq.mobileprogramming.myweather.database.AroundDatabase;
 import it.univaq.mobileprogramming.myweather.json.ParsingAround;
 import it.univaq.mobileprogramming.myweather.json.VolleyRequest;
@@ -51,6 +53,9 @@ public class MyWorker extends Worker {
     private void doBackgroundWork() {
 
         Log.d(TAG, "pre work ");
+
+        if ((Settings.loadString(getApplicationContext(), Settings.LATITUDE, "") == null) || (Settings.loadString(getApplicationContext(), Settings.LONGITUDE, "") == null))
+            return;
 
         lat = Settings.loadString(getApplicationContext(), Settings.LATITUDE, "");
         lon = Settings.loadString(getApplicationContext(), Settings.LONGITUDE, "");
@@ -119,11 +124,12 @@ public class MyWorker extends Worker {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(
                     getApplicationContext(), "myChannel");
             builder.setContentTitle(getApplicationContext().getString(R.string.app_name));
-            builder.setSmallIcon(R.drawable.weather_512);
+            builder.setSmallIcon(R.drawable.ic_notification);
+            builder.setLargeIcon(BitmapFactory.decodeResource( getApplicationContext().getResources(), R.drawable.weather_512));
             builder.setContentText(message);
             builder.setAutoCancel(true);
 
-            Intent intent = new Intent(getApplicationContext(), AroundMeActivity.class);
+            Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     getApplicationContext(), 0, intent, 0);
 

@@ -21,13 +21,8 @@ public class ParsingFiveDays {
     List<Five_Days> listaDay = new ArrayList<Five_Days>();
 
     public ParsingFiveDays(String parsing) throws JSONException {
-        Log.d("ENRI", "parsing");
-        Log.d("ENRI", parsing);
         JSONObject jor = new JSONObject(parsing);
-        Log.d("enri", "ParsingFiveDays: " + jor);
         JSONArray lista = jor.getJSONArray("list");
-        Log.d("enr", "ParsingFiveDays: ");
-        Log.d("list", lista + "");
 
         Date date = new  Date();
         Locale.setDefault(Locale.ITALIAN);
@@ -60,6 +55,21 @@ public class ParsingFiveDays {
                 dayweek=getDayWeek(date,cont);
             }
         }
+
+        if (listaDay.size() == 4){
+            JSONObject oggetto = lista.getJSONObject(0);
+            dayweek = getDayWeek(date,0);
+            JSONObject main = oggetto.getJSONObject("main");
+            int min = main.getInt("temp_min"); String mintemp = min + "\u00B0";
+            int max = main.getInt("temp_max"); String maxtemp = max + "\u00B0";
+            JSONArray weather = oggetto.getJSONArray("weather");
+            JSONObject icon = weather.getJSONObject(0);
+            String imm = icon.getString("icon");
+            int immagine = setImm(imm);
+            Five_Days five = new Five_Days(dayweek, maxtemp, mintemp, immagine);
+            listaDay.add(0, five);
+        }
+
         Log.d("ENRI", "parsing finito");
         Log.d("enri", listaDay.toString());
     }

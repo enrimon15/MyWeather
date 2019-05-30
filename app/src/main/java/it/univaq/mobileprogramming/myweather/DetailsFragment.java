@@ -41,7 +41,6 @@ public class DetailsFragment extends Fragment{
     private TextView sunset;
     private ImageView icon;
     private ImageButton pref;
-    private FavDatabase favdb;
     private Snackbar snack;
     private View lay;
 
@@ -76,10 +75,26 @@ public class DetailsFragment extends Fragment{
         pref = view.findViewById(R.id.star);
         lay = view.findViewById(R.id.view_details);
 
-            favdb = Room.databaseBuilder(getActivity(), FavDatabase.class, "favouriteDB")
-                    .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
-                    .build();
+        pref.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)  {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Preferiti p = FavDatabase.getInstance(getContext()).favouriteDAO().getFav(n, c);
+                        if (p != null) {
+                            snack = Snackbar.make(lay, "Città già presente nei preferiti", Snackbar.LENGTH_SHORT);
+                            snack.setDuration(3000);
+                            snack.show();
+                        } else {
+                            snack = Snackbar.make(lay, "Città aggiunta ai preferiti", Snackbar.LENGTH_SHORT);
+                            snack.setDuration(3000);
+                            snack.show();
+                            FavDatabase.getInstance(getContext()).favouriteDAO().save(new Preferiti(n, c, id));
+                        }
+                    }
+                    }).start();
+                }
+            });
 
         return view;
     }
@@ -87,22 +102,6 @@ public class DetailsFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        pref.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)  {
-                Preferiti p = favdb.favouriteDAO().getFav(n,c);
-                if (p != null) {
-                    snack = Snackbar.make(lay, "Città già presente nei preferiti", Snackbar.LENGTH_SHORT);
-                    snack.setDuration(3000);
-                    snack.show();
-                }
-                else {
-                    snack = Snackbar.make(lay, "Città aggiunta ai preferiti", Snackbar.LENGTH_SHORT);
-                    snack.setDuration(3000);
-                    snack.show();
-                    favdb.favouriteDAO().save(new Preferiti(n, c, id));
-                }
-            }
-        });
     }
 
     public void setOggi(Bundle today){

@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements TodayFragment.OnM
         b.putString("nameCity",Namecity);
 
         td.setArguments(b);
-        //mp.setArguments(b);
     }
 
     @Override
@@ -156,11 +155,4 @@ public class MainActivity extends AppCompatActivity implements TodayFragment.OnM
             mp.setArguments(map);
             fr.setArguments(x);
     }
-
-
-    /*@Override
-    public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), AroundMeActivity.class);
-        startActivity(intent);
-    }*/
 }

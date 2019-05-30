@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,11 +23,13 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.arlib.floatingsearchview.util.Util;
 import java.util.ArrayList;
 import java.util.List;
+
+import it.univaq.mobileprogramming.myweather.json.ParsingSearch;
 import it.univaq.mobileprogramming.myweather.model.CitySearch;
 import it.univaq.mobileprogramming.myweather.model.DataHelper;
 
 
-public class SlidingSearchFragment extends BaseExampleFragment {
+public class SlidingSearchFragment extends Fragment {
     private final String TAG = "BlankFragment";
 
     public static final long FIND_SUGGESTION_SIMULATED_DELAY = 250;
@@ -59,9 +62,8 @@ public class SlidingSearchFragment extends BaseExampleFragment {
         super.onViewCreated(view, savedInstanceState);
         mSearchView = view.findViewById(R.id.floating_search_view);
         mSearchResultsList = view.findViewById(R.id.search_results_list);
-        lista = SplashScreen.getList();
-        //setupFloatingSearch();
-
+        lista = ParsingSearch.getInstance(getContext()).getList();
+        mSearchView.setSearchFocused(true);
     }
 
     @Override
@@ -113,17 +115,6 @@ public class SlidingSearchFragment extends BaseExampleFragment {
             @Override
             public void onSuggestionClicked(final SearchSuggestion searchSuggestion) {
 
-                Context ctx = getContext();
-                InputMethodManager inputManager = (InputMethodManager) ctx
-                        .getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                // check if no view has focus:
-                View v = ((Activity) ctx).getCurrentFocus();
-                if (v == null)
-                    return;
-
-                inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
                 Log.d(TAG, "onSuggestionClicked()");
 
                 mLastQuery = ((CitySearch) searchSuggestion).getName();
@@ -140,26 +131,14 @@ public class SlidingSearchFragment extends BaseExampleFragment {
             @Override
             public void onSearchAction(String query) {
                 mLastQuery = query;
+                String search = mLastQuery.substring(0, 1).toUpperCase() + mLastQuery.substring(1);
 
                 Log.d(TAG, "onSearchAction()");
 
-
-                Context ctx = getContext();
-                InputMethodManager inputManager = (InputMethodManager) ctx
-                        .getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                // check if no view has focus:
-                View v = ((Activity) ctx).getCurrentFocus();
-                if (v == null)
-                    return;
-
-                inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
-
                 for (CitySearch c: lista){
-                    if (c.getName().equals(mLastQuery)) {
+                    if (c.getName().equals(search)) {
                         Intent intent = new Intent(getContext(), MainActivity.class);
-                        intent.putExtra("cityName", mLastQuery);
+                        intent.putExtra("cityName", search);
                         startActivity(intent);
                         getActivity().finish();
                         break;
@@ -183,7 +162,7 @@ public class SlidingSearchFragment extends BaseExampleFragment {
             public void onFocus() {
 
                 //show suggestions when search bar gains focus (typically history suggestions)
-                mSearchView.swapSuggestions(DataHelper.getHistory(getActivity(), 3));
+                mSearchView.swapSuggestions(DataHelper.getHistory(getActivity(), 3, history));
 
                 Log.d(TAG, "onFocus()");
             }
@@ -219,22 +198,15 @@ public class SlidingSearchFragment extends BaseExampleFragment {
                                          TextView textView, SearchSuggestion item, int itemPosition) {
                 CitySearch CitySearch = (CitySearch) item;
 
-                String textColor = "#000000";
 
                 if (CitySearch.getIsHistory()) {
                     leftIcon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
                             R.drawable.ic_history_black_24dp, null));
-
-                    Util.setIconColor(leftIcon, Color.parseColor(textColor));
-                    leftIcon.setAlpha(.36f);
-                } else {
-                    leftIcon.setAlpha(0.0f);
-                    leftIcon.setImageDrawable(null);
+                    leftIcon.setAlpha(.36f); //colore grigio
                 }
 
-                String text = CitySearch.getBody();
-
-                textView.setText(text);
+                //String text = CitySearch.getBody();
+                //textView.setText(text);
             }
 
         });
@@ -263,7 +235,9 @@ public class SlidingSearchFragment extends BaseExampleFragment {
         });
     }
 
-    @Override
+
+
+   /* @Override
     public boolean onActivityBackPress() {
         //if mSearchView.setSearchFocused(false) causes the focused search
         //to close, then we don't want to close the activity. if mSearchView.setSearchFocused(false)
@@ -273,10 +247,22 @@ public class SlidingSearchFragment extends BaseExampleFragment {
             return false;
         }
         return true;
-    }
+    } */
 
-    public static List<CitySearch> getHistoryList() {
-        return  history;
+    @Override
+    public void onPause() {
+        super.onPause();
+        /*Context ctx = getContext();
+        InputMethodManager inputManager = (InputMethodManager) ctx
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View v = ((Activity) ctx).getCurrentFocus();
+        if (v == null)
+            return;
+
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);*/
+        mSearchView.setSearchFocused(false);
     }
 
 }

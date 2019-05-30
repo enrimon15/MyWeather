@@ -34,7 +34,7 @@ public class VolleyRequest {
     }
 
     public void downloadFive(String city, /*String country,*/ String key, String unit, Response.Listener<String> listener, Response.ErrorListener error){
-
+        Log.d("DB", "https://api.openweathermap.org/data/2.5/forecast?"+ city + /*"," + country +*/ "&appid=" + key + unit);
         StringRequest request = new StringRequest(
                 StringRequest.Method.GET,
                 "https://api.openweathermap.org/data/2.5/forecast?"+ city + /*"," + country +*/ "&appid=" + key + unit,

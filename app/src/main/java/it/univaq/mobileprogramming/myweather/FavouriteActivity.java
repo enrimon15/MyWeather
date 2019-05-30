@@ -1,6 +1,7 @@
 package it.univaq.mobileprogramming.myweather;
 
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,17 +34,20 @@ import it.univaq.mobileprogramming.myweather.model.Preferiti;
 
 public class FavouriteActivity extends AppCompatActivity {
     private RecyclerView rec;
+    List<Preferiti> pref = new ArrayList<Preferiti>();
     private static List<ListCity> lista = new ArrayList<ListCity>();
-    private  static FavDatabase favdb;
     private static RecyclerViewAdapter_favourite adapter;
     private  static Snackbar snack;
     private  static View lay;
+    private  static Context context;
+
     private Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
         setContentView(R.layout.activity_favourite);
         rec = findViewById(R.id.favourite_city);
         lay = findViewById(R.id.view_fav);
@@ -51,14 +55,8 @@ public class FavouriteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        if (savedInstanceState == null){
-            favdb = Room.databaseBuilder(this, FavDatabase.class, "favouriteDB")
-                    .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
-                    .build();
-
-        }
+        pref.clear();
+        pref = FavDatabase.getInstance(getApplicationContext()).favouriteDAO().getAll();
 
         Log.d("pavan", "pavan");
         rec.setLayoutManager(new LinearLayoutManager(this));
@@ -69,11 +67,10 @@ public class FavouriteActivity extends AppCompatActivity {
 
     private void getValue() {
         lista.clear();
-        List<Preferiti> pref = favdb.favouriteDAO().getAll();
         Log.d("DB", "preferito");
         for (Preferiti p : pref){
             Log.d("DB", p.getNameCity());
-            VolleyRequest.getInstance(this)
+            VolleyRequest.getInstance(getApplicationContext())
                     .downloadCity(p.getNameCity(), p.getCountryCity(), getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS),
                             new Response.Listener<String>() {
                                 @Override
@@ -101,23 +98,26 @@ public class FavouriteActivity extends AppCompatActivity {
                                 }
                             });
         }
-
-
     }
 
    @Override
     public void onResume() {
         super.onResume();
-        getValue();
+               getValue();
     }
 
 
 
 
 
-    public static void methodOnBtnClick(ListCity lc) {
+    public static void methodOnBtnClick(final ListCity lc) {
         //eliminazione record db
-        favdb.favouriteDAO().delete(lc.getCode());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FavDatabase.getInstance(context).favouriteDAO().delete(lc.getCode());
+            }
+        }).start();
         snack = Snackbar.make(lay, "Città rimossa dai preferiti", Snackbar.LENGTH_SHORT);
         snack.setDuration(3000);
         snack.show();

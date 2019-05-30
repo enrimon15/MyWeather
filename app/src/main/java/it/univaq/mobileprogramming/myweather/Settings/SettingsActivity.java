@@ -46,11 +46,9 @@ public class SettingsActivity extends AppCompatActivity {
             myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
                     if(Settings.loadBoolean(getActivity(), Settings.SWITCH_BACKGROUND, true)) {
-                        //Toast.makeText(getActivity(), "cliccato", Toast.LENGTH_LONG).show();
                         scheduleJob();
                     }
                     else {
-                        //Toast.makeText(getActivity(), "not cliccato", Toast.LENGTH_LONG).show();
                         cancelJob();
                     }
                     return true;

@@ -43,9 +43,7 @@ public class CitySearch implements SearchSuggestion {
     public boolean getIsHistory() { return this.mIsHistory; }
 
     @Override
-    public String getBody() {
-        return name;
-    }
+    public String getBody() { return name; }
 
     @Override
     public int describeContents() { return 0; }

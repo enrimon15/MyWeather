@@ -148,6 +148,7 @@ public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                                 ParsingToday pars = new ParsingToday(response);
                                 weather = pars.getToday_object();
                                 fiveDays();
+                                myListner.passCity(weather);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -194,7 +195,7 @@ public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                             }
                         }
 
-                        swipeRefreshLayout.setRefreshing(false);
+                        //swipeRefreshLayout.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -213,7 +214,7 @@ public class TodayFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         t4_date.setText(weather.getDate());
         if (adapter != null) adapter.notifyDataSetChanged();
 
-        myListner.passCity(weather);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
 

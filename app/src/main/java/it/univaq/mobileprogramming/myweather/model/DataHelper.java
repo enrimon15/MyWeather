@@ -10,6 +10,7 @@ import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.SlidingSearchFragment;
 import it.univaq.mobileprogramming.myweather.SplashScreen;
+import it.univaq.mobileprogramming.myweather.json.ParsingSearch;
 
 public class DataHelper {
 
@@ -19,19 +20,19 @@ public class DataHelper {
         void onResults(List<CitySearch> results);
     }
 
-    public static List<CitySearch> getHistory(Context context, int count) {
-
-        List<CitySearch> suggestionList = new ArrayList<>();
+    public static List<CitySearch> getHistory(Context context, int count, List<CitySearch> history) {
+        List<CitySearch> suggestionListComplete = new ArrayList<>();
         CitySearch citySuggestion;
-        suggestionList.addAll(SlidingSearchFragment.getHistoryList());
-        for (int i = 0; i < suggestionList.size(); i++) {
-            citySuggestion = suggestionList.get(i);
+
+        for (int i = history.size()-1; i >= 0; i--) {
+            citySuggestion = history.get(i);
             citySuggestion.setIsHistory(true);
-            if (i == count) {
+            suggestionListComplete.add(citySuggestion);
+            if (suggestionListComplete.size() == 3) {
                 break;
             }
         }
-        return suggestionList;
+        return suggestionListComplete;
     }
 
     public static void resetSuggestionsHistory() {
@@ -69,7 +70,7 @@ public class DataHelper {
 
                     }
 
-                    //if (suggestionList.isEmpty()) suggestionList.add(new CitySearch("No suggestions available", ""));
+                    if (suggestionList.isEmpty()) suggestionList.add(new CitySearch("Città non disponibile"));
                 }
 
                 FilterResults results = new FilterResults();
@@ -101,53 +102,11 @@ public class DataHelper {
 
     }
 
-
-    /*public static void findColors(Context context, String query, final OnFindColorsListener listener) {
-        initColorWrapperList(context);
-
-        new Filter() {
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-
-
-                List<Today> suggestionList = new ArrayList<>();
-
-                if (!(constraint == null || constraint.length() == 0)) {
-
-                    for (Today color : sColorWrappers) {
-                        if (color.getCity().toUpperCase()
-                                .startsWith(constraint.toString().toUpperCase())) {
-
-                            suggestionList.add(color);
-                        }
-                    }
-
-                }
-
-                FilterResults results = new FilterResults();
-                results.values = suggestionList;
-                results.count = suggestionList.size();
-
-                return results;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-
-                if (listener != null) {
-                    listener.onResults((List<Today>) results.values);
-                }
-            }
-        }.filter(query);
-
-    }*/
-
     private static void initCityWrapperList(Context context) {
 
         if (citySuggestions.isEmpty()) {
 
-            citySuggestions= SplashScreen.getList();
+            citySuggestions = ParsingSearch.getInstance(context).getList();
 
         }
     }

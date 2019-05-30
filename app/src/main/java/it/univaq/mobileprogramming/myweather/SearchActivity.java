@@ -8,7 +8,7 @@ import android.os.Bundle;
 import com.arlib.floatingsearchview.FloatingSearchView;
 
 
-public class SearchActivity extends AppCompatActivity implements BaseExampleFragment.BaseExampleFragmentCallbacks  {
+public class SearchActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
 
@@ -27,15 +27,5 @@ public class SearchActivity extends AppCompatActivity implements BaseExampleFrag
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment).commit();
-    }
-
-    @Override
-    public void onAttachSearchViewToDrawer(FloatingSearchView searchView) {
-        //searchView.attachNavigationDrawerToMenuButton(mDrawerLayout);
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }

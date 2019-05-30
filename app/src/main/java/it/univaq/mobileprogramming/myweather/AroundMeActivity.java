@@ -130,6 +130,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     protected void onResume() {
+        Log.d("schedulerrr", "no conn");
         super.onResume();
 
         if (InternetConnection.haveNetworkConnection(AroundMeActivity.this)) {
@@ -137,20 +138,20 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
                 startGPS();
             }
             else {
-                alert("Per continuare bisogna consentire la posizione dalle impostazioni dell'app", "settings");
+                alert("Per continuare bisogna consentire la posizione dalle impostazioni dell'app", "settings", "ATTENZIONE");
             }
         }
         else {
             loadDataFromDB();
 
-            alert("La connessione internet non è disponibile! \nSono state caricate le città in base all'ultima posizione rilevata.", "connection");
+            alert("La connessione internet non è disponibile! \nSono state caricate le città in base all'ultima posizione rilevata.", "connection", "ATTENZIONE");
         }
 
     }
 
-    private void alert(String message, final String type ) {
+    private void alert(String message, final String type, String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AroundMeActivity.this);
-        builder.setTitle("ATTENZIONE");
+        builder.setTitle(title);
         builder.setMessage(message);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -171,6 +172,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         lat = location.getLatitude() + "";
         lon = location.getLongitude() + "";
         locationService.stopLocationUpdates(this);
+        Log.d("schedulerrr", "startGPS: ");
         downloadData();
         Settings.save(getApplicationContext(), Settings.LATITUDE, lat);
         Settings.save(getApplicationContext(), Settings.LONGITUDE, lon);
@@ -210,7 +212,6 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
                             try {
                                 ParsingAround pars = new ParsingAround(response);
                                 lista = pars.getAround();
-                                if (!(getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED))) {  Log.d("schedulerrr", "stopped"); }
                                 clearDataFromDB();
                                 saveDataInDB(lista);
                                 Log.d("schedulerrr", "sopra ");
@@ -242,7 +243,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public void onRefresh() {
-        startGPS();
+        onResume();
     }
 
 
@@ -338,15 +339,12 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
             Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
             startActivity(intent2);
         } else if (id == R.id.nav_posizione) {
-            Intent intent = new Intent(getApplicationContext(), AroundMeActivity.class);
-            startActivity(intent);
+            onRefresh();
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_backyes) {
-            scheduleJob();
-        } else if (id == R.id.nav_backno) {
-            cancelJob();
+        } else if (id == R.id.nav_info) {
+            alert("Corso 'Mobile Programming' 2018-2019 \nDISIM - Univaq \nApp sviluppata da: \nEnrico Monte & Giuseppe Gasbarro.", "info", "INFORMAZIONI");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -364,8 +362,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
                 return true;
 
             case R.id.position_button:
-                Intent intent1 = new Intent(getApplicationContext(), FavouriteActivity.class);
-                startActivity(intent1);
+                onRefresh();
                 return true;
 
             default:
@@ -390,36 +387,11 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
 
         if(requestCode == 1){
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                startGPS();
+               startGPS();
             } else {
                 finish();
             }
         }
-    }
-
-    public void scheduleJob(){
-        if(Settings.loadBoolean(getApplicationContext(), Settings.SWITCH_BACKGROUND, true)) {
-            Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build();
-
-            WorkManager workManager = WorkManager.getInstance();
-            PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES).setConstraints(constraints)
-                    .build();
-            workManager.enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.KEEP, request);
-
-            snackbar = Snackbar.make(lay, "Aggiornamento in background attivato", snackbar.LENGTH_INDEFINITE);
-            snackbar.setDuration(3000);
-            snackbar.show();
-        }
-
-        else { alert("Per continuare bisogna consentire i servizi in background dalle impostazioni dell'app", "background"); }
-    }
-
-    public void cancelJob(){
-        WorkManager.getInstance().cancelUniqueWork(TAG);
-        snackbar = Snackbar.make(lay, "Aggiornamento in background disattivato", snackbar.LENGTH_INDEFINITE);
-        snackbar.setDuration(3000);
-        snackbar.show();
     }
 }
 
