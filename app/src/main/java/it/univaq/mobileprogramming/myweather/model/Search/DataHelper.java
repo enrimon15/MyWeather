@@ -89,14 +89,14 @@ public class DataHelper {
                     if (suggestionList.isEmpty()) suggestionList.add(new CitySearch("Città non disponibile"));
                 }
 
-                //ordina i risultati che fanno match in base alla cronologia (i già cercati in alto)
+                //filtra i risultati in base alle esigenze
                 FilterResults results = new FilterResults();
-                Collections.sort(suggestionList, new Comparator<CitySearch>() {
+                /*Collections.sort(suggestionList, new Comparator<CitySearch>() {
                     @Override
                     public int compare(CitySearch lhs, CitySearch rhs) {
                         return lhs.getIsHistory() ? -1 : 0;
                     }
-                });
+                });*/
                 results.values = suggestionList;
                 results.count = suggestionList.size();
 
@@ -109,11 +109,6 @@ public class DataHelper {
 
                 if (listener != null & results.values != null) {
                     listener.onResults((List<CitySearch>) results.values);
-                }
-                else {
-                    List<CitySearch> vuoto = new ArrayList<>();
-                    vuoto.add(new CitySearch("Città non disponibile"));
-                    listener.onResults(vuoto);
                 }
             }
         }.filter(query);

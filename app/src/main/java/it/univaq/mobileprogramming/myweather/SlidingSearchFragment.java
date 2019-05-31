@@ -99,6 +99,8 @@ public class SlidingSearchFragment extends Fragment {
             @Override
             public void onSuggestionClicked(final SearchSuggestion searchSuggestion) { //tap suggerimenti
 
+                if (((CitySearch) searchSuggestion).getName() == "Città non disponibile") return; //se tap su no suggestion available
+
                 Log.d(TAG, "onSuggestionClicked()");
                 mLastQuery = ((CitySearch) searchSuggestion).getName(); //prende il nome del suggerimento toccato
                 history.add((CitySearch) searchSuggestion); //aggiunge alla cronologia ricerca il suggerimento tappato
