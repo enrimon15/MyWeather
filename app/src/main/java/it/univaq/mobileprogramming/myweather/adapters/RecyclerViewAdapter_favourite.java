@@ -7,14 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
-import it.univaq.mobileprogramming.myweather.FavouriteActivity;
-import it.univaq.mobileprogramming.myweather.MainActivity;
+import it.univaq.mobileprogramming.myweather.activity.FavouriteActivity;
+import it.univaq.mobileprogramming.myweather.activity.MainActivity;
 import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
 
@@ -71,7 +70,7 @@ public class RecyclerViewAdapter_favourite extends RecyclerView.Adapter<Recycler
                 @Override
                 public void onClick(View v) {
 
-                    // Open another Activity and pass to it the right city
+                    // Open main Activity and pass to it the right city
                     ListCity city = lista_pref.get(getAdapterPosition());
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
                     intent.putExtra("cityID", "id=" + city.getCode());
@@ -85,11 +84,7 @@ public class RecyclerViewAdapter_favourite extends RecyclerView.Adapter<Recycler
                 public void onClick(View v)
                 {
 
-
-                    //String cod = lista_pref.get(getAdapterPosition()).getCode();
-                    //Clicked entry in your List
-
-                    //Method from your activity
+                    //Method from your activity (tap su rimuovi city)
                     FavouriteActivity.methodOnBtnClick(lista_pref.get(getAdapterPosition()));
                 }
         });

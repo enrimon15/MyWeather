@@ -1,4 +1,4 @@
-package it.univaq.mobileprogramming.myweather;
+package it.univaq.mobileprogramming.myweather.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_favourite;
 import it.univaq.mobileprogramming.myweather.database.FavDatabase;
 import it.univaq.mobileprogramming.myweather.json.ParsingFavourite;
@@ -36,7 +37,6 @@ public class FavouriteActivity extends AppCompatActivity {
     private  static Snackbar snack;
     private  static View lay;
     private  static Context context;
-
     private Toolbar toolbar;
 
 
@@ -51,41 +51,37 @@ public class FavouriteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        pref.clear();
-        pref = FavDatabase.getInstance(getApplicationContext()).favouriteDAO().getAll();
+        pref.clear(); //resetta lista preferiti
+        pref = FavDatabase.getInstance(getApplicationContext()).favouriteDAO().getAll(); //preferiti db
 
-        Log.d("pavan", "pavan");
         rec.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RecyclerViewAdapter_favourite(lista);
         rec.setAdapter(adapter);
         rec.setHasFixedSize(true);
     }
 
+    /** popola la view con i preferiti dal db **/
     private void getValue() {
         lista.clear();
         Log.d("DB", "preferito");
-        for (Preferiti p : pref){
-            Log.d("DB", p.getNameCity());
+        for (Preferiti p : pref){ //per ogni pref nel db (salvo solo nome e country) scarica i dati
             VolleyRequest.getInstance(getApplicationContext())
                     .downloadCity(p.getNameCity(), p.getCountryCity(), getResources().getString(R.string.keyOPEN), getResources().getString(R.string.keyUNITS),
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response)
-                                { Log.d("dentro2 db", response);
+                                {
                                     if (response.length() > 0) {
-                                        try {
-                                            Log.d("dentro2 db", response);
+                                        try { //parsing dati
                                             ParsingFavourite pars = new ParsingFavourite(response);
                                             ListCity c = pars.getCity();
-                                            Log.d("DB", c.getName());
-                                            lista.add(c);
-                                            Log.d("DB", lista.get(0).getCondition());
+                                            lista.add(c); //aggiungi ogni city parsata ad una lista
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
 
                                     }
-                                    if (adapter != null) adapter.notifyDataSetChanged();
+                                    if (adapter != null) adapter.notifyDataSetChanged(); //aggiorna l'adapter
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
@@ -99,13 +95,13 @@ public class FavouriteActivity extends AppCompatActivity {
    @Override
     public void onResume() {
         super.onResume();
-               getValue();
+        getValue(); //popola la view con i preferiti
     }
 
 
 
 
-
+    /** gestione tap su rimuovi **/
     public static void methodOnBtnClick(final ListCity lc) {
         //eliminazione record db
         new Thread(new Runnable() {

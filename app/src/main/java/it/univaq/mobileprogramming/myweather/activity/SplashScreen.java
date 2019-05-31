@@ -1,10 +1,11 @@
-package it.univaq.mobileprogramming.myweather;
+package it.univaq.mobileprogramming.myweather.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.json.ParsingSearch;
 
 public class SplashScreen extends AppCompatActivity {
@@ -16,12 +17,16 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ParsingSearch.getInstance(getApplicationContext()).loadJson();
-            }
-        }).start();
+        /** parsing list city world json (per ricerca) **/
+        if (ParsingSearch.getInstance(getApplicationContext()).getList().isEmpty()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ParsingSearch.getInstance(getApplicationContext()).loadJson();
+                }
+            }).start();
+        }
+
 
         setContentView(R.layout.activity_splash_screen);
 

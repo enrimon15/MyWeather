@@ -1,6 +1,7 @@
 package it.univaq.mobileprogramming.myweather.json;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,22 +30,28 @@ public class ParsingSearch {
         cont = context;
     }
 
+    /** parsing con jsonReader **/
     public void loadJson(){
 
         try {
-            InputStream is = cont.getAssets().open(CITIES_FILE_NAME);
-            JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
+            InputStream is = cont.getAssets().open(CITIES_FILE_NAME); //inputstream con il file contenente tutte le città
+            JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8")); //creo il json reader dandogli in pasto l'inpiut stream
 
-            reader.beginArray();
+            reader.beginArray(); //inizio lettura array json
 
             Gson gson = new GsonBuilder().create();
 
-            while (reader.hasNext()) {
+            String checkDuplicate = ""; //il file gson fornito ha duplicati
+
+            while (reader.hasNext()) { //fin quando l'array ha un oggetto non visto
 
                 CitySearch cityJson = gson.fromJson(reader, CitySearch.class);
-                cityList.add(cityJson);
+                if (!(checkDuplicate.equals(cityJson.getName()))) cityList.add(cityJson); //non inserisco i duplicati
+                checkDuplicate = cityJson.getName();
 
             }
+            reader.endArray(); //lettura terminata
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -19,11 +19,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".FavouriteActivity" />
-        <activity android:name=".AroundMeActivity" />
+        <activity android:name=".activity.FavouriteActivity" />
+        <activity android:name=".activity.AroundMeActivity" />
         <activity android:name=".Settings.SettingsActivity" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".activity.SplashScreen"
             android:theme="@style/AppFullScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".activity.SearchActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -41,7 +41,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MainActivity" />
+        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

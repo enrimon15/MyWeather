@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/main_swipe"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".TodayFragment">
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/view_today"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/view_today"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".activity.TodayFragment">
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:orientation="vertical"
@@ -75,7 +67,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:orientation="vertical"
@@ -86,8 +78,8 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/weather_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:scrollbars="none" />
 
@@ -98,4 +90,3 @@
 
 
 </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.SwipeRefreshLayout>

@@ -11,10 +11,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import it.univaq.mobileprogramming.myweather.MainActivity;
+import it.univaq.mobileprogramming.myweather.activity.MainActivity;
 import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
-import it.univaq.mobileprogramming.myweather.model.Today;
 
 public class RecyclerViewAdapter_around extends RecyclerView.Adapter<RecyclerViewAdapter_around.ViewHolder> {
     private List<ListCity> lista_around;
@@ -33,7 +32,6 @@ public class RecyclerViewAdapter_around extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
-
         ListCity city = lista_around.get(i);
         holder.title.setText(city.getName());
         holder.temp.setText(city.getTemp());
@@ -47,8 +45,7 @@ public class RecyclerViewAdapter_around extends RecyclerView.Adapter<RecyclerVie
     }
 
     //definiamo il ViewHolder
-    public class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView temp;
         private TextView title;
         private TextView condition;
@@ -65,7 +62,7 @@ public class RecyclerViewAdapter_around extends RecyclerView.Adapter<RecyclerVie
                 @Override
                 public void onClick(View v) {
 
-                    // Open another Activity and pass to it the right city
+                    // Open Main Activity and pass to it the right city (ID)
                     ListCity city = lista_around.get(getAdapterPosition());
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
                     intent.putExtra("cityID", "id=" + city.getCode());

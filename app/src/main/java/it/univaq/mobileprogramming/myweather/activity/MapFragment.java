@@ -1,4 +1,4 @@
-package it.univaq.mobileprogramming.myweather;
+package it.univaq.mobileprogramming.myweather.activity;
 
 
 import android.graphics.Bitmap;
@@ -18,6 +18,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import it.univaq.mobileprogramming.myweather.R;
 
 
 public class MapFragment extends Fragment implements  OnMapReadyCallback {
@@ -47,14 +49,14 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
     @Override
     public void onResume() {
         super.onResume();
-
         mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         if(mapFragment != null) mapFragment.getMapAsync(this);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("PAVAN", "ENTROSIIII");
+        Log.d("FragmentMAP", "MapReady:");
+
         mMap = googleMap;
         double latitude = Double.parseDouble(lat);
         double longitude = Double.parseDouble(lon);
@@ -63,15 +65,18 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
         Log.d("POS", latitude + "");
         Log.d("POS", longitude + "");
         LatLng position = new LatLng(latitude, longitude);
+        //creazione icona marker
         int height = 140;
         int width = 140;
         BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(icon);
         Bitmap b=bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
-        mMap.addMarker(new MarkerOptions().position(position).title(name).snippet(desc + R.string.temperature + temp).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+        //aggiungi marker
+        mMap.addMarker(new MarkerOptions().position(position).title(name).snippet(desc + ", temperatura: " + temp).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position,13), 5000, null);
     }
 
+    /** prende dati da main activity **/
     @Override
     public void setArguments(@Nullable Bundle args) {
         super.setArguments(args);
@@ -81,6 +86,5 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
             desc = args.getString("desc");
             icon = args.getInt("icon");
             temp = args.getString("temperatura");
-
     }
 }

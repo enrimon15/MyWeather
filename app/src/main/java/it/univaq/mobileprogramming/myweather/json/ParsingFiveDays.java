@@ -20,25 +20,24 @@ public class ParsingFiveDays {
     private Five_Days five;
     List<Five_Days> listaDay = new ArrayList<Five_Days>();
 
+    /** prendo i 5 gg successivi al giorno attuale tutti alle ore 12:00 **/
     public ParsingFiveDays(String parsing) throws JSONException {
         JSONObject jor = new JSONObject(parsing);
-        JSONArray lista = jor.getJSONArray("list");
+        JSONArray lista = jor.getJSONArray("list"); //lista di 5 giorni successivi con tutte le ore
 
-        Date date = new  Date();
+        Date date = new  Date(); //imposto la data e ora attuale
         Locale.setDefault(Locale.ITALIAN);
-        int cont = 1;
+        int cont = 1; //cont serve al trovare l'iesimo gg a partire da oggi fino a 5
         String gg = addDays(date,cont);
         Log.d("gg", gg);
         String dayweek = getDayWeek(date,cont);
         Log.d("gg est", dayweek);
 
-        for (int i=0; i<lista.length(); i++){
-            Log.d("for", "entrata");
-            if (cont == 6) {Log.d("for", "uscita"); break;}
+        for (int i=0; i<lista.length(); i++){ //per ogni elemento della lista
+            if (cont == 6) {Log.d("for", "uscita"); break;} //se raggiungo 5 gg stop
             JSONObject oggetto = lista.getJSONObject(i);
             String data = oggetto.getString("dt_txt");
-            Log.d("giorno", data);
-
+            //controlla per ogni elemento se è il gg successivo alle ore 12:00 e salva i dati necessari
             if(data.equals(gg + " 12:00:00")) {
                 cont++;
                 gg=addDays(date,cont);
@@ -56,6 +55,7 @@ public class ParsingFiveDays {
             }
         }
 
+        //se la lista ha solo 4 gg (problemi di openweather) inserisci in più il gg attuale
         if (listaDay.size() == 4){
             JSONObject oggetto = lista.getJSONObject(0);
             dayweek = getDayWeek(date,0);
@@ -69,9 +69,6 @@ public class ParsingFiveDays {
             Five_Days five = new Five_Days(dayweek, maxtemp, mintemp, immagine);
             listaDay.add(0, five);
         }
-
-        Log.d("ENRI", "parsing finito");
-        Log.d("enri", listaDay.toString());
     }
 
     private int setImm(String imm) {
@@ -97,6 +94,7 @@ public class ParsingFiveDays {
         return image;
     }
 
+    /** sapere quale è il giorno attuale + 1,2,3,4,5 **/
     private String addDays(Date d, int g) {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
@@ -107,6 +105,7 @@ public class ParsingFiveDays {
         return form;
     }
 
+    /** dalla data estrapolare il giorno della settimana **/
     private String getDayWeek(Date d, int g) {
         Calendar c = Calendar.getInstance();
         c.setTime(d);

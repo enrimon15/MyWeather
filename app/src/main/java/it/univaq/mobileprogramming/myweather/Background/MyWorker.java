@@ -17,6 +17,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import org.json.JSONException;
 
@@ -24,7 +25,7 @@ import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.Settings.Settings;
-import it.univaq.mobileprogramming.myweather.SplashScreen;
+import it.univaq.mobileprogramming.myweather.activity.SplashScreen;
 import it.univaq.mobileprogramming.myweather.database.AroundDatabase;
 import it.univaq.mobileprogramming.myweather.json.ParsingAround;
 import it.univaq.mobileprogramming.myweather.json.VolleyRequest;
@@ -49,10 +50,10 @@ public class MyWorker extends Worker {
         return Result.success();
     }
 
+    /** lavoro da fare quando il worker è richiamato **/
     private void doBackgroundWork() {
-
         Log.d(TAG, "pre work ");
-
+        //check su lat e lon salvate nelle preferences --> se sono nulle stop
         if ((Settings.loadString(getApplicationContext(), Settings.LATITUDE, "") == null) || (Settings.loadString(getApplicationContext(), Settings.LONGITUDE, "") == null))
             return;
 
@@ -60,28 +61,31 @@ public class MyWorker extends Worker {
         lon = Settings.loadString(getApplicationContext(), Settings.LONGITUDE, "");
         Log.d(TAG, lat);
         Log.d(TAG, lon);
-
+        //download dati in base alla lat e alla long e aggiorna il db
         VolleyRequest.getInstance(getApplicationContext())
-                .downloadBackground(lat,lon, getApplicationContext().getResources().getString(R.string.keyOPEN), getApplicationContext().getResources().getString(R.string.keyUNITS), new Response.Listener<String>() {
+                .downloadAroundMe(lat,lon, getApplicationContext().getResources().getString(R.string.keyOPEN), getApplicationContext().getResources().getString(R.string.keyUNITS), new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response) {
                         if (response.length() > 0) {
                             try {
                                 ParsingAround pars = new ParsingAround(response);
                                 clearDataFromDB();
-                                saveDataInDB(pars.getAround());
-                                Log.d("schedulerrr", "fatto");
+                                saveDataInDB(pars.getAround()); //salva in db
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                    }
+                    }}, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                        }
                 });
 
                 Log.d(TAG, "post work ");
     }
 
+    /** salva dati nel db **/
     private void saveDataInDB(final List<ListCity> city){
 
         // Save by RoomDatabase
@@ -90,9 +94,8 @@ public class MyWorker extends Worker {
             public void run() {
                 for (ListCity l : city){
                     AroundDatabase.getInstance(getApplicationContext()).getAroundDAO().save(l);
-                    Log.d("schedulerrr", "datadb ");
                 }
-                notifyMess(R.string.db_updated + lat + ", " + lon);
+                notifyMess(R.string.db_updated + lat + ", " + lon); //costruisci notifica
             }
         }).start();
     }
@@ -108,6 +111,7 @@ public class MyWorker extends Worker {
         }).start();
     }
 
+    /** manda notifica ogni volta che aggiorno i dati nel db **/
     private void notifyMess(String message) {
 
         if(Settings.loadBoolean(getApplicationContext(), Settings.CHECK_NOTIFY, true)) {
@@ -128,7 +132,7 @@ public class MyWorker extends Worker {
             builder.setContentText(message);
             builder.setAutoCancel(true);
 
-            Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
+            Intent intent = new Intent(getApplicationContext(), SplashScreen.class); //click su notifica
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     getApplicationContext(), 0, intent, 0);
 

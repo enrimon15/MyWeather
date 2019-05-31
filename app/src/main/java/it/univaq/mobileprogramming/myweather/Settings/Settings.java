@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 
 public class Settings {
 
-    public static final String FIRST_TIME = "first_time"; // Used to remember if is the first time that the user open the app
     public static final String CHECK_LOCATION = "check_location"; // Used to switch on the location service and vice versa
     public static final String CHECK_NOTIFY = "check_notify"; // Used to switch on the notify service and vice versa
     public static final String SWITCH_LOCATION = "switch_location"; // Used to switch from LocationManager to GoogleService and vice versa
