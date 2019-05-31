@@ -7,7 +7,7 @@
     android:background="@color/colorBackground"
     android:orientation="vertical"
     android:id="@+id/main_ac"
-    tools:context="it.univaq.mobileprogramming.myweather.MainActivity">
+    tools:context="it.univaq.mobileprogramming.myweather.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package it.univaq.mobileprogramming.myweather;
+package it.univaq.mobileprogramming.myweather.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_favourite;
 import it.univaq.mobileprogramming.myweather.database.FavDatabase;
 import it.univaq.mobileprogramming.myweather.json.ParsingFavourite;

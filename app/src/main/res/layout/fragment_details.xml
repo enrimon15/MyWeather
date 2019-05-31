@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_constraintBottom_toBottomOf="parent"
     android:id="@+id/view_details"
-    tools:context=".DetailsFragment">
+    tools:context=".activity.DetailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -97,7 +97,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/colorCard"
                 android:orientation="vertical">
 

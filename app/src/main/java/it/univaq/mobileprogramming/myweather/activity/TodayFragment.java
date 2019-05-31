@@ -1,4 +1,4 @@
-package it.univaq.mobileprogramming.myweather;
+package it.univaq.mobileprogramming.myweather.activity;
 
 
 import android.content.Context;
@@ -25,6 +25,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.adapters.RecyclerViewAdapter_hour;
 import it.univaq.mobileprogramming.myweather.json.ParsingFiveDays;
 import it.univaq.mobileprogramming.myweather.json.ParsingToday;
@@ -103,6 +104,7 @@ public class TodayFragment extends Fragment {
                             try {
                                 Log.d("dentro", response);
                                 ParsingFiveDays pars = new ParsingFiveDays(response); //parsing
+                                giorni.clear();
                                 giorni.addAll(pars.getListaDay());
                                 setView(); //popola vista
                             } catch (JSONException e) {

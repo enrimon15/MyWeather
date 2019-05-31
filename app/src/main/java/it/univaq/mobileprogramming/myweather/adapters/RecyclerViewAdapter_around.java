@@ -11,10 +11,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import it.univaq.mobileprogramming.myweather.MainActivity;
+import it.univaq.mobileprogramming.myweather.activity.MainActivity;
 import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.model.ListCity;
-import it.univaq.mobileprogramming.myweather.model.Today;
 
 public class RecyclerViewAdapter_around extends RecyclerView.Adapter<RecyclerViewAdapter_around.ViewHolder> {
     private List<ListCity> lista_around;

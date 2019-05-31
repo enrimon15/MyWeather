@@ -1,4 +1,4 @@
-package it.univaq.mobileprogramming.myweather;
+package it.univaq.mobileprogramming.myweather.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.univaq.mobileprogramming.myweather.json.ParsingSearch;
+import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.model.Search.CitySearch;
 import it.univaq.mobileprogramming.myweather.model.Search.DataHelper;
 

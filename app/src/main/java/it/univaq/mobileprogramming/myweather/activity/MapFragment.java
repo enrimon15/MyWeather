@@ -1,4 +1,4 @@
-package it.univaq.mobileprogramming.myweather;
+package it.univaq.mobileprogramming.myweather.activity;
 
 
 import android.graphics.Bitmap;
@@ -18,6 +18,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import it.univaq.mobileprogramming.myweather.R;
 
 
 public class MapFragment extends Fragment implements  OnMapReadyCallback {

@@ -1,4 +1,4 @@
-package it.univaq.mobileprogramming.myweather;
+package it.univaq.mobileprogramming.myweather.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 
 import it.univaq.mobileprogramming.myweather.InternetConnection.InternetConnection;
+import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.adapters.ViewPagerAdapter;
 import it.univaq.mobileprogramming.myweather.json.ParsingToday;
 import it.univaq.mobileprogramming.myweather.json.VolleyRequest;

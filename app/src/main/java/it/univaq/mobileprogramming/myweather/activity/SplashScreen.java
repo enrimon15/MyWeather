@@ -1,10 +1,11 @@
-package it.univaq.mobileprogramming.myweather;
+package it.univaq.mobileprogramming.myweather.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.json.ParsingSearch;
 
 public class SplashScreen extends AppCompatActivity {

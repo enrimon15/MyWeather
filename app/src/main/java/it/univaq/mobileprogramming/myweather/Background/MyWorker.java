@@ -25,7 +25,7 @@ import java.util.List;
 
 import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.Settings.Settings;
-import it.univaq.mobileprogramming.myweather.SplashScreen;
+import it.univaq.mobileprogramming.myweather.activity.SplashScreen;
 import it.univaq.mobileprogramming.myweather.database.AroundDatabase;
 import it.univaq.mobileprogramming.myweather.json.ParsingAround;
 import it.univaq.mobileprogramming.myweather.json.VolleyRequest;

@@ -1,4 +1,4 @@
-package it.univaq.mobileprogramming.myweather;
+package it.univaq.mobileprogramming.myweather.activity;
 
 
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import it.univaq.mobileprogramming.myweather.R;
 import it.univaq.mobileprogramming.myweather.database.FavDatabase;
 import it.univaq.mobileprogramming.myweather.model.Preferiti;
 
