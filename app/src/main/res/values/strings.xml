@@ -28,6 +28,7 @@
 
     <!-- TODAY FRAGMENT -->
     <string name="city_not_found">Città non trovata</string>
+    <string name="content_description">nextFiveDays</string>
 
     <!-- DETAILS FRAGMENT -->
     <string name="city_already_favourite">Città già presente nei preferiti</string>
@@ -45,11 +46,9 @@
 
     <!-- FAVOURITE ACTIVITY -->
     <string name="city_removed">Città rimossa dai preferiti</string>
+    <string name="city_fav">Città Preferite:</string>
 
     <!-- MAIN ACTIVITY -->
     <string name="connection_error">Errore di connessione</string>
-
-    <!-- WORKER -->
-    <string name="db_updated">Database Aggiornato: </string>
 
 </resources>

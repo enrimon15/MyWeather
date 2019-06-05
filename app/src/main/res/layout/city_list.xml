@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Torrebruna"
                     android:textColor="@color/colorDetails"
-                    android:textSize="32dp"
+                    android:textSize="32sp"
                     android:id="@+id/text_list"/>
 
                 <TextView
@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Sereno"
                     android:textColor="@color/colorDetails"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:id="@+id/desc_list"/>
 
                 <ImageView
@@ -51,7 +51,8 @@
                     android:layout_height="70dp"
                     android:layout_marginTop="18dp"
                     android:src="@drawable/sun"
-                    android:id="@+id/icon_list"/>
+                    android:id="@+id/icon_list"
+                    android:contentDescription="@string/content_description"/>
             </LinearLayout>
 
             <TextView
@@ -63,7 +64,7 @@
                 android:layout_marginBottom="3dp"
                 tools:text="21°"
                 android:textColor="@color/colorDetails"
-                android:textSize="60dp"
+                android:textSize="60sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </android.support.constraint.ConstraintLayout>

@@ -349,6 +349,7 @@ public class AroundMeActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
+
     /** abilitare permessi dell app alla posizione **/
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

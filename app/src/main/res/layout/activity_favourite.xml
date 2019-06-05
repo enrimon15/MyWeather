@@ -38,11 +38,11 @@
         <TextView
             android:id="@+id/testo_fav"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Città Preferite:"
-            android:textSize="24dp"
+            android:text="@string/city_fav"
+            android:textSize="24sp"
             android:textColor="@color/colorDetails"
             android:layout_marginBottom="8dp"/>
 

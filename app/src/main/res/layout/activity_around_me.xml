@@ -38,11 +38,11 @@
         <TextView
             android:id="@+id/testo_top"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Città intorno a me:"
-            android:textSize="24dp"
+            tools:text="@string/city_around"
+            android:textSize="24sp"
             android:textColor="@color/colorDetails"
             android:layout_marginBottom="8dp"/>
 

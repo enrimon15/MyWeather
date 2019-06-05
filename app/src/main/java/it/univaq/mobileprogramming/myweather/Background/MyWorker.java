@@ -95,7 +95,7 @@ public class MyWorker extends Worker {
                 for (ListCity l : city){
                     AroundDatabase.getInstance(getApplicationContext()).getAroundDAO().save(l);
                 }
-                notifyMess(R.string.db_updated + lat + ", " + lon); //costruisci notifica
+                notifyMess("Database aggiornato: " + lat + ", " + lon); //costruisci notifica
             }
         }).start();
     }
