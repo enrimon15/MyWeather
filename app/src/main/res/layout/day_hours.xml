@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingStart="9dp"
+    android:paddingStart="8dp"
     android:paddingRight="15dp"
     android:layout_height="wrap_content"
     android:paddingBottom="3dp"
