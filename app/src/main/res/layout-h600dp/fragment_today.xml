@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +10,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/colorWhite"
-            android:textSize="37sp"
+            android:textSize="36sp"
             tools:text="Torrebruna, IT" />
 
         <TextView
@@ -38,40 +37,40 @@
 
         <ImageView
             android:id="@+id/weather_icon"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="6dp"
-            android:padding="6dp"
-            android:contentDescription="@string/content_description" />
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            />
 
         <com.github.pavlospt.CircleView
-            android:id="@+id/weather_result"
-            android:layout_width="122dp"
-            android:layout_height="117dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="6dp"
-            android:layout_marginBottom="2dp"
             android:visibility="invisible"
+            android:id="@+id/weather_result"
+            android:layout_width="184dp"
+            android:layout_height="176dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="3dp"
             app:cv_backgroundColorValue="@color/colorCircleStroke"
             app:cv_fillColor="@color/colorBackground"
             app:cv_strokeColorValue="@color/colorCircleStroke"
-            app:cv_subtitleSize="12sp"
+            app:cv_subtitleSize="20sp"
             app:cv_titleColor="@color/colorWhite"
-            app:cv_titleSize="40sp"
-            app:cv_titleSubtitleSpace="10"
+            app:cv_titleSize="60sp"
+            app:cv_titleSubtitleSpace="50"
             tools:cv_subtitleText="@string/weather_information"
             tools:cv_titleText="@string/current_temperature" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
             android:orientation="vertical"
-            android:paddingBottom="2dp"
+            android:paddingBottom="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
