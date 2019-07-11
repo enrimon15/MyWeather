@@ -5,9 +5,10 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import it.univaq.mobileprogramming.myweather.model.ListCity;
 import it.univaq.mobileprogramming.myweather.model.Preferiti;
 
-@Database(entities ={ Preferiti.class }, version = 2, exportSchema = false)
+@Database(entities ={ Preferiti.class}, version = 2, exportSchema = false)
 public abstract class FavDatabase extends RoomDatabase {
     public abstract FavouriteDAO favouriteDAO();
 

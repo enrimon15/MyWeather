@@ -19,7 +19,7 @@
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimaryDark">
+            app:cardBackgroundColor="@color/colorPrimaryDark">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="Torrebruna"
-                        android:textSize="32dp"
+                        android:textSize="32sp"
                         android:textColor="@color/colorWhite"/>
 
                     <TextView
@@ -51,7 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="Sereno"
-                        android:textSize="18dp"
+                        android:textSize="18sp"
                         android:textColor="@color/colorWhite"/>
 
                     <ImageView
@@ -59,7 +59,8 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginTop="30dp"
-                        android:src="@drawable/sun" />
+                        android:src="@drawable/sun"
+                        android:contentDescription="@string/content_description"/>
                 </LinearLayout>
 
                 <TextView
@@ -71,7 +72,7 @@
                     android:layout_marginBottom="8dp"
                     tools:text="21°"
                     android:textColor="@color/colorWhite"
-                    android:textSize="60dp"
+                    android:textSize="60sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -84,13 +85,14 @@
                     android:src="@drawable/favourite"
                     android:background="@android:color/transparent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/content_description"/>
 
             </android.support.constraint.ConstraintLayout>
 
         </android.support.v7.widget.CardView>
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent">
@@ -125,16 +127,18 @@
                             <ImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:src="@drawable/thermometer" />
+                                android:src="@drawable/thermometer"
+                                android:contentDescription="@string/content_description"/>
+
 
                             <TextView
-                                android:id="@+id/max_details"
+                                android:id="@+id/min_details"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                tools:text="MAX: 22°"
+                                tools:text="MIN: 18°"
                                 android:textColor="@color/colorDetails"
-                                android:textSize="18dp" />
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -150,19 +154,20 @@
                             app:layout_constraintVertical_bias="1.0">
 
                             <TextView
-                                android:id="@+id/min_details"
+                                android:id="@+id/max_details"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                tools:text="MIN: 18°"
+                                tools:text="MAX: 22°"
                                 android:textColor="@color/colorDetails"
-                                android:textSize="18dp" />
+                                android:textSize="18sp" />
 
                             <ImageView
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:src="@drawable/thermometer"
-                                android:rotation="180"/>
+                                android:rotation="180"
+                                android:contentDescription="@string/content_description"/>
                         </LinearLayout>
 
                     </android.support.constraint.ConstraintLayout>
@@ -200,14 +205,14 @@
                              android:layout_height="wrap_content"
                              android:text="@string/wind"
                              android:textColor="@color/colorDetails"
-                             android:textSize="20dp"/>
+                             android:textSize="20sp"/>
                          <TextView
                              android:id="@+id/wind_details"
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
                              tools:text="11 km/h"
                              android:textColor="@color/colorDetails"
-                             android:textSize="16dp"/>
+                             android:textSize="16sp"/>
                      </LinearLayout>
 
                      <android.support.constraint.ConstraintLayout
@@ -221,7 +226,8 @@
                              android:layout_marginBottom="0dp"
                              android:src="@drawable/wind"
                              app:layout_constraintBottom_toBottomOf="parent"
-                             app:layout_constraintEnd_toEndOf="parent" /> </android.support.constraint.ConstraintLayout>
+                             app:layout_constraintEnd_toEndOf="parent"
+                             android:contentDescription="@string/content_description"/> </android.support.constraint.ConstraintLayout>
 
                      </LinearLayout>
 
@@ -249,14 +255,14 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/umidity"
                                     android:textColor="@color/colorDetails"
-                                    android:textSize="20dp"/>
+                                    android:textSize="20sp"/>
                                 <TextView
                                     android:id="@+id/humidity_details"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     tools:text="60 %"
                                     android:textColor="@color/colorDetails"
-                                    android:textSize="16dp"/>
+                                    android:textSize="16sp"/>
                             </LinearLayout>
 
                             <android.support.constraint.ConstraintLayout
@@ -270,7 +276,8 @@
                                     android:layout_marginBottom="0dp"
                                     android:src="@drawable/drop"
                                     app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent" /> </android.support.constraint.ConstraintLayout>
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:contentDescription="@string/content_description"/> </android.support.constraint.ConstraintLayout>
 
                         </LinearLayout>
 
@@ -298,14 +305,14 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/pressure"
                                     android:textColor="@color/colorDetails"
-                                    android:textSize="20dp"/>
+                                    android:textSize="20sp"/>
                                 <TextView
                                     android:id="@+id/pressure_details"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     tools:text="1013 hPA"
                                     android:textColor="@color/colorDetails"
-                                    android:textSize="16dp"/>
+                                    android:textSize="16sp"/>
                             </LinearLayout>
 
                             <android.support.constraint.ConstraintLayout
@@ -319,7 +326,8 @@
                                     android:layout_marginBottom="0dp"
                                     android:src="@drawable/speedometer"
                                     app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent" /> </android.support.constraint.ConstraintLayout>
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:contentDescription="@string/content_description"/> </android.support.constraint.ConstraintLayout>
 
                         </LinearLayout>
 
@@ -348,14 +356,14 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/cloud"
                                     android:textColor="@color/colorDetails"
-                                    android:textSize="20dp"/>
+                                    android:textSize="20sp"/>
                                 <TextView
                                     android:id="@+id/clouds_details"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     tools:text="62 %"
                                     android:textColor="@color/colorDetails"
-                                    android:textSize="16dp"/>
+                                    android:textSize="16sp"/>
                             </LinearLayout>
 
                             <android.support.constraint.ConstraintLayout
@@ -369,7 +377,8 @@
                                     android:layout_marginBottom="0dp"
                                     android:src="@drawable/clouds"
                                     app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent" /> </android.support.constraint.ConstraintLayout>
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:contentDescription="@string/content_description"/> </android.support.constraint.ConstraintLayout>
 
                         </LinearLayout>
 
@@ -400,17 +409,18 @@
                             <ImageView
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:src="@drawable/sunrise" />
+                                android:src="@drawable/sunrise"
+                                android:contentDescription="@string/content_description"/>
 
                             <TextView
                                 android:id="@+id/sunrise_details"
-                                android:layout_marginLeft="8dp"
+                                android:layout_marginStart="8dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 tools:text="06:30°"
                                 android:textColor="@color/colorDetails"
-                                android:textSize="18dp" />
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -423,25 +433,26 @@
 
                             <TextView
                                 android:id="@+id/sunset_details"
-                                android:layout_marginRight="8dp"
+                                android:layout_marginEnd="8dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 tools:text="17:30°"
                                 android:textColor="@color/colorDetails"
-                                android:textSize="18dp" />
+                                android:textSize="18sp" />
 
                             <ImageView
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:src="@drawable/sunset" />
+                                android:src="@drawable/sunset"
+                                android:contentDescription="@string/content_description"/>
                         </LinearLayout>
 
                     </android.support.constraint.ConstraintLayout>
                 </android.support.v7.widget.CardView>
 
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
     </LinearLayout>
 

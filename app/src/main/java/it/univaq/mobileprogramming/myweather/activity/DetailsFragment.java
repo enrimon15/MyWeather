@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import it.univaq.mobileprogramming.myweather.R;
@@ -93,6 +94,7 @@ public class DetailsFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        //((MainActivity) getActivity()).enableSwipe();
     }
 
     /** popola view **/
@@ -101,12 +103,11 @@ public class DetailsFragment extends Fragment{
         n = today.getString("nome");
         c = today.getString("country");
         id = today.getString("id");
-
         city.setText(n + ", " + c);
         description.setText(today.getString("desc"));
         temp.setText(today.getString("temp"));
-        mintemp.setText("MAX: " + " " + today.getString("min"));
-        maxtemp.setText("MIN: " + today.getString("max"));
+        mintemp.setText("MIN: " + " " + today.getString("min"));
+        maxtemp.setText("MAX: " + today.getString("max"));
         cloud.setText(today.getString("nuv"));
         hum.setText(today.getString("umid"));
         press.setText(today.getString("press"));

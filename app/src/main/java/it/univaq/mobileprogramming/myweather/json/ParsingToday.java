@@ -1,5 +1,7 @@
 package it.univaq.mobileprogramming.myweather.json;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +38,6 @@ public class ParsingToday {
             String umidita= main.getString("humidity") + " %";
             String min= main.getInt("temp_min") + "\u00B0";
             String max= main.getInt("temp_max") + "\u00B0";
-
             String lat = coord.getString("lat");
             String lon = coord.getString("lon");
 

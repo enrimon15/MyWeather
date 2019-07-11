@@ -75,6 +75,8 @@ public class ParsingAround {
         else if (imm.equals("50d")) image = R.drawable.windy;
         else if (imm.equals("50n")) image = R.drawable.windy;
         return image;
+
+
     }
 
 

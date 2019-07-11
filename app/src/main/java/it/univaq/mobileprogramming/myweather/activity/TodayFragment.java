@@ -76,6 +76,7 @@ public class TodayFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        //((MainActivity) getActivity()).enableSwipe();
         if (nameC != null) setView(); //popola view
     }
 

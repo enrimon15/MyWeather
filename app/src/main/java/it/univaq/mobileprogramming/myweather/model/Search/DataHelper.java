@@ -1,6 +1,7 @@
 package it.univaq.mobileprogramming.myweather.model.Search;
 
 import android.content.Context;
+import android.os.Handler;
 import android.widget.Filter;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class DataHelper {
     /** controlla che la stringa cercata è presente nella lista di città **/
     public static CitySearch checkQuery(String query) {
         CitySearch city = null;
+        if (query.equals("")) return city;
         String search = query.substring(0, 1).toUpperCase() + query.substring(1);
 
         for (CitySearch c: citySuggestions){ //controllo se la query fa match con una città della lista
@@ -62,6 +64,14 @@ public class DataHelper {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
 
+
+                /*Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                }, simulatedDelay);*/
                 try {
                     Thread.sleep(simulatedDelay);
                 } catch (InterruptedException e) {

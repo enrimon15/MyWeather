@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,8 @@ public class MapFragment extends Fragment implements  OnMapReadyCallback {
     @Override
     public void onResume() {
         super.onResume();
+        //((MainActivity) getActivity()).disableSwipe();
+
         mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         if(mapFragment != null) mapFragment.getMapAsync(this);
     }

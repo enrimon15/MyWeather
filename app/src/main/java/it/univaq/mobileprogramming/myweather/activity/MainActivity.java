@@ -76,9 +76,27 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             adapter.addFragment("MAPPA", map);
 
             viewPager.setAdapter(adapter);
-            tabLayout.setupWithViewPager(viewPager); }
+            tabLayout.setupWithViewPager(viewPager);
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    //Toast.makeText(MainActivity.this, "tabSelected:  " + tab.getPosition(), Toast.LENGTH_SHORT).show();
+                    if (tab.getPosition() == 2) disableSwipe();
+                    else enableSwipe();
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }});
 
     }
+        }
 
 
     @Override
@@ -198,5 +216,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         onResume();
+    }
+
+    public void disableSwipe(){
+        if (swipeRefreshLayout.isEnabled() == true) swipeRefreshLayout.setEnabled(false);
+    }
+
+    public void enableSwipe(){
+        if (swipeRefreshLayout.isEnabled() == false) swipeRefreshLayout.setEnabled(true);
     }
 }
